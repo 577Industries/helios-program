@@ -6,7 +6,7 @@ artifacts:
     - §1.4
     - '§4.2 innovation #2'
     version: 0.1.0
-    pypi: https://pypi.org/project/helios-provenance/
+    pypi: https://pypi.org/project/helios-provenance-spec/
     docs: https://577industries.github.io/helios-provenance-spec/
   connectors:
     repo: https://github.com/577Industries/helios-spaceweather-connectors

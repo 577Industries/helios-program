@@ -23,7 +23,7 @@ Submission has happened; timeline is open-ended. The plan optimizes for **qualit
 | Fusion-engine IP scope | **Hybrid**: public framework, private weights/configs | Matches §6.6 IP strategy; companion private repo `helios-fusion-internal` holds trained weights, BMA priors, equipment transfer functions |
 | Execution team | Solo founder (Thomas) + heavy Claude agent delegation | Aggressive parallel agent dispatch across 4 worktrees; you on review/merge/secrets |
 | Paper kill-gate | **§2 Obj. 3 criterion (pre-registered)**: fused all-clear-revocation HSS beats best-component-model HSS by ≥15% on 3-event hold-out (2022-01-20 M5.5, 2023-02-17 X2.2, 2024-05-11 Gannon G5) AND reliability slope within 0.15 across all Kp severity strata | Both must pass → full arXiv paper. One fails → honest-negative-result ablation paper (still valuable). Both fail → no paper, fusion engine ships without preprint citation |
-| GitHub home | `github.com/577Industries/` (already authenticated via `gh`) | Matches existing org access; sibling to agent-memory, hashchain-audit, etc. |
+| GitHub home | `github.com/577Industries/` (organization, alongside aegisgraph + model-router + agent-memory + tool-guardrails) | Matches established public 577 SBIR portfolio. Session-1 bootstrap mistakenly used the user account `577-Industries` (with hyphen); session-1 cleanup transferred all six repos to the org. See `CLAUDE.md` §"GitHub identity disambiguation" — non-negotiable for future sessions. |
 | License | Apache 2.0 across all public repos | Preserves patent grant for SBIR data-rights compatibility; broader than MIT for SaaS/OEM downstreams |
 | Python baseline | 3.11+ (3.12 preferred) | Pattern matching, exception groups, modern typing |
 
@@ -31,7 +31,7 @@ Submission has happened; timeline is open-ended. The plan optimizes for **qualit
 
 - **Local checkout convention**: `~/577i-Projects/<repo>/` matching existing sibling repos (`agent-memory`, `hashchain-audit`, `model-router`, `tool-guardrails`, `workflow-dag`).
 - **Worktree convention**: `~/577i-Projects/.worktrees/<repo>-<branch>/` matching the directory you already maintain at `~/577i-Projects/.worktrees/`.
-- **Meta-repo**: `~/577i-Projects/helios-program/` (**public** on GitHub at `577Industries/helios-program`, alongside aegisgraph and the other public 577 SBIR work) holds the proposal companion document source, cross-repo orchestration scripts, the master plan tracker, kill-gate evaluation runner, and per-artifact design specs as they're created.
+- **Meta-repo**: `~/577i-Projects/helios-program/` (private, on GitHub) holds the proposal companion document source, cross-repo orchestration scripts, the master plan tracker, kill-gate evaluation runner, and per-artifact design specs as they're created.
 - **CITATION**: every public repo ships `CITATION.cff` so academic citers don't have to invent one.
 - **PyPI**: `helios-spaceweather-connectors`, `helios-fusion-engine`, `helios-provenance` namespace; `helios-fusion-internal` is wheel-only via internal index, never PyPI.
 - **DOI**: each public release tagged on GitHub auto-mints a Zenodo DOI (free, accepts arbitrary GitHub repos).
@@ -356,93 +356,653 @@ Each of those follow-up cycles is its own brainstorm → spec → plan → execu
 
 ---
 
-## Execution Log
+# Wave 2 + Polish Pass — Plan (Session 2, 2026-05-17)
 
-### 2026-05-17 — Program kickoff (Session 1)
+## Context
 
-**Bootstrapped (6 repos)**:
-- `helios-program` (private) — meta-repo, master plan committed, on GitHub
-- `helios-provenance-spec` (public) — scaffolding pushed
-- `helios-spaceweather-connectors` (public) — scaffolding pushed
-- `helios-fusion-engine` (public) — scaffolding pushed
-- `helios-fusion-internal` (private) — scaffolding pushed, gitignore-override patch applied so `weights/`, `priors/`, `transfer_functions/` directories will track binary model artifacts
-- `gannon-storm-rtk-analysis` (public) — scaffolding pushed
+Wave 1 shipped Phase 1 artifacts publicly: helios-program (private→public meta-repo at `github.com/577Industries/helios-program` with live docs at `https://577industries.github.io/helios-program/`), provenance-spec v0.1.0 RFC, fusion-engine v0.1.0 framework, Gannon analysis v0.1.0 (1,302 station-hours headline), and the foundation+DONKI of helios-spaceweather-connectors (no v0.1.0 yet, by design — held until ≥3 adapters live). The session-1 work also migrated all repos from the user account `577-Industries` (hyphen) to the organization `577Industries` (no hyphen, where aegisgraph + the rest of the public 577 SBIR portfolio lives).
 
-All public repos: Apache 2.0 LICENSE (full text), Python 3.11/3.12 matrix CI, ruff + mypy --strict + pytest, pre-commit with detect-secrets, MkDocs Material site skeleton, CITATION.cff, conventional-commit enforcement, dependabot.
+This Wave 2 + Polish pass addresses six interleaved workstreams the user asked to bundle into a single comprehensive execution:
 
-**GitHub topics** set on each repo for discoverability. Bootstrap script committed to `/tmp/helios_bootstrap.py` (not in the repo; ephemeral build-time artifact).
+1. **Repo cleanup** — Phase 1 audit (Explore agent E2) surfaced concrete P1+P2 issues across all 6 repos
+2. **Visual polish for GitHub Pages** — current site renders correctly but is stock Material; needs distinctive credibility signals for the NASA-center + precision-ag audience per Explore agent E3
+3. **Deploy Pages for the 4 artifact repos** — currently only helios-program has a published site; each artifact already has an `mkdocs.yml` from bootstrap but no live URL
+4. **CLAUDE.md** at the meta-repo root for future Claude sessions and any developer onboarding to the program (operator-confirmed scope: helios-program root only)
+5. **Wave 2 connector adapters** — 5 new adapters across 2 staged sub-waves (3a: SWPC + GOES + DSCOVR; then 2b: SEP Scoreboards + CDDIS GIMs) to unblock helios-fusion-engine's training phase
+6. **Four "next moves" from session 1** — PyPI publication for A/C, RFC issue #1 on provenance-spec, Gannon blog post publication, and the Wave 2 dispatch itself
 
-**Wave 1 agents dispatched (background, parallel)**:
+## Decisions Locked (this round)
 
-| Agent | Repo | Branch (local) | Status |
+| Decision | Choice | Why it matters |
+|---|---|---|
+| Polish scope | **Full polish (~1-2 days)** | Custom logo + Mermaid diagram + include-markdown refactor + dark mode tuning, not just MVP palette swap |
+| Artifact Pages | **Deploy all 4** at `https://577industries.github.io/<repo>/` with consistent style | Five published sites total; reviewers can deep-link to per-artifact docs |
+| CLAUDE.md scope | **helios-program root only** | One canonical reference; deviation from sister-repo house style (which has none) is acknowledged |
+| Wave 2 parallelism | **3 + 2 staged sub-waves** | 2a (SWPC, GOES, DSCOVR; DONKI-pattern-similar) lands first; 2b (Scoreboards, CDDIS GIMs; complex) after |
+
+## Defaults applied (flag any to revise)
+
+- **Palette swap**: `deep_purple/amber` → `blue` (primary) + `teal` (accent) per Explore E3's recommendation. Better dark-mode contrast; signals "credible engineering" to the NASA audience.
+- **Hero treatment**: lead with "1,302 station-hours over 2.5 cm threshold" but with an **inline climatological-v1 modifier** so the disclosure discipline from `gannon-storm-rtk-analysis/docs/methodology.md` is preserved.
+- **Custom logo**: minimal sun motif (single SVG, ≤2 colors, ≤8 KB). HELIOS is sun-themed. Avoid cartoon styling; aim for "research lab" register.
+- **No patent attribution** in any HELIOS repo (unlike sister TS libs which cite specific 577 patents) — HELIOS IP strategy is per master plan §6.6 (hybrid open/private with SBIR data rights on the fusion and translation layers).
+- **`helios-fusion-internal`** stays private; no Pages site; not touched by this pass other than docs banner clarifying private/IP-gated status.
+
+## Sequencing
+
+Seven phases, executed in order (each phase commits + pushes before the next begins):
+
+| Phase | Workstream | Eff. (h) | Critical-path? |
 |---|---|---|---|
-| A | helios-provenance-spec | `feat/v0.1-rfc` | ✅ Complete |
-| B-foundation | helios-spaceweather-connectors | `feat/v0.1-foundation-and-donki` | ✅ Complete |
-| C-framework | helios-fusion-engine | `feat/v0.1-framework` | ✅ Complete |
-| D | gannon-storm-rtk-analysis | `feat/v0.1-gannon-analysis` | ✅ Complete |
+| **P1** | Cleanup (P1+P2 fixes from audit) | 2 | Yes — unblocks polish work |
+| **P2** | Visual polish for helios-program Pages | 4-6 | No — but blocks P3 (style template) |
+| **P3** | Deploy Pages for 4 artifact repos with consistent style | 2-3 | No |
+| **P4** | CLAUDE.md at helios-program root | 1 | No |
+| **P5** | Wave 2a connector dispatch (3 agents in parallel) | 2 dispatch + ~30min/agent runtime | Yes — unblocks B v0.2.0a1 alpha |
+| **P6** | Wave 2b connector dispatch (2 agents in parallel, after 2a merges) | 1 dispatch + ~45min/agent runtime | Yes — unblocks B v0.2.0 stable |
+| **P7** | RFC issue + PyPI trusted publishing wiring + Gannon blog staging | 2 | No |
 
-Each agent commits locally on its feature branch but does NOT push — human operator (Thomas) reviews and merges.
+Phases P1-P4 are the polish/cleanup pass (~half-day effective). P5-P6 are Wave 2 (~1-2 day async — agents work while operator reviews). P7 is the four "next moves" wrap-up.
 
-**Wave 1 outcomes**:
+---
 
-| Artifact | Tests | Coverage | Headline result | Review pack |
+## Phase 1 — Cleanup pass (P1+P2 from Explore agent E2 audit)
+
+### Cross-cutting fixes (apply once across repos)
+
+| Fix | Files / locations |
+|---|---|
+| Fix PyPI URL mismatch in companion footnotes | `helios-program/companion/footnotes.yaml:9` — change `helios-provenance/` → `helios-provenance-spec/` |
+| Create shared meta-file template directory | `helios-program/templates/` containing: `SECURITY.md`, `CHANGELOG.md.template`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/bug.md`, `.github/ISSUE_TEMPLATE/feature.md`, `.github/FUNDING.yml` |
+| Distribute meta-files to all 4 public artifact repos + helios-program | Copy from templates, customize per-artifact PR template checklist (e.g., connectors PR template includes "new adapter tests + docs/adapters/*.md updated"; fusion-engine PR template includes "≥85% coverage maintained") |
+| Final sweep for any remaining `577-Industries` (hyphen) references | `grep -r '577-Industries' .` across all 6 repos; expected: zero hits |
+| GitHub topics consistency | `gh repo edit --add-topic` calls per repo — already done in session 1, audit confirms; spot-check |
+
+### Per-repo P1+P2 fixes (from E2 audit tables)
+
+| Repo | Action |
+|---|---|
+| `helios-fusion-engine` | Add explicit link to OSF pre-registration template in README Status section (line ~43): `[OSF pre-registration template](https://github.com/577Industries/helios-program/blob/main/orchestration/osf_preregistration.template.md)`. Add CHANGELOG.md with `[0.1.0] — 2026-05-17` entry. Sync `CITATION.cff` version `0.0.0 → 0.1.0` (drifted). |
+| `helios-provenance-spec` | Add cross-link to review pack in README. CITATION.cff already at 0.1.0 — verify date matches release. |
+| `helios-spaceweather-connectors` | Add CHANGELOG.md with `[unreleased]` placeholder. Add cross-link to review pack. |
+| `gannon-storm-rtk-analysis` | Delete `data/.gitkeep` (folder now used). Add CHANGELOG.md. Add cross-link to review pack. Move blog-post discoverability earlier in README. |
+| `helios-fusion-internal` | Add private/IP-gated banner to README; confirm Pages NOT enabled. |
+| `helios-program` | Fix footnotes.yaml PyPI URL (above). Confirm topics. |
+
+### Verification gate for Phase 1
+
+- `grep -rn '577-Industries' ~/577i-Projects/helios-* ~/577i-Projects/gannon-storm-rtk-analysis 2>/dev/null` returns zero hits
+- All 4 public artifact repos contain `SECURITY.md`, `CHANGELOG.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/{bug,feature}.md`, `.github/FUNDING.yml`
+- `curl -sI https://pypi.org/project/helios-provenance-spec/` returns HTTP 200 (already published implicitly via GH release — confirms URL matches)
+- helios-fusion-engine README contains the OSF pre-reg link
+- Companion footnotes regenerate identically: `python3 -m orchestration.companion_sync --check` exits 0
+
+---
+
+## Phase 2 — Visual polish for helios-program Pages (FULL polish)
+
+Target site: `https://577industries.github.io/helios-program/` — currently stock MkDocs Material with deep_purple/amber palette.
+
+### Stack changes (mkdocs.yml + requirements-docs.txt)
+
+**Add to `requirements-docs.txt`** (pinned for reproducibility):
+```
+mkdocs-material==9.5.27
+mkdocs-git-revision-date-localized-plugin==1.2.6
+mkdocs-include-markdown-plugin==8.0.1
+mkdocs-glightbox==0.4.0
+pymdown-extensions==10.9
+```
+
+**`mkdocs.yml` palette swap** (deep_purple/amber → blue/teal):
+```yaml
+theme:
+  name: material
+  custom_dir: overrides           # NEW — for home.html override
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: teal
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: teal
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/sun             # placeholder until custom SVG ships
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top              # NEW — back-to-top button
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit         # NEW — "Edit on GitHub" links
+    - content.tooltips
+```
+
+**Plugins**:
+```yaml
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: iso_date
+  - include-markdown
+  - glightbox
+  - social                        # built-in Material 9.5+ — auto preview cards
+```
+
+**`edit_uri`**: `edit/main/docs/` — points the "Edit on GitHub" links at the correct branch.
+
+**`extra.social`** footer:
+```yaml
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/577Industries/helios-program
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/577-industries/
+```
+
+### Custom landing page
+
+**`overrides/home.html`** (extends `base.html`): hero section + 4 artifact status cards + key stats + document registry + CTA.
+
+Hero copy (with disclosure-preserving caveat):
+
+> # HELIOS
+> *Heliophysics-Enhanced Location Integrity and Operations System*
+>
+> Calibrated, provenance-tracked decision intelligence for NASA mission operations and U.S. precision agriculture.
+>
+> **1,302 station-hours** of RTK positioning exceeding the 2.5 cm planting threshold during the May 2024 Gannon G5 storm — first reproducible quantification of solar-storm impact on U.S. row-crop GNSS. *(Climatological v1; full SPP in v2.)*
+>
+> [ View Artifacts ] [ Read the Plan ] [ GitHub ]
+
+**4 artifact status cards** (dynamic status badges read from `footnotes.yaml`):
+
+| Card | Tagline | Status badge color |
+|---|---|---|
+| helios-provenance-spec | "Feature-level lineage RFC for heliophysics fusion" | green (in-development) |
+| helios-spaceweather-connectors | "DONKI live; 5 more adapters in flight" | amber (scaffolding) |
+| helios-fusion-engine | "BMA + isotonic + Mondrian conformal framework" | green (in-development) |
+| gannon-storm-rtk-analysis | "1,302 station-hours quantified" | green (in-development) |
+
+**Mermaid dependency diagram** (in home page or master plan page):
+```mermaid
+graph LR
+  A[helios-provenance-spec] -->|schema| B[helios-spaceweather-connectors]
+  A -->|schema| C[helios-fusion-engine]
+  B -->|Table 3-1 data| C
+  D[gannon-storm-rtk-analysis] -.->|independent| B
+  C -->|trained weights| F[helios-fusion-internal]
+  classDef shipped fill:#5cb85c,stroke:#3e8e41,color:#fff
+  classDef partial fill:#f0ad4e,stroke:#cb8430,color:#fff
+  classDef private fill:#888,stroke:#555,color:#fff
+  class A,C,D shipped
+  class B partial
+  class F private
+```
+
+### Custom CSS
+
+**`docs/stylesheets/extra.css`** — ~150 lines covering:
+- `.md-hero` gradient background, headline typography
+- `.md-artifact-grid` 4-column responsive grid; `auto-fit, minmax(250px, 1fr)`
+- `.md-artifact-card` shadow + hover lift + status pill colors (green/amber/grey for stable/in-development/scaffolding)
+- `.md-stats` 3-up grid for headline numbers
+- Dark mode adjustments
+- Print-friendly overrides (so reviewer PDF export looks clean)
+
+Referenced in `mkdocs.yml`:
+```yaml
+extra_css:
+  - stylesheets/extra.css
+```
+
+### Custom logo
+
+**`docs/assets/logo.svg`** + **`docs/assets/favicon.png`**:
+- Single SVG, ≤2 colors (primary blue + accent teal), ≤8 KB
+- Concept: stylized sun with a horizontal line bisecting it (suggests horizon/ionosphere)
+- Restrained, NOT cartoon; "research lab" aesthetic per E3's audience analysis
+- favicon.png at 64×64 for browser tab
+
+mkdocs.yml:
+```yaml
+theme:
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+```
+
+### Workflow refactor: eliminate the `cp` aggregation step
+
+Current `.github/workflows/pages.yml` does:
+```bash
+cp companion/companion.md docs/index.md
+cp plan/master-plan.md docs/master-plan.md
+# ...etc
+```
+
+**Refactored approach** using `mkdocs-include-markdown-plugin`:
+
+`docs/index.md`:
+```markdown
+---
+title: HELIOS
+template: home.html
+---
+
+{%
+  include "../companion/companion.md"
+  start="## Technical Abstract"
+%}
+```
+
+`docs/master-plan.md`:
+```markdown
+{% include "../plan/master-plan.md" %}
+```
+
+Benefits: canonical source stays in `companion/`, `plan/`, etc. No copy step. No source drift. Workflow's "Aggregate sources into docs/" step becomes "copy the spec/* renames" only.
+
+### Tag the polish milestone
+
+After P2 lands and the new Pages site builds clean: tag `helios-program` at `v0.2.0` to mark the polish baseline. This is the helios-program meta-repo's first semver release (it had no `v0.1.0` before; meta-repos are documents-first, but a tag here gives reviewers a stable URL for citation).
+
+### Verification gate for Phase 2
+
+- `mkdocs build --strict` passes locally
+- GH Actions `pages` workflow run succeeds (target: <60s build time even with new plugins)
+- Live site at `https://577industries.github.io/helios-program/` shows: blue/teal palette, custom logo, hero section, 4 artifact cards, Mermaid diagram renders, "Last updated" stamp on every page, "Edit on GitHub" link works
+- Dark mode toggle works; all sections readable in both modes
+- Lychee link-checker (existing CI workflow) passes on every link
+- Social card preview: open `https://577industries.github.io/helios-program/assets/social/index.png` returns a generated card image
+- Tag `v0.2.0` pushed to `helios-program`; `gh release create v0.2.0 --generate-notes` published
+
+---
+
+## Phase 3 — Deploy Pages for the 4 artifact repos with consistent style
+
+Each artifact repo (`helios-provenance-spec`, `helios-spaceweather-connectors`, `helios-fusion-engine`, `gannon-storm-rtk-analysis`) already has an `mkdocs.yml` from bootstrap with the OLD deep_purple/amber palette. Update each to match the helios-program style, deploy via GH Actions, enable Pages with `build_type=workflow`.
+
+### Per-repo updates
+
+For each of the 4:
+
+1. **mkdocs.yml refresh**:
+   - Swap palette to blue/teal matching helios-program
+   - Same font choices (Roboto / Roboto Mono)
+   - Same feature flags (navigation.tabs etc.)
+   - Same plugins: `search`, `git-revision-date-localized`, `glightbox`, `mkdocstrings[python]` (for API ref autogeneration on the package repos)
+   - Add `edit_uri: edit/main/docs/`
+   - Same `extra.social` footer
+   - **Add a header link back to the helios-program site** for context (so an isolated arrival lands users at the program overview if they want it)
+
+2. **Add Pages workflow**: `.github/workflows/pages.yml` modeled after `helios-program/.github/workflows/pages.yml` but adapted to each repo:
+   - On push to main + workflow_dispatch
+   - Same `actions/configure-pages` + `actions/upload-pages-artifact` + `actions/deploy-pages` pattern
+   - Install from each repo's `pyproject.toml` `[docs]` extras (already exists from bootstrap)
+   - `mkdocs build --strict`
+
+3. **Enable Pages**: `gh api -X POST repos/577Industries/<repo>/pages -F build_type=workflow` per repo
+
+4. **Verify**: `https://577industries.github.io/<repo>/` returns 200 with the new style
+
+### Cross-linking after deployment
+
+Update `helios-program/companion/companion.md` artifact registry table to add a "Docs" column with live links:
+
+| # | Artifact | Repository | Docs | Status |
 |---|---|---|---|---|
-| A — provenance-spec | 98 passing | 98% | 4 record types, 11 worked examples, hash-stable lineage proof-of-concept on May 8 2024 fused SEP all-clear | `specs/2026-05-17-A-provenance-spec-review-pack.md` |
-| B-foundation — connectors | 66 unit + 1 live | 94% | DONKI adapter with dual-endpoint failover (api.nasa.gov ↔ kauai.ccmc.gsfc.nasa.gov); real Gannon GST → 5 CME ancestors + 1 IPS lineage proven end-to-end | `specs/2026-05-17-B-connectors-foundation-review-pack.md` |
-| C-framework — fusion engine | 105 passing | 92% | BMA + isotonic/Platt/stratified calibration + split/Mondrian conformal + CCMC metrics with bootstrap CIs; synthetic demo: isotonic brings reliability slope from 1.0071 → 1.0772, Mondrian 91% aggregate coverage @ α=0.1 | `specs/2026-05-17-C-fusion-engine-framework-review-pack.md` |
-| D — Gannon analysis | 40 passing | 80% | **1,302 station-hours over 2.5 cm threshold across 25 NGS CORS stations IA/IL/IN/OH; 95th-pctl peak 3.0 m, ~150× quiet baseline.** Real Kp (GFZ Potsdam) + real Dst (Kyoto WDC) + 175 cached real RINEX files. v1 climatological positioning, honestly disclosed. 1707-word blog post draft. | `specs/2026-05-17-D-gannon-analysis-review-pack.md` |
+| 1 | helios-provenance-spec | [github](...) | [docs](https://577industries.github.io/helios-provenance-spec/) | in-development |
+| ... |
 
-**Cumulative**: 309 tests passing across 4 artifacts, all `mypy --strict` + `ruff` clean, all coverage targets met or exceeded. Every artifact's quality bar matches the master plan's "citable-readiness checklist" except where blocked by sequencing (no v0.1.0 tags pushed, no PyPI publishes — operator-gated per policy).
+Update `helios-program/orchestration/companion_sync.py` to verify each docs URL returns 200 in `--check` mode.
 
-**Companion document seeded**: `companion/companion.md` ported the full submitted-proposal structure with live artifact footnote references for §1.3, §1.4, §2 (all objectives), §3.1, §4.2 (all five innovations). URLs are placeholders until each artifact's v0.1.0 ships.
+### Verification gate for Phase 3
 
-**OSF pre-registration template** drafted at `orchestration/osf_preregistration.template.md`. Must be filled and filed publicly **before** fusion-engine hold-out evaluation; `orchestration/kill_gate.py` will refuse to run without an OSF URL on file at `orchestration/osf_preregistration.url`.
+- All 4 artifact Pages live and return 200
+- Each renders with the new palette + custom logo (logo can be shared across all 5 repos via copy of `helios-program/docs/assets/logo.svg`)
+- helios-program companion's artifact registry shows the 4 new docs URLs
+- Lychee link-check on companion.md passes
 
-**`companion_sync.py`** upgraded from skeleton to working implementation. Reads each artifact's latest GitHub release (via `gh release view`), derives a status (scaffolding/in-development/stable), and writes `companion/footnotes.yaml`. CI mode (`--check`) for stale-detection.
+---
 
-**Pending (operator action items)**:
+## Phase 4 — CLAUDE.md at helios-program root
 
-*Immediate (review-and-merge Wave 1)*:
-- Review each feature branch using the per-artifact review pack in `specs/`. Each has a precise `git diff | pytest | ruff | mypy | merge --no-ff | tag | push | gh release create` sequence.
-- After merging A: open RFC discussion issue on helios-provenance-spec (the agent deferred per policy because the doc must be on main first).
-- After merging A and C: dispatch the small follow-up agents to swap placeholder `ProvenanceRecord` in B (connectors) and C (fusion-engine) for the real import from `helios_provenance.models`.
-- Hold off on tagging connectors v0.1.0 until ≥3 adapters live (DONKI + SWPC + GOES). A `v0.1.0a1` PyPI alpha is acceptable for the foundation-only state.
+**Path**: `~/577i-Projects/helios-program/CLAUDE.md`
 
-*Wave 2 (next agent dispatch — runs after Wave 1 merges land)*:
-- **Five next-wave connector adapter agents IN PARALLEL** on `helios-spaceweather-connectors`:
-  - SEP Scoreboards A/B/C (single agent; all three Scoreboards together)
-  - NOAA SWPC plasma + mag + 3-day SEP forecast (EXTEND of SunPy's index coverage)
-  - NASA CDDIS GIMs with Earthdata auth + IONEX parsing + parquet cache
-  - GOES wrapper over PySPEDAS + SWPC near-real-time JSON
-  - DSCOVR wrapper over PySPEDAS + real-time JSON
-  
-  **Each brief inherits the 7 DONKI API quirks** the B-foundation agent surfaced (api.nasa.gov flakiness, nullable linkedEvents, variable ID fields, singleton-vs-list defensive wrapping, 30-day max window, inclusive date math). Also inherits the historical-archive gotcha D surfaced: **NOAA SWPC public archive only serves the last ~30 days**; the SWPC adapter must support GFZ Potsdam + Kyoto WDC fallback for retrospective windows.
+**Audience**: future Claude sessions joining the HELIOS program; any developer (including non-Claude) onboarding.
 
-- **`helios-fusion-engine` Sprint C-Training** (single agent, after B v0.2 ships ≥3 adapters):
-  - Ingest the 7 Table 3-1 training events via real connectors
-  - Fit BMA priors per OSF pre-reg
-  - Fit isotonic calibrators per Kp severity stratum
-  - Persist weights to `helios-fusion-internal/weights/` (private repo)
-  - **Do not run hold-out evaluation yet** — that needs OSF pre-reg filing first.
+**Structure**:
 
-- **OSF pre-registration filing** (operator action):
-  - Fill in TO_BE_FILLED fields in `orchestration/osf_preregistration.template.md`
-  - File publicly on OSF (cite to public artifact URLs that should be stable by then)
-  - Save returned OSF DOI/URL to `orchestration/osf_preregistration.url`
-  - Tag `helios-fusion-engine` at the locked commit with `prereg-v1.0` and push
-  - Only THEN can `orchestration/kill_gate.py` run on the 3-event hold-out
+```markdown
+# CLAUDE.md
 
-- **GitHub Pages for companion document** — three options in `docs/operations.md §8`. Pick one before publishing the companion broadly.
+> Working context for the HELIOS program. Read this first if you're a new
+> Claude session or a developer joining the program.
 
-*Phase II readiness (longer arc)*:
-- Customer-discovery interviews per proposal §2 Obj. 5 (≥10 prospective customers; OSU Extension / OARDC channels)
-- NASA-center engagement decks (CCMC, M2M SWAO, SRAG, SPoRT) using the companion document as pre-read and the Gannon analysis blog post as the operational hook
-- Letters of intent (≥2 NASA-relevant, ≥2 precision-ag commercial)
-- Phase II commercialization plan draft
+## What HELIOS is
+[1 paragraph: NASA SBIR Phase I subtopic SPWX.1.S26A; calibrated space-weather
+decision intelligence; dual-use NASA SRAG + precision-ag GNSS]
 
-### Notes for future sessions
+## ⚠️ Critical: GitHub identity disambiguation
+[The 577Industries (org, no hyphen) vs 577-Industries (user, with hyphen)
+table. Same content as memory entry `helios-conventions.md`. This is the
+single most common mistake.]
 
-- The proposal source `.docx` at `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx` is the submitted version — locked, do not modify. The mirror in `helios-program/companion/companion.md` is the public-facing live version.
-- An extracted plaintext version of the proposal is persisted at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/774be7f5-a036-4889-8afe-4c087e05097c/tool-results/b0awntn99.txt` — useful for follow-up sessions that don't want to re-run `python-docx`.
-- Memory entries saved at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/memory/` cover: user profile, program overview, autonomy preference, shared conventions. New sessions inherit these.
-- Per the user's stated autonomy preference: heavy parallel agent dispatch; do not stop to confirm scope/architecture decisions that match the master plan's defaults. Only gate on destructive/irreversible actions (force-push to main, secrets, public posts on user social channels, OSF filing before pre-reg discipline checks).
+## The 6 repositories
+[Table of all 6 with brief description, visibility, latest release]
+
+## Local conventions
+- Checkout: `~/577i-Projects/<repo>/`
+- Worktrees: `~/577i-Projects/.worktrees/<repo>-<branch>/`
+- Apache 2.0 license across public repos
+- Python 3.11+/3.12 matrix
+- ruff + mypy --strict + pytest with ≥80% coverage
+- Conventional commits + pre-commit hooks
+
+## Master plan and decisions
+[Link to `plan/master-plan.md`. Highlight the pre-registered kill-gate
+discipline for the fusion-engine paper — non-negotiable process.]
+
+## Agent dispatch patterns
+[The four-stage per-artifact agent pipeline: Discover (Explore) → Design
+(code-architect) → Build (general-purpose in parallel worktrees, ≤5 active)
+→ Review (pr-review-toolkit + coderabbit). Plus the "agent commits but
+does not push; operator merges" policy.]
+
+## Submitted proposal
+[Locked .docx path; companion.md is the public mirror; the plaintext
+extraction at `~/.claude/projects/.../tool-results/b0awntn99.txt`]
+
+## Working with this program — daily checklist
+[Refresh footnotes, check open PRs, check CI, review master plan execution log]
+
+## When in doubt
+[Read the master plan execution log; recent decisions are usually in the
+last few entries. Check the per-artifact review packs in `specs/`.]
+
+## Memory
+[Cross-reference to `~/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/memory/`
+which mirrors much of this content. CLAUDE.md is the in-repo version that
+travels with the codebase; memory entries are the cross-session inheritance.]
+```
+
+Approximately 250-400 lines; scannable.
+
+### Verification gate for Phase 4
+
+- `~/577i-Projects/helios-program/CLAUDE.md` committed and pushed
+- File renders cleanly on GitHub's web view (preview before commit if possible)
+- No `577-Industries` (hyphen) references except in the disambiguation table itself
+- Cross-references to `plan/master-plan.md`, `docs/operations.md`, and `specs/*` resolve
+
+---
+
+## Phase 5 — Wave 2a: 3 connector adapters in parallel
+
+Dispatch 3 `general-purpose` agents simultaneously, each in `~/577i-Projects/.worktrees/helios-spaceweather-connectors-<branch>/`:
+
+### Agent 5a: NOAA SWPC adapter
+
+- **Branch**: `feat/v0.2-swpc-adapter`
+- **Strategy**: EXTEND (SunPy partially covers indices; we add plasma + mag + 3-day SEP forecast JSON)
+- **Endpoints**:
+  - `services.swpc.noaa.gov/json/solar-wind/plasma-7-day.json`
+  - `services.swpc.noaa.gov/json/solar-wind/mag-7-day.json`
+  - `services.swpc.noaa.gov/json/predictions/aviation-3-day-forecast.json`
+  - Plus Kp/Dst current — note historical archive limit (~30 days)
+- **Critical: historical-archive fallback** — for retrospective work beyond 30 days, fall back to GFZ Potsdam (Kp, CC-BY-4.0) and Kyoto WDC (Dst). This was the operational gotcha Agent D surfaced; bake it into the adapter so consumers don't have to know.
+- **Provenance**: emit `helios_provenance.HeliosModelOutputRecord` from each fetched point (no placeholder — real import; A v0.1.0 is published)
+- **Tests**: recorded fixtures for both SWPC and GFZ/Kyoto fallback paths; one live test
+- **Quality bar**: ≥80% coverage, mypy --strict, ruff clean
+
+### Agent 5b: GOES adapter wrapper
+
+- **Branch**: `feat/v0.2-goes-adapter`
+- **Strategy**: WRAP (PySPEDAS goes module is active, Apache 2)
+- **Endpoints**: thin wrapper over PySPEDAS for archive; SWPC near-real-time JSON for live data
+- **Particles**: X-ray flux + integral proton flux (the GOES products HELIOS needs for SEP analysis)
+- **Tests**: fixtures with PySPEDAS return shape; live test marked `live`
+- **Quality bar**: same
+
+### Agent 5c: DSCOVR adapter wrapper
+
+- **Branch**: `feat/v0.2-dscovr-adapter`
+- **Strategy**: WRAP (PySPEDAS dscovr module)
+- **Endpoints**: thin wrapper for L1 plasma + mag
+- **Tests + quality bar**: same
+
+### Coordination
+
+All 3 dispatched in one message via parallel `Agent` calls (run_in_background=true). Each agent receives:
+- The 7 DONKI quirks from B-foundation's `docs/design.md` as background
+- The NOAA-archive-30-day-limit gotcha from Phase 1 audit notes
+- The provenance-spec real import path (`from helios_provenance.models import ...`)
+- Instructions to commit but NOT push (operator reviews)
+
+### Merge sequence after agents return
+
+1. Operator reviews each branch via per-agent review packs (agents produce these in their final report)
+2. Merge order: GOES → DSCOVR → SWPC (simplest first, lowest review surface; SWPC last because of the dual-source fallback complexity)
+3. After all 3 merge to main: tag `helios-spaceweather-connectors` `v0.2.0a1` (PyPI alpha — 4 adapters live: DONKI + GOES + DSCOVR + SWPC)
+4. Run `companion_sync` to update footnotes (connectors → `in-development`)
+
+### Verification gate for Phase 5
+
+- All 3 agent branches green CI on push (`pytest --cov`, ruff, mypy)
+- `from helios_connectors.adapters import SwpcAdapter, GoesAdapter, DscovrAdapter` works
+- Each adapter's `fetch()` returns records validating against `helios_provenance` schema
+- Connectors tagged `v0.2.0a1`; PyPI alpha published (Phase 7 wires PyPI publishing; alpha can ship even before trusted-publishing is wired by using `gh release` only — operator manually decides)
+
+---
+
+## Phase 6 — Wave 2b: 2 connector adapters in parallel (after 2a merges)
+
+Dispatch 2 `general-purpose` agents:
+
+### Agent 6a: SEP Scoreboards A/B/C adapter
+
+- **Branch**: `feat/v0.2-sep-scoreboards-adapter`
+- **Strategy**: BUILD (no read client exists; CCMC publishes only a write-only helper)
+- **Endpoints**: all three Scoreboards in one adapter module — A (onset probability), B (peak flux), C (event time profiles)
+- **Rate limits**: respect CCMC's posted limits; conservative default (≤5 RPS)
+- **HESPERIA REleASE explicitly excluded** per proposal §3 T1 (commercial licensing)
+- **Tests**: recorded fixtures for each Scoreboard; live tests gated by `pytest -m live`
+- **Quality bar**: ≥80% coverage
+
+### Agent 6b: NASA CDDIS GIMs adapter
+
+- **Branch**: `feat/v0.2-cddis-gim-adapter`
+- **Strategy**: BUILD (no maintained client with Earthdata auth + IONEX parsing exists)
+- **Auth**: Earthdata Login via `NASA_EARTHDATA_USER` / `NASA_EARTHDATA_PASS` env vars; documented in `.env.example` and `docs/adapters/cddis.md`
+- **Format**: IONEX parsing (2-hour vertical-TEC maps); parquet cache for downloaded grids
+- **Special concern**: 20+ years of GIMs is multi-TB; cache rules and lazy-fetch are important. Default to "fetch only the requested time window; cache locally; don't pre-warm"
+- **Tests + quality bar**: same
+
+### Merge sequence after agents return
+
+1. Review both branches
+2. Merge order: CDDIS first (independent of SEP Scoreboards), then SEP Scoreboards
+3. After both merge: tag `helios-spaceweather-connectors` **`v0.2.0`** (stable, all 6 sources live)
+4. `gh release create v0.2.0` with full release notes
+5. PyPI publish via the trusted-publishing wiring (Phase 7)
+6. Run `companion_sync`
+
+### Verification gate for Phase 6
+
+- All 6 sources importable: `from helios_connectors.adapters import DonkiAdapter, ScoreboardAdapter, SwpcAdapter, CddisAdapter, GoesAdapter, DscovrAdapter`
+- An end-to-end integration test in `helios-fusion-engine` (added in this pass) fetches a small window of Scoreboard A data through the connector and feeds it through the BMA orchestrator — proves real-data flow
+- `helios-spaceweather-connectors` v0.2.0 tagged + released
+- Companion footnotes: connectors `version: 0.2.0, status: in-development`
+
+---
+
+## Phase 7 — Four "next moves" from session 1
+
+### 7.1 — PyPI trusted publishing for A, C, and (after Phase 6) B
+
+**Operator action required**: configure PyPI trusted publishing on `pypi.org/manage/account/publishing/` for each package, registering:
+- Publisher: GitHub
+- Organization: 577Industries
+- Repository: `helios-provenance-spec` / `helios-fusion-engine` / `helios-spaceweather-connectors`
+- Workflow: `publish.yml`
+- Environment: `pypi`
+
+For each repo, add `.github/workflows/publish.yml`:
+```yaml
+name: publish
+on:
+  release:
+    types: [published]
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install build
+      - run: python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
+```
+
+After trusted publishing is set up, manually re-run the `v0.1.0` release on A and C to trigger PyPI publish (or tag `v0.1.1` if any cleanup commits landed).
+
+**Skip PyPI for `gannon-storm-rtk-analysis`** — it's an analysis repo, not a library. The README install instructions correctly emphasize `git clone + pip install -e .` for reproduction.
+
+### 7.2 — Open RFC issue #1 on helios-provenance-spec
+
+After Phase 1 (helios-provenance-spec is merged + tagged), run:
+```bash
+gh issue create --repo 577Industries/helios-provenance-spec \
+  --title "RFC-0001: feature-level provenance for heliophysics fusion systems" \
+  --body "$(cat rfc/RFC-0001-feature-lineage.md)" \
+  --label rfc
+```
+
+**Operator outreach** (not automated): cross-post the issue link to:
+- SPASE community list (spase-info on Google Groups)
+- sunpy-dev mailing list
+- CCMC feedback channel (via helios-program contact form / direct email to a known CCMC contact)
+- 577 Industries LinkedIn announcement
+
+### 7.3 — Gannon blog post — publish and announce
+
+Two options the operator picks at execution time:
+1. **577industries.com publication**: requires WordPress access. The blog post markdown source lives at `gannon-storm-rtk-analysis/blog-post/2026-05-17-when-the-sky-stopped-the-tractors.md`. Rehost figures on CDN (Cloudflare R2 or similar) and rewrite the markdown's figure URLs.
+2. **MkDocs blog plugin** as a fallback: add `mkdocs-material[blog]` to helios-program's docs; add a `docs/blog/` section; first post is the Gannon retrospective. URL becomes `https://577industries.github.io/helios-program/blog/2026-05-17-when-the-sky-stopped-the-tractors/`.
+
+Default in this pass: stage the blog post in helios-program's MkDocs blog plugin (option 2) so a public URL exists; operator can mirror to 577industries.com when WordPress access is convenient.
+
+**Social posts** (operator-driven; this pass writes draft text):
+- LinkedIn post draft → `helios-program/docs/blog/social/2026-05-17-linkedin.md`
+- Twitter/X thread draft → `helios-program/docs/blog/social/2026-05-17-twitter-thread.md`
+Both reference the headline plot at `https://577industries.github.io/gannon-storm-rtk-analysis/results/figures/fig-01-regional-error-vs-time.png` and the methodology disclosure.
+
+### 7.4 — Wave 2 dispatch (already covered in Phases 5-6)
+
+The fourth "next move" from session 1 *is* Wave 2 — already detailed above.
+
+### Verification gate for Phase 7
+
+- For each of A, C, (B after Phase 6): a successful `publish` workflow run, package visible at `pypi.org/project/<name>/`
+- RFC issue #1 open and visible at `github.com/577Industries/helios-provenance-spec/issues/1`
+- Blog post published at one of the two URLs (depending on operator choice)
+- Social-post drafts committed
+
+---
+
+## Critical files / paths (master list, organized by phase)
+
+| Phase | Path | Action |
+|---|---|---|
+| P1 | `helios-program/companion/footnotes.yaml` | Edit: provenance → provenance-spec |
+| P1 | `helios-program/templates/SECURITY.md` | NEW |
+| P1 | `helios-program/templates/CHANGELOG.md.template` | NEW |
+| P1 | `helios-program/templates/.github/*.md`, `*.yml` | NEW |
+| P1 | (4 public artifact repos)/SECURITY.md | NEW (copied from template) |
+| P1 | (4 public artifact repos)/CHANGELOG.md | NEW (customized per artifact) |
+| P1 | (4 public artifact repos)/.github/{PULL_REQUEST_TEMPLATE.md,ISSUE_TEMPLATE/*,FUNDING.yml} | NEW |
+| P1 | `helios-fusion-engine/README.md` | Edit: add OSF pre-reg link |
+| P1 | `helios-fusion-engine/CITATION.cff` | Edit: version 0.0.0 → 0.1.0 |
+| P1 | (3 public artifact repos)/README.md | Edit: add cross-link to review pack |
+| P1 | `gannon-storm-rtk-analysis/data/.gitkeep` | DELETE |
+| P2 | `helios-program/mkdocs.yml` | Major edit: palette, plugins, features, edit_uri, extra.social |
+| P2 | `helios-program/requirements-docs.txt` | Edit: add 4 new plugin deps |
+| P2 | `helios-program/overrides/home.html` | NEW (custom hero template) |
+| P2 | `helios-program/docs/stylesheets/extra.css` | NEW (~150 lines) |
+| P2 | `helios-program/docs/assets/logo.svg` | NEW (custom sun motif) |
+| P2 | `helios-program/docs/assets/favicon.png` | NEW (64×64 derivative) |
+| P2 | `helios-program/.github/workflows/pages.yml` | Edit: refactor aggregation step using `include-markdown` |
+| P2 | `helios-program/docs/index.md` | Edit: use `{% include "../companion/companion.md" %}` |
+| P2 | `helios-program/docs/master-plan.md` | Edit: use include directive |
+| P2 | (Mermaid graph) | Embedded in `companion.md` or `index.md` |
+| P3 | (4 artifact repos)/mkdocs.yml | Edit: palette/plugins matching helios-program |
+| P3 | (4 artifact repos)/.github/workflows/pages.yml | NEW |
+| P3 | (4 artifact repos)/docs/assets/logo.svg | NEW (copy from helios-program) |
+| P3 | `gh api -X POST repos/577Industries/<repo>/pages -F build_type=workflow` | run × 4 |
+| P3 | `helios-program/companion/companion.md` | Edit: add "Docs" column with live URLs |
+| P3 | `helios-program/orchestration/companion_sync.py` | Edit: verify docs URLs in `--check` mode |
+| P4 | `helios-program/CLAUDE.md` | NEW (~250-400 lines) |
+| P5-P6 | `helios-spaceweather-connectors/src/helios_connectors/adapters/{swpc,goes,dscovr,sep_scoreboards,cddis_gim}.py` | NEW per Wave 2 dispatch |
+| P5-P6 | `helios-spaceweather-connectors/tests/test_*.py` | NEW per adapter |
+| P5-P6 | `helios-spaceweather-connectors/docs/adapters/*.md` | NEW per adapter |
+| P5-P6 | `helios-spaceweather-connectors/CHANGELOG.md` | Append v0.2.0a1 + v0.2.0 entries |
+| P7 | (3 publishable repos)/.github/workflows/publish.yml | NEW |
+| P7 | `helios-program/docs/blog/2026-05-17-when-the-sky-stopped-the-tractors.md` | NEW (mirror of gannon's blog-post) |
+| P7 | `helios-program/docs/blog/social/{linkedin,twitter}.md` | NEW (draft text) |
+
+## Reusable code / utilities to leverage
+
+- `helios-program/orchestration/companion_sync.py` — already production; `--check` mode used by CI
+- `helios-program/orchestration/kill_gate.py` — stays a stub (correctly blocked until OSF pre-reg + B v0.2)
+- Existing `helios-program/.github/workflows/pages.yml` — template for the 4 artifact Pages workflows
+- Existing per-artifact `pyproject.toml` `[docs]` extras — already declared, just need to be installed in the new Pages workflows
+- The 9 real DONKI fixtures in `helios-spaceweather-connectors/tests/fixtures/donki/` — Wave 2 adapter agents should look here for "what a real CCMC API response looks like" reference
+
+## Verification — end-to-end after all phases
+
+1. **Live sites**: open each of 5 published Pages URLs (1 program + 4 artifacts). All return HTTP 200; all show consistent palette + logo; "Last updated" stamp present on every page; dark mode works.
+2. **Cross-links**: every link on the helios-program companion document resolves (lychee CI passes).
+3. **Tests**: every artifact repo CI is green on main. `helios-spaceweather-connectors` v0.2.0 has ≥80% coverage with 4+ adapters tested.
+4. **PyPI**: `pip install helios-provenance-spec helios-fusion-engine helios-spaceweather-connectors` succeeds; each package imports.
+5. **Companion sync**: `python3 -m orchestration.companion_sync --check` exits 0; footnotes match upstream release state.
+6. **CLAUDE.md**: a fresh `Claude` session in `~/577i-Projects/helios-program/` reads CLAUDE.md on session start and demonstrates context — e.g., correctly disambiguates 577Industries vs 577-Industries on first probe.
+7. **RFC issue**: visible at `github.com/577Industries/helios-provenance-spec/issues/1` with the full RFC body.
+8. **Blog post**: published at the chosen URL; first-paragraph quote with caveat preserved.
+9. **End-to-end integration test** (added in P6): `python -m pytest helios-fusion-engine/tests/test_e2e.py::test_fetch_through_fusion -v` passes — proves real connector data flows through fusion engine.
+
+## Risks specific to this pass
+
+| Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|
+| `mkdocs-include-markdown-plugin` produces different render than the current `cp` approach (different relative-path resolution) | Medium | Low (visual regression only) | Build the new site locally first; visually diff against the current production site before merging |
+| Custom `home.html` breaks on a non-default Material version bump | Low | Medium | Pin `mkdocs-material==9.5.27` in `requirements-docs.txt`; document the pin reason in a comment |
+| Wave 2a + Wave 2b feature branches conflict on `pyproject.toml` (adding deps) | Medium | Low | Each adapter agent edits `pyproject.toml` to add its deps; merge in branch order and resolve via `git checkout --theirs pyproject.toml` followed by a manual merge of the dep list |
+| CCMC SEP Scoreboards rate-limit blocks the live integration test in Wave 2b | Medium | Low | Default to fixture-based tests; live test marked `pytest -m live` and runs only nightly with backoff |
+| PyPI trusted-publishing requires manual config on pypi.org that the operator hasn't done | High | Medium (delays Phase 7.1) | Phase 7.1 explicitly calls out this as operator-required pre-step; the publish.yml workflow ships but doesn't fire until pypi.org config is in place |
+| Custom logo / favicon takes longer than expected | Medium | Low | Phase 2 ships first with `material/sun` icon as placeholder; custom SVG is appended via a follow-up commit if time runs out |
+| 4 artifact Pages workflows blow through GH Actions minutes | Low | Low | Each workflow is <60s; 5 sites × ~5 pushes/week = trivial usage |
+| Mermaid diagram renders broken inside Material's superfences | Low | Low | Use Material's native `mermaid` integration (`pymdownx.superfences` with `format: !!python/name:pymdownx.superfences.fence_code_format`); test on Phase 2 before P3 inherits it |
+
+## What happens after this pass
+
+- **Sprint C-Training** (separate session, not this pass): once `helios-spaceweather-connectors` v0.2.0 is on PyPI, dispatch a fusion-engine agent to train BMA priors on the 7 Table 3-1 training events using real Scoreboard data. Persist weights to `helios-fusion-internal/weights/`.
+- **OSF pre-registration** (operator action, before hold-out evaluation): fill `helios-program/orchestration/osf_preregistration.template.md` and file on OSF. Save URL to `orchestration/osf_preregistration.url`. Tag `helios-fusion-engine` at `prereg-v1.0`.
+- **Kill-gate execution day**: run `python -m orchestration.kill_gate`; commit `results/<date>-killgate.json`; branch on outcome (full paper / ablation paper / no paper).
+- **Phase II re-pitch material**: companion document + 5 published artifact sites + 1,302 station-hours headline result + RFC community engagement = a substantially stronger Phase II package than session 1 ended on.

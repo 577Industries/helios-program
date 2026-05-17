@@ -55,7 +55,7 @@ ARTIFACTS: list[Artifact] = [
         key="provenance_spec",
         repo="577Industries/helios-provenance-spec",
         public=True,
-        pypi_name="helios-provenance",
+        pypi_name="helios-provenance-spec",
         cited_in=["§1.4", "§4.2 innovation #2"],
     ),
     Artifact(
