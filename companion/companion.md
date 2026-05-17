@@ -20,12 +20,12 @@
 
 ## Artifact registry
 
-| # | Artifact | Repository | Status (2026-05-17) | Cited in |
-|---|---|---|---|---|
-| 1 | helios-provenance-spec | [github.com/577Industries/helios-provenance-spec](https://github.com/577Industries/helios-provenance-spec) | scaffolding | §1.4 CONOPS · §4.2 innovation #2 |
-| 2 | helios-spaceweather-connectors | [github.com/577Industries/helios-spaceweather-connectors](https://github.com/577Industries/helios-spaceweather-connectors) | scaffolding | §2 Obj. 1 · §3 T1 |
-| 3 | helios-fusion-engine *(public framework)* | [github.com/577Industries/helios-fusion-engine](https://github.com/577Industries/helios-fusion-engine) | scaffolding | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
-| 4 | gannon-storm-rtk-analysis | [github.com/577Industries/gannon-storm-rtk-analysis](https://github.com/577Industries/gannon-storm-rtk-analysis) | scaffolding | §1.3 Gannon · §2 Obj. 4 · §4.2 innovation #4 |
+| # | Artifact | Repository | Docs | Version | Status | Cited in |
+|---|---|---|---|---|---|---|
+| 1 | helios-provenance-spec | [GitHub](https://github.com/577Industries/helios-provenance-spec) | [docs](https://577industries.github.io/helios-provenance-spec/) | v0.1.0 | in-development | §1.4 CONOPS · §4.2 innovation #2 |
+| 2 | helios-spaceweather-connectors | [GitHub](https://github.com/577Industries/helios-spaceweather-connectors) | [docs](https://577industries.github.io/helios-spaceweather-connectors/) | pre-v0.1 | scaffolding | §2 Obj. 1 · §3 T1 |
+| 3 | helios-fusion-engine *(public framework)* | [GitHub](https://github.com/577Industries/helios-fusion-engine) | [docs](https://577industries.github.io/helios-fusion-engine/) | v0.1.0 | in-development | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
+| 4 | gannon-storm-rtk-analysis | [GitHub](https://github.com/577Industries/gannon-storm-rtk-analysis) | [docs](https://577industries.github.io/gannon-storm-rtk-analysis/) | v0.1.0 | in-development | §1.3 Gannon · §2 Obj. 4 · §4.2 innovation #4 |
 
 A canonical machine-readable artifact registry lives at [`footnotes.yaml`](./footnotes.yaml). It is rebuilt automatically from each artifact's README on every merge to `main` via `orchestration/companion_sync.py`.
 
