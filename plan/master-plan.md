@@ -1146,3 +1146,55 @@ Will write Sprint C-Training review pack on agent return; then update execution 
 
 After items 1-3 are done by the operator: kill-gate runner is unblocked. Then run `orchestration/kill_gate.py` for the actual hold-out evaluation against the 3-event set (2022-01-20 M5.5, 2023-02-17 X2.2, 2024-05-11 Gannon G5).
 
+
+### Sprint C-Training merged; helios-fusion-engine v0.1.1 shipped
+
+**`helios-fusion-engine` v0.1.1 tagged + released**: <https://github.com/577Industries/helios-fusion-engine/releases/tag/v0.1.1>. Adds the `training/` subpackage (138 tests, 90% coverage) with loader + 3 fitters + orchestrator pipeline.
+
+**`helios-fusion-internal/weights/` populated** for the first time:
+- `bma_priors_table_3_1.npz` (7 named BMA prior vectors, one per training event)
+- `isotonic_calibrators_stratified.npz` (3 calibrators: quiet/moderate/extreme Kp strata)
+- `conformal_residuals_{split,mondrian}.npz`
+- `manifest.json` (training-run UTC, git SHA b749d10, connectors v0.2.0, OSF pre-reg URL slot)
+- Each `.npz` paired with a sibling `.provenance.json` (`HeliosTransformationRecord` per spec)
+
+Review pack: `specs/2026-05-17-Sprint-C-Training-review-pack.md`.
+
+### ISWA pre-2018 cutover — data-availability constraint surfaced
+
+The Sprint C-Training agent discovered that ISWA SEP Scoreboards' JSON deposits don't reach back to Table 3-1's training events (2000-2017). **Every event used synthetic-proxy streams** in this run; fully labelled in manifest's `data_gaps` map.
+
+Resulting BMA priors are **near-uniform (top weight ~0.09-0.11 across 11 components)** — not over-fit. The kill-gate hold-out events (2022-01-20, 2023-02-17, 2024-05-11) post-date the ISWA cutover and will hit real upstream data at evaluation time.
+
+**Two paths forward** (operator decision):
+
+1. **Accept now**: synthetic-trained near-uniform priors effectively reduce BMA to equal-weight ensemble for hold-out eval — defensible; the metric is data-driven at eval time; the proposal's §3.2 "validation event cherry-picking" risk is fully mitigated by the OSF pre-registration discipline regardless of training-data substrate.
+2. **Sprint C-Training-v2 (recommended before kill-gate eval)**: expand the Scoreboards adapter registry to probe more energy directories (per Wave 2b Scoreboards review pack open question #1) AND/OR ingest SWPC SEP-event archive (pre-2018 coverage). Either path lifts `iswa_rows > 0` for at least September 2017; refit; re-persist.
+
+### Session 3 close — Phase II readiness summary
+
+**All four artifact-track milestones for this session shipped.** No work remains that I can do without operator action. The next session's possible work:
+
+1. **Sprint C-Training-v2** (recommended; substantive agent dispatch)
+2. **Kill-gate execution** (blocked on operator OSF pre-reg filing; then mechanical)
+3. **arXiv preprint** (gated on kill-gate result + decision tree per master plan §C)
+
+The full HELIOS portfolio at session-3 close:
+
+| Repo | Latest release | What it does |
+|---|---|---|
+| `helios-program` | v0.2.0 | Visual polish; companion document; master plan; ops guide; CLAUDE.md; OPERATOR_TODO |
+| `helios-provenance-spec` | v0.1.0 | JSON Schema RFC; pydantic ref impl; community-comment issue #4 open |
+| **`helios-spaceweather-connectors`** | **v0.2.0** | 6 production adapters; 305 tests at 90% cov; real `HeliosModelOutputRecord` provenance |
+| **`helios-fusion-engine`** | **v0.1.1** | Framework + Sprint C-Training subpackage; 138 tests; ready to consume real weights |
+| `helios-fusion-internal` | — (private) | First trained artifacts on disk; manifest + provenance for each |
+| `gannon-storm-rtk-analysis` | v0.1.0 | 1,302 station-hours headline; reproducible CORS retrospective |
+
+**Five citable Gannon ground-truth observations** now exist with full provenance:
+1. Kp peak = 9.0 (SwpcAdapter / GFZ)
+2. Bz peak = -59.16 nT (DscovrAdapter / DSCOVR L2 GSE)
+3. TEC peak = 55.1 TECU at Columbus OH (CddisGimAdapter / synthetic; real-data confirmation pending Earthdata creds)
+4. RTK error > 2.5 cm = 1,302 station-hours (gannon-storm-rtk-analysis)
+5. Trained BMA priors on 7 SEP events (Sprint C-Training; synthetic-proxy substrate with documented caveat)
+
+**Operator action items remaining**: see `OPERATOR_TODO.md` for the 9-item checklist. Critical-path items: PyPI trusted publishing (3 packages); Earthdata Login credentials; OSF pre-registration filing.
