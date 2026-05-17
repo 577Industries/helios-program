@@ -1006,3 +1006,46 @@ The fourth "next move" from session 1 *is* Wave 2 — already detailed above.
 - **OSF pre-registration** (operator action, before hold-out evaluation): fill `helios-program/orchestration/osf_preregistration.template.md` and file on OSF. Save URL to `orchestration/osf_preregistration.url`. Tag `helios-fusion-engine` at `prereg-v1.0`.
 - **Kill-gate execution day**: run `python -m orchestration.kill_gate`; commit `results/<date>-killgate.json`; branch on outcome (full paper / ablation paper / no paper).
 - **Phase II re-pitch material**: companion document + 5 published artifact sites + 1,302 station-hours headline result + RFC community engagement = a substantially stronger Phase II package than session 1 ended on.
+
+---
+
+## Execution Log — Wave 2 (Session 2, 2026-05-17)
+
+### Phases 1-4 complete
+- **Phase 1 (cleanup)**: shared meta-file templates created in `templates/`; SECURITY.md / ISSUE-TEMPLATE / FUNDING.yml distributed to 4 public artifact repos; per-repo PR templates with customized checklists; CHANGELOG.md per repo; cross-links to review packs in each artifact README; `companion/footnotes.yaml` PyPI URL fixed (`helios-provenance` → `helios-provenance-spec`); fusion-engine README now links to OSF pre-reg template; `gannon-storm-rtk-analysis/data/.gitkeep` deleted; `helios-fusion-engine/CITATION.cff` synced 0.0.0 → 0.1.0.
+- **Phase 2 (helios-program Pages polish, v0.2.0)**: blue/teal palette, custom sun-themed SVG logo + favicon, Inter/JetBrains Mono fonts, hero with 1,302-station-hours headline (climatological-v1 caveat preserved), 4 artifact status cards, 4-up stats strip, Mermaid dependency graph, Material blog plugin enabled with Gannon retrospective as first post + LinkedIn + 9-tweet thread drafts. Workflow refactored to use mkdocs-include-markdown-plugin (canonical content stays in source dirs; only footnotes.yaml is still `cp`'d). Tagged `v0.2.0`. Live at https://577industries.github.io/helios-program/.
+- **Phase 3 (4 artifact Pages)**: all four artifact repos now have published docs sites with consistent style at https://577industries.github.io/{helios-provenance-spec, helios-spaceweather-connectors, helios-fusion-engine, gannon-storm-rtk-analysis}/. Shared logo + extra.css for portfolio-wide visual consistency.
+- **Phase 4 (CLAUDE.md)**: 201-line in-repo orientation at `helios-program/CLAUDE.md` covering the org/user disambiguation, the 6 repos, conventions, master plan + kill-gate discipline, agent dispatch patterns, daily checklist, and a "new Claude session" do-not-do list.
+
+### Phase 5 — Wave 2a complete
+Three connector adapters dispatched in parallel:
+
+| Adapter | Branch | Tests | Coverage | Headline result |
+|---|---|---|---|---|
+| `SwpcAdapter` | `feat/v0.2-swpc-adapter` | 42 unit + 1 live | 89% | Real Gannon-week smoke test routed correctly to GFZ archive (49 Kp records, peak Kp=9.0 on 2024-05-11); zero requests hit SWPC realtime for >30-day queries |
+| `GoesAdapter` | `feat/v0.2-goes-adapter` | 51 unit | 94% | Real PySPEDAS smoke test pulled NCEI archive for Gannon week; proton flux at 16/54/91 MeV proxy channels emitted correctly; **caveat**: SGPS L2 1-minute file publishes only differential channels — Sprint C-Training must re-integrate or route through SWPC NRT for true >10/>100 MeV thresholds |
+| `DscovrAdapter` | `feat/v0.2-dscovr-adapter` | 38 unit + 1 live | 92% | Real DSCOVR L2 CDF from SPDF: 86,400 1-second mag samples on May 10 2024, **peak Bz = -59.16 nT** in GSE frame |
+
+All 3 branches merged to main with union conflict resolution on `__init__.py`, `adapters/__init__.py`, `pyproject.toml`, `CHANGELOG.md`, `schema.py`. Per-agent review packs written to `specs/2026-05-17-Wave2a-{SWPC,GOES,DSCOVR}-review-pack.md`. Pushed to <https://github.com/577Industries/helios-spaceweather-connectors> as commits `5d2c1a0` (GOES), `57b03ac` (DSCOVR), `27d532b` (SWPC).
+
+**Three live ground-truth Gannon observations** now exist as citable records: Kp=9.0 (GFZ via SWPC adapter), Bz=-59.16 nT (DSCOVR L2), 1,302 station-hours over 2.5 cm (gannon-storm-rtk-analysis). All three traceable to specific records with full provenance lineage.
+
+**Test pollution issue**: `tests/test_http.py::test_safe_log_params_filters` passes in isolation but fails in the full suite after Wave 2a merges. Filed at <https://github.com/577Industries/helios-spaceweather-connectors/issues/4>. Triage: P3 (test-ordering / caplog filtering, not a real code regression). 196 of 197 tests pass. To investigate: which new adapter's logger captures URL params during pyspedas import.
+
+### Phase 6 — Wave 2b in flight
+Dispatched 2 background agents in **isolated worktrees** (lesson from Wave 2a where the GOES branch-switch wiped DSCOVR's untracked work in the main checkout):
+
+- SEP Scoreboards adapter at `~/577i-Projects/.worktrees/helios-spaceweather-connectors-scoreboards/` on branch `feat/v0.2-sep-scoreboards-adapter`. BUILD strategy: no Python client existed. HESPERIA REleASE explicitly excluded from request paths per proposal §3 T1 licensing constraint.
+- CDDIS GIMs adapter at `~/577i-Projects/.worktrees/helios-spaceweather-connectors-cddis/` on branch `feat/v0.2-cddis-gim-adapter`. BUILD strategy: Earthdata Login auth required (`NASA_EARTHDATA_USER`/`NASA_EARTHDATA_PASS` env vars); IONEX parsing; lazy-fetch + parquet cache to keep the multi-TB historical archive manageable.
+
+### Phase 7 — partially complete
+- **PyPI publish workflows** added to `helios-provenance-spec` and `helios-fusion-engine` (`.github/workflows/publish.yml`). **Operator action remaining**: configure trusted publishing at <https://pypi.org/manage/account/publishing/> for each package.
+- **RFC issue #1** opened at <https://github.com/577Industries/helios-provenance-spec/issues/4> with the full RFC body and the 8 open §6 community questions. **Operator outreach remaining**: cross-post the issue URL to SPASE community list, sunpy-dev, CCMC feedback channel.
+- **Gannon blog post** staged in `helios-program/docs/blog/posts/` (Material's blog plugin) with rewritten absolute URLs; **drafts for LinkedIn + 9-tweet thread** at `helios-program/docs/blog/social/`. **Operator action remaining**: schedule the posts; mirror to 577industries.com when WordPress access is convenient.
+
+### Pending after this session
+- **Wave 2b merge** (after the 2 background agents return): expect trivial union conflicts on the 5 shared files (the same set as Wave 2a). Then tag connectors `v0.2.0a1` (6 adapters live: DONKI + SWPC + GOES + DSCOVR + SEP Scoreboards + CDDIS GIMs).
+- **Atomic provenance-swap PR**: replace placeholder `ProvenanceRecord` with `helios_provenance.HeliosModelOutputRecord` across `BaseAdapter._emit_provenance` and all 6 adapters; consolidate the redundant `SourceID.SWPC_KP/PLASMA/MAG/SEP_FORECAST` and `GOES_XRAY/PROTON` and `DSCOVR_MAG/PLASMA` enum members into `SWPC`/`GOES`/`DSCOVR` with a `record_type` discriminator (the GOES agent's cleaner pattern). After this PR, tag connectors `v0.2.0` (stable).
+- **Sprint C-Training**: fusion-engine ingests Table 3-1 events through real connector data; fits BMA priors; persists weights to `helios-fusion-internal`. **Blocked on**: B v0.2.0 + OSF pre-registration filing.
+- **OSF pre-registration filing**: operator action. Fill `orchestration/osf_preregistration.template.md`'s `TO_BE_FILLED` fields, file on OSF, save URL to `orchestration/osf_preregistration.url`, tag `helios-fusion-engine` at `prereg-v1.0`.
+- **Kill-gate execution**: after all the above, run `python -m orchestration.kill_gate`.
