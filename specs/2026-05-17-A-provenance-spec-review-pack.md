@@ -50,13 +50,13 @@ Substantial and clean. 98 tests passing at **98% coverage** on `src/helios_prove
 
 2. **Open Issue #1 ("RFC-0001: feature-level provenance for heliophysics fusion systems") on GitHub.**
    - Agent deferred this until the branch is on main. Reasonable — the issue body cites `rfc/RFC-0001-feature-lineage.md` and the link needs to resolve.
-   - After merge, run `gh issue create --repo 577-Industries/helios-provenance-spec --title "RFC-0001: feature-level provenance for heliophysics fusion systems" --body-file rfc/RFC-0001-feature-lineage.md` (or a hand-edited intro pointing to the file).
+   - After merge, run `gh issue create --repo 577Industries/helios-provenance-spec --title "RFC-0001: feature-level provenance for heliophysics fusion systems" --body-file rfc/RFC-0001-feature-lineage.md` (or a hand-edited intro pointing to the file).
 
 3. **The 8 open RFC §6 questions** — community-comment items. Worth scanning to confirm none should be pre-resolved before publishing the RFC. The two most consequential per my read:
    - **Q1 (code_ref shape)**: free-form string vs. structured `{git_url, sha, path}`. Structured is more rigorous; free-form is easier for early adopters. The agent left it as string. Reasonable for v0.1 RFC.
    - **Q8 (hash payload composition)**: should `conformal_interval`, `location`, `agent` be inside the hash? Trade-off: including them makes records tamper-evident across MORE dimensions but breaks hash stability when, e.g., a conformal recalibration recomputes intervals without changing the underlying fused value. The agent excluded them; the rationale is reasonable and worth confirming.
 
-4. **`@context` URI is a placeholder** (`577-industries.github.io/.../v0.1.jsonld`) in `to_jsonld()` output. Real URL becomes the MkDocs site address once docs deploy. Fix as a v0.1.1 patch alongside docs deployment.
+4. **`@context` URI is a placeholder** (`577industries.github.io/.../v0.1.jsonld`) in `to_jsonld()` output. Real URL becomes the MkDocs site address once docs deploy. Fix as a v0.1.1 patch alongside docs deployment.
 
 ## Merge readiness checklist (per master plan §"Per-Artifact 'citable'-readiness")
 
@@ -96,10 +96,10 @@ git push origin main
 git push origin v0.1.0
 
 # 4. Open GitHub release (auto-trigger PyPI publish if trusted publishing is configured)
-gh release create v0.1.0 --generate-notes --repo 577-Industries/helios-provenance-spec
+gh release create v0.1.0 --generate-notes --repo 577Industries/helios-provenance-spec
 
 # 5. Open RFC discussion issue
-gh issue create --repo 577-Industries/helios-provenance-spec \
+gh issue create --repo 577Industries/helios-provenance-spec \
   --title "RFC-0001: feature-level provenance for heliophysics fusion systems" \
   --body "See \`rfc/RFC-0001-feature-lineage.md\`. Comments welcome on the 8 open questions in §6."
 

@@ -32,8 +32,8 @@
 ## 3. Daily / session-startup checklist
 
 1. **Refresh footnotes**: `cd helios-program && python -m orchestration.companion_sync` — pulls latest gh release state across all artifacts and updates `companion/footnotes.yaml`. Commit if changed.
-2. **Check open PRs on each artifact**: `for r in helios-provenance-spec helios-spaceweather-connectors helios-fusion-engine gannon-storm-rtk-analysis; do gh pr list --repo 577-Industries/$r; done`
-3. **Check companion-check CI on this repo**: `gh run list --repo 577-Industries/helios-program --workflow companion-check.yml --limit 3`
+2. **Check open PRs on each artifact**: `for r in helios-provenance-spec helios-spaceweather-connectors helios-fusion-engine gannon-storm-rtk-analysis; do gh pr list --repo 577Industries/$r; done`
+3. **Check companion-check CI on this repo**: `gh run list --repo 577Industries/helios-program --workflow companion-check.yml --limit 3`
 4. **Review master plan execution log** at the bottom of `plan/master-plan.md` — last session's status and pending items.
 
 ## 4. Reviewing a feature branch produced by an agent
@@ -100,7 +100,7 @@ git add results/ && git commit -m "results: kill-gate $(date +%F)" && git push
 - **gh release view** returns non-zero when no release exists yet. `companion_sync.py` handles this by treating it as "version 0.0.0 → scaffolding". This is expected during the build-up phase.
 - **`helios-program` is private** — GitHub Pages on private repos requires Pro/Team. Options when you want to publish the rendered companion:
   1. Flip `helios-program` to public (most of its content is already public-facing).
-  2. Create a public sister repo `577-Industries/helios-public-pages` and push rendered HTML/PDF there.
+  2. Create a public sister repo `577Industries/helios-public-pages` and push rendered HTML/PDF there.
   3. Use Cloudflare Pages or Netlify with a private GitHub source.
 - **Pandoc is not installed in the dev environment**. Install via `apt install pandoc` (needs sudo) or `pip install pandoc-bin` for a bundled version, before running `python -m companion.render`. CI installs it via the workflow as needed.
 - **The "Hook blocks Write on GH Actions workflow files"** issue: the local Claude Code hook flags any Write to `.github/workflows/*.yml` as a security advisory. When the workflow is auditably safe (only `secrets.GITHUB_TOKEN` via env, no untrusted `github.event.*` in `run:` blocks), use `cat > file.yml << EOF ... EOF` heredoc as a workaround. Document the safety in the commit message.

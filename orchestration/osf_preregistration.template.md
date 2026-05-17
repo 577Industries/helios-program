@@ -59,7 +59,7 @@ We pre-register the following directional hypotheses:
 - SEP Scoreboard B (consensus peak flux prediction)
 - SEP Scoreboard C (event time profile)
 
-All component-model outputs are pulled from public sources via [`helios-spaceweather-connectors`](https://github.com/577-Industries/helios-spaceweather-connectors). No reprocessing; if a component model's output is unavailable for a given event, that component is excluded from BMA *for that event only*, with the exclusion recorded.
+All component-model outputs are pulled from public sources via [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors). No reprocessing; if a component model's output is unavailable for a given event, that component is excluded from BMA *for that event only*, with the exclusion recorded.
 
 ## 6. Metrics
 

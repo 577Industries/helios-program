@@ -152,7 +152,7 @@ private companion helios-fusion-internal repo."
 git push origin main
 git tag -a v0.1.0 -m "v0.1.0 — framework ready for real-data integration"
 git push origin v0.1.0
-gh release create v0.1.0 --generate-notes --repo 577-Industries/helios-fusion-engine
+gh release create v0.1.0 --generate-notes --repo 577Industries/helios-fusion-engine
 
 # 3. Notify the companion document
 cd ~/577i-Projects/helios-program

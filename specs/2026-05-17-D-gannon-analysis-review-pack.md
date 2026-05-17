@@ -138,7 +138,7 @@ Blog post draft + 3 reproducibility notebooks + Makefile."
 git push origin main
 git tag -a v0.1.0 -m "v0.1.0 — initial Gannon retrospective with climatological positioning"
 git push origin v0.1.0
-gh release create v0.1.0 --generate-notes --repo 577-Industries/gannon-storm-rtk-analysis
+gh release create v0.1.0 --generate-notes --repo 577Industries/gannon-storm-rtk-analysis
 
 # 4. Notify the companion document
 cd ~/577i-Projects/helios-program

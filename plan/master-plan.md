@@ -23,7 +23,7 @@ Submission has happened; timeline is open-ended. The plan optimizes for **qualit
 | Fusion-engine IP scope | **Hybrid**: public framework, private weights/configs | Matches §6.6 IP strategy; companion private repo `helios-fusion-internal` holds trained weights, BMA priors, equipment transfer functions |
 | Execution team | Solo founder (Thomas) + heavy Claude agent delegation | Aggressive parallel agent dispatch across 4 worktrees; you on review/merge/secrets |
 | Paper kill-gate | **§2 Obj. 3 criterion (pre-registered)**: fused all-clear-revocation HSS beats best-component-model HSS by ≥15% on 3-event hold-out (2022-01-20 M5.5, 2023-02-17 X2.2, 2024-05-11 Gannon G5) AND reliability slope within 0.15 across all Kp severity strata | Both must pass → full arXiv paper. One fails → honest-negative-result ablation paper (still valuable). Both fail → no paper, fusion engine ships without preprint citation |
-| GitHub home | `github.com/577-Industries/` (already authenticated via `gh`) | Matches existing org access; sibling to agent-memory, hashchain-audit, etc. |
+| GitHub home | `github.com/577Industries/` (already authenticated via `gh`) | Matches existing org access; sibling to agent-memory, hashchain-audit, etc. |
 | License | Apache 2.0 across all public repos | Preserves patent grant for SBIR data-rights compatibility; broader than MIT for SaaS/OEM downstreams |
 | Python baseline | 3.11+ (3.12 preferred) | Pattern matching, exception groups, modern typing |
 

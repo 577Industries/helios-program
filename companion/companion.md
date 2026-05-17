@@ -22,10 +22,10 @@
 
 | # | Artifact | Repository | Status (2026-05-17) | Cited in |
 |---|---|---|---|---|
-| 1 | helios-provenance-spec | [github.com/577-Industries/helios-provenance-spec](https://github.com/577-Industries/helios-provenance-spec) | scaffolding | §1.4 CONOPS · §4.2 innovation #2 |
-| 2 | helios-spaceweather-connectors | [github.com/577-Industries/helios-spaceweather-connectors](https://github.com/577-Industries/helios-spaceweather-connectors) | scaffolding | §2 Obj. 1 · §3 T1 |
-| 3 | helios-fusion-engine *(public framework)* | [github.com/577-Industries/helios-fusion-engine](https://github.com/577-Industries/helios-fusion-engine) | scaffolding | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
-| 4 | gannon-storm-rtk-analysis | [github.com/577-Industries/gannon-storm-rtk-analysis](https://github.com/577-Industries/gannon-storm-rtk-analysis) | scaffolding | §1.3 Gannon · §2 Obj. 4 · §4.2 innovation #4 |
+| 1 | helios-provenance-spec | [github.com/577Industries/helios-provenance-spec](https://github.com/577Industries/helios-provenance-spec) | scaffolding | §1.4 CONOPS · §4.2 innovation #2 |
+| 2 | helios-spaceweather-connectors | [github.com/577Industries/helios-spaceweather-connectors](https://github.com/577Industries/helios-spaceweather-connectors) | scaffolding | §2 Obj. 1 · §3 T1 |
+| 3 | helios-fusion-engine *(public framework)* | [github.com/577Industries/helios-fusion-engine](https://github.com/577Industries/helios-fusion-engine) | scaffolding | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
+| 4 | gannon-storm-rtk-analysis | [github.com/577Industries/gannon-storm-rtk-analysis](https://github.com/577Industries/gannon-storm-rtk-analysis) | scaffolding | §1.3 Gannon · §2 Obj. 4 · §4.2 innovation #4 |
 
 A canonical machine-readable artifact registry lives at [`footnotes.yaml`](./footnotes.yaml). It is rebuilt automatically from each artifact's README on every merge to `main` via `orchestration/companion_sync.py`.
 
@@ -81,7 +81,7 @@ HELIOS **does not replace** SRAG's Acute Radiation Risk Tool (ARRT). It produces
 
 The **May 10-12, 2024 Gannon superstorm (G5, Kp=9)** was the most powerful geomagnetic storm in over two decades. RTK-GNSS positioning failed across the U.S. Midwest during peak corn and soybean planting season; the American Farm Bureau Federation [27] and OSU Extension [28] documented equipment shutdowns lasting 12-48 hours. In Brazil, Equatorial Plasma Bubbles routinely disrupt GNSS during harvest [16]. In the UK, autonomous agricultural vehicles were severely disrupted by the same storm [29]. **No commercial product converted federal space-weather data into terms a row-crop operator could act on** — not a Kp index, not a TEC map, but a field-level *"your StarFire 6000 will not hold sub-3 cm RTK for the next four hours; recommend manual operations until 19:00 local."*
 
-[^4]: A retrospective reanalysis of the May 10-12, 2024 Gannon storm using NGS CORS data across IA / IL / IN / OH is published at [`gannon-storm-rtk-analysis`](https://github.com/577-Industries/gannon-storm-rtk-analysis) (status: scaffolding; v0.1 in progress). Notebook + blog post + 2D error envelope plots forthcoming.
+[^4]: A retrospective reanalysis of the May 10-12, 2024 Gannon storm using NGS CORS data across IA / IL / IN / OH is published at [`gannon-storm-rtk-analysis`](https://github.com/577Industries/gannon-storm-rtk-analysis) (status: scaffolding; v0.1 in progress). Notebook + blog post + 2D error envelope plots forthcoming.
 
 Precision agriculture is the beachhead for three reasons. **First, install base concentration:** more than 80% of U.S. row-crop acres operate under GPS guidance [27]; the John Deere StarFire 6000/7000, Trimble RTK, and AgLeader Surefire/Versa families dominate. Deere's Operations Center alone connects 500,000+ machines. **Second, observable, dollar-quantified disruption:** the May 2024 storm produced widely reported equipment shutdowns during peak planting, with daily opportunity costs documented at the national level. **Third, geographic concentration:** the IA/IL/IN/OH corridor — within one day's drive of 577 Industries' Columbus, OH base — concentrates the customer base where OEM, cooperative, and operator conversations are tractable on a Phase I budget.
 
@@ -93,11 +93,11 @@ HELIOS operates as a continuously running cloud service. The ingestion tier[^2] 
 
 **Every output exposes a drill-down to its full provenance chain** — which upstream models contributed at which weights, with which calibration history. This provenance affordance is essential for SRAG console adoption and for the CCMC proving-ground evaluation pathway, and is formalized as a public, community-comment RFC[^1].
 
-[^1]: The provenance affordance is formalized as a public, machine-readable JSON Schema (draft 2020-12) plus a pydantic v2 reference implementation: [`helios-provenance-spec`](https://github.com/577-Industries/helios-provenance-spec). Currently scaffolding; v0.1 RFC issued for community comment shortly.
+[^1]: The provenance affordance is formalized as a public, machine-readable JSON Schema (draft 2020-12) plus a pydantic v2 reference implementation: [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec). Currently scaffolding; v0.1 RFC issued for community comment shortly.
 
-[^2]: The ingestion pipeline is implemented as a Python package: [`helios-spaceweather-connectors`](https://github.com/577-Industries/helios-spaceweather-connectors). Currently scaffolding; first adapter (DONKI) v0.1 in progress.
+[^2]: The ingestion pipeline is implemented as a Python package: [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors). Currently scaffolding; first adapter (DONKI) v0.1 in progress.
 
-[^3]: The fusion engine framework is open source: [`helios-fusion-engine`](https://github.com/577-Industries/helios-fusion-engine). Trained weights and BMA priors live in the private companion `helios-fusion-internal`. Currently scaffolding.
+[^3]: The fusion engine framework is open source: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine). Trained weights and BMA priors live in the private companion `helios-fusion-internal`. Currently scaffolding.
 
 ---
 
@@ -120,7 +120,7 @@ Raw outputs from upstream models differ in cadence, bias structure, uncertainty 
 - **Conformal prediction** for distribution-free confidence intervals on continuous outputs (TEC, proton flux, 2D positioning error). Required because parametric uncertainty assumptions break at tail events.
 - **Severity-stratified validation** across quiet, moderate, and extreme conditions (Kp-stratified bins) to prevent calibration collapse on the events that matter most.
 
-**Success criterion**: reliability-diagram slope within 0.15 of perfect calibration across all severity strata on the pre-registered validation set; Brier score and CRPS improvements over the best individual component model on hold-out events. The public framework is at [`helios-fusion-engine`](https://github.com/577-Industries/helios-fusion-engine); validation runs on the pre-registered Table 3-1 events with full reproducibility[^3].
+**Success criterion**: reliability-diagram slope within 0.15 of perfect calibration across all severity strata on the pre-registered validation set; Brier score and CRPS improvements over the best individual component model on hold-out events. The public framework is at [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine); validation runs on the pre-registered Table 3-1 events with full reproducibility[^3].
 
 ### Objective 3 — NASA Mission Radiation-Risk Translation Module
 
@@ -224,9 +224,9 @@ Commercial GNSS correction services (Trimble RTX, John Deere StarFire, Hexagon S
 
 The novelty claim is framed conservatively. HELIOS is innovative in five specific ways, each defensible against the literature:
 
-1. **Model-agnostic decision-calibrated fusion.** Bayesian Model Averaging with isotonic-regression reliability calibration applied across heterogeneous CCMC and SWPC SEP outputs. Operational ensemble work to date has emphasized model averaging without explicit reliability calibration; HELIOS combines both with conformal-prediction uncertainty bounds. *Implementation*: [`helios-fusion-engine`](https://github.com/577-Industries/helios-fusion-engine)[^3].
+1. **Model-agnostic decision-calibrated fusion.** Bayesian Model Averaging with isotonic-regression reliability calibration applied across heterogeneous CCMC and SWPC SEP outputs. Operational ensemble work to date has emphasized model averaging without explicit reliability calibration; HELIOS combines both with conformal-prediction uncertainty bounds. *Implementation*: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine)[^3].
 
-2. **Provenance-aware architecture.** Every output traces to its underlying models, data feeds, and assumptions — a property required for CCMC proving-ground evaluation, ARRT-compatible mission integration, and the operator trust that safety-critical adoption demands. *Specification*: [`helios-provenance-spec`](https://github.com/577-Industries/helios-provenance-spec)[^1] — open RFC composing SPASE 2.7.1, W3C PROV-JSON, and RO-Crate 1.2 JSON-LD with a novel feature-level transformation chain. To our knowledge, the first feature-level lineage standard for heliophysics fusion systems.
+2. **Provenance-aware architecture.** Every output traces to its underlying models, data feeds, and assumptions — a property required for CCMC proving-ground evaluation, ARRT-compatible mission integration, and the operator trust that safety-critical adoption demands. *Specification*: [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec)[^1] — open RFC composing SPASE 2.7.1, W3C PROV-JSON, and RO-Crate 1.2 JSON-LD with a novel feature-level transformation chain. To our knowledge, the first feature-level lineage standard for heliophysics fusion systems.
 
 3. **Dual-use translation from a common fusion core.** NASA mission operations and precision agriculture share fusion infrastructure but use separate translation modules. The R2O2R feedback loop is bidirectional: operator feedback informs model weighting, and the commercial workload funds operational maturation that NASA would otherwise need to fund alone. The commercial slice produces three independent benefits to NASA: it generates real-world calibration data on rare extreme events (every G2+ event is an inadvertent validation campaign for the fusion engine), it amortizes the operational cost of keeping the system live, and it documents trust patterns from non-traditional users that inform future NASA acquisitions.
 
@@ -379,6 +379,6 @@ The hybrid open/private architecture supports this: the fusion-engine framework 
 
 ---
 
-*This companion document is maintained at [github.com/577-Industries/helios-program](https://github.com/577-Industries/helios-program) (private; collaborators with access).
+*This companion document is maintained at [github.com/577Industries/helios-program](https://github.com/577Industries/helios-program) (private; collaborators with access).
 Rendered HTML and PDF versions auto-publish to the project's GitHub Pages site on every artifact merge.
 Last updated: 2026-05-17. Contact: <engineering@577industries.com>.*

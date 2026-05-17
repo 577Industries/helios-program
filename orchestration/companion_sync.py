@@ -43,7 +43,7 @@ FOOTNOTES_PATH = COMPANION_DIR / "footnotes.yaml"
 @dataclass
 class Artifact:
     key: str
-    repo: str          # e.g. "577-Industries/helios-provenance-spec"
+    repo: str          # e.g. "577Industries/helios-provenance-spec"
     public: bool
     pypi_name: str | None = None
     cited_in: list[str] = field(default_factory=list)
@@ -53,21 +53,21 @@ class Artifact:
 ARTIFACTS: list[Artifact] = [
     Artifact(
         key="provenance_spec",
-        repo="577-Industries/helios-provenance-spec",
+        repo="577Industries/helios-provenance-spec",
         public=True,
         pypi_name="helios-provenance",
         cited_in=["§1.4", "§4.2 innovation #2"],
     ),
     Artifact(
         key="connectors",
-        repo="577-Industries/helios-spaceweather-connectors",
+        repo="577Industries/helios-spaceweather-connectors",
         public=True,
         pypi_name="helios-spaceweather-connectors",
         cited_in=["§2 Obj. 1", "§3 T1"],
     ),
     Artifact(
         key="fusion_engine",
-        repo="577-Industries/helios-fusion-engine",
+        repo="577Industries/helios-fusion-engine",
         public=True,
         pypi_name="helios-fusion-engine",
         cited_in=["§2 Obj. 2", "§3.1", "§4.2 innovation #1"],
@@ -75,7 +75,7 @@ ARTIFACTS: list[Artifact] = [
     ),
     Artifact(
         key="gannon_analysis",
-        repo="577-Industries/gannon-storm-rtk-analysis",
+        repo="577Industries/gannon-storm-rtk-analysis",
         public=True,
         pypi_name=None,
         cited_in=["§1.3 Gannon case study", "§2 Obj. 4", "§4.2 innovation #4"],
@@ -136,7 +136,7 @@ def build_registry() -> dict[str, Any]:
         if art.pypi_name:
             entry["pypi"] = f"https://pypi.org/project/{art.pypi_name}/"
         repo_slug = art.repo.split("/", 1)[1]
-        entry["docs"] = f"https://577-industries.github.io/{repo_slug}/"
+        entry["docs"] = f"https://577industries.github.io/{repo_slug}/"
         entry.update(art.extra_keys)
         out["artifacts"][art.key] = entry
     return out

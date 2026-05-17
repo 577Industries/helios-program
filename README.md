@@ -16,11 +16,11 @@
 
 ## Sister repos
 
-- [helios-provenance-spec](https://github.com/577-Industries/helios-provenance-spec) (public)
-- [helios-spaceweather-connectors](https://github.com/577-Industries/helios-spaceweather-connectors) (public)
-- [helios-fusion-engine](https://github.com/577-Industries/helios-fusion-engine) (public)
+- [helios-provenance-spec](https://github.com/577Industries/helios-provenance-spec) (public)
+- [helios-spaceweather-connectors](https://github.com/577Industries/helios-spaceweather-connectors) (public)
+- [helios-fusion-engine](https://github.com/577Industries/helios-fusion-engine) (public)
 - helios-fusion-internal (private)
-- [gannon-storm-rtk-analysis](https://github.com/577-Industries/gannon-storm-rtk-analysis) (public)
+- [gannon-storm-rtk-analysis](https://github.com/577Industries/gannon-storm-rtk-analysis) (public)
 
 Status: scaffolding committed 2026-05-17; build in progress.
 
