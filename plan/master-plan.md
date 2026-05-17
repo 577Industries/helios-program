@@ -353,3 +353,50 @@ Nothing in `/home/twawe/577i-Projects/SBIR Working Folder/NASA/` is modified by 
 7. Continuous: companion document updated weekly; LinkedIn/Twitter announcements as each artifact's v0.1.0 ships.
 
 Each of those follow-up cycles is its own brainstorm → spec → plan → execute sequence with its own user-approval gate. This master plan only orchestrates the program.
+
+---
+
+## Execution Log
+
+### 2026-05-17 — Program kickoff (Session 1)
+
+**Bootstrapped (6 repos)**:
+- `helios-program` (private) — meta-repo, master plan committed, on GitHub
+- `helios-provenance-spec` (public) — scaffolding pushed
+- `helios-spaceweather-connectors` (public) — scaffolding pushed
+- `helios-fusion-engine` (public) — scaffolding pushed
+- `helios-fusion-internal` (private) — scaffolding pushed, gitignore-override patch applied so `weights/`, `priors/`, `transfer_functions/` directories will track binary model artifacts
+- `gannon-storm-rtk-analysis` (public) — scaffolding pushed
+
+All public repos: Apache 2.0 LICENSE (full text), Python 3.11/3.12 matrix CI, ruff + mypy --strict + pytest, pre-commit with detect-secrets, MkDocs Material site skeleton, CITATION.cff, conventional-commit enforcement, dependabot.
+
+**GitHub topics** set on each repo for discoverability. Bootstrap script committed to `/tmp/helios_bootstrap.py` (not in the repo; ephemeral build-time artifact).
+
+**Agents dispatched (background, parallel)**:
+
+| Agent | Repo | Branch (local) | Goal |
+|---|---|---|---|
+| A | helios-provenance-spec | `feat/v0.1-rfc` | Full v0.1 RFC: JSON Schema (draft 2020-12) for 4 record types (Dataset / ModelOutput / Transformation / FusedOutput), pydantic v2 models, hashing-based tamper evidence, 10 worked examples, SPASE + PROV + RO-Crate crosswalks, RFC-0001 doc |
+| B-foundation | helios-spaceweather-connectors | `feat/v0.1-foundation-and-donki` | Adapter pattern (BaseAdapter abstract class), cache, ratelimit, shared httpx client, full DONKI adapter as proof-of-pattern (all 10 endpoints + intelligent linkages), tests with recorded fixtures + nightly live integration |
+| D | gannon-storm-rtk-analysis | `feat/v0.1-gannon-analysis` | NGS CORS RINEX fetcher for 12+ IA/IL/IN/OH stations May 8-14 2024, SWPC index puller, SPP positioning solutions (or honest placeholder), regional 2D error aggregate plot, blog post draft |
+
+Each agent commits locally on its feature branch but does NOT push — human operator (Thomas) reviews and merges. Reports back with file list, test results, and any decisions needing review.
+
+**Companion document seeded**: `companion/companion.md` ported the full submitted-proposal structure with live artifact footnote references for §1.3, §1.4, §2 (all objectives), §3.1, §4.2 (all five innovations). URLs are placeholders until each artifact's v0.1.0 ships.
+
+**OSF pre-registration template** drafted at `orchestration/osf_preregistration.template.md`. Must be filled and filed publicly **before** fusion-engine hold-out evaluation; `orchestration/kill_gate.py` will refuse to run without an OSF URL on file at `orchestration/osf_preregistration.url`.
+
+**`companion_sync.py`** upgraded from skeleton to working implementation. Reads each artifact's latest GitHub release (via `gh release view`), derives a status (scaffolding/in-development/stable), and writes `companion/footnotes.yaml`. CI mode (`--check`) for stale-detection.
+
+**Pending (next session, blocked on agent completion)**:
+- Review each agent's branch via `gh pr view` (or `git log` if PR not opened); merge to main; tag v0.1.0; push tag; trigger PyPI publish.
+- Once A v0.1 ships → connectors PR to swap placeholder `ProvenanceRecord` for the real one, complete remaining 5 adapters (SEP Scoreboards A/B/C, SWPC, CDDIS GIMs, GOES, DSCOVR).
+- Set up GitHub Pages on `helios-program` to serve the rendered companion HTML/PDF.
+- Add OSF pre-reg filing as a tracked task; only after fusion-engine framework is implementation-ready.
+
+### Notes for future sessions
+
+- The proposal source `.docx` at `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx` is the submitted version — locked, do not modify. The mirror in `helios-program/companion/companion.md` is the public-facing live version.
+- An extracted plaintext version of the proposal is persisted at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/774be7f5-a036-4889-8afe-4c087e05097c/tool-results/b0awntn99.txt` — useful for follow-up sessions that don't want to re-run `python-docx`.
+- Memory entries saved at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/memory/` cover: user profile, program overview, autonomy preference, shared conventions. New sessions inherit these.
+- Per the user's stated autonomy preference: heavy parallel agent dispatch; do not stop to confirm scope/architecture decisions that match the master plan's defaults. Only gate on destructive/irreversible actions (force-push to main, secrets, public posts on user social channels, OSF filing before pre-reg discipline checks).
