@@ -97,25 +97,50 @@ def _gh(*args: str) -> str:
 
 
 def _latest_release(repo: str) -> str:
-    """Latest release tag (e.g., 'v0.1.0') or '0.0.0' if no release exists."""
-    out = _gh("release", "view", "--repo", repo, "--json", "tagName")
+    """Latest release tag (e.g., 'v0.1.0' or 'v0.2.0a1'), including prereleases,
+    or '0.0.0' if no release exists.
+
+    `gh release view` defaults to the latest *stable* release and silently
+    skips prereleases (alphas, betas, rcs). We want both — a connector alpha
+    tagged at v0.2.0a1 should still show up in the companion footnotes as
+    "in-development version 0.2.0a1", not as "scaffolding version 0.0.0".
+
+    `gh release list --limit 1` returns the most-recent release of any kind.
+    """
+    out = _gh("release", "list", "--repo", repo, "--limit", "1", "--json", "tagName,isPrerelease")
     if not out:
         return "0.0.0"
     try:
-        return json.loads(out).get("tagName", "0.0.0").lstrip("v")
-    except json.JSONDecodeError:
+        releases = json.loads(out)
+        if not releases:
+            return "0.0.0"
+        # Take the first entry — gh list orders by createdAt descending
+        return releases[0].get("tagName", "0.0.0").lstrip("v")
+    except (json.JSONDecodeError, IndexError, AttributeError):
         return "0.0.0"
 
 
 def _derive_status(version: str, manual_override: str | None = None) -> str:
-    """Status derivation: 0.0.x -> scaffolding; 0.1.x -> in-development; 1.0+ -> stable."""
+    """Status derivation: 0.0.x -> scaffolding; 0.x.y[suffix] -> in-development;
+    1.0+ -> stable.
+
+    A version like '0.2.0a1' (alpha) parses to major=0, minor=2 -> in-development.
+    A version like '0.1.0' parses to major=0, minor=1 -> in-development.
+    A version like '1.0.0rc1' parses to major=1 -> stable.
+    """
     if manual_override:
         return manual_override
     try:
-        major, minor, *_ = version.split(".")
-        if int(major) >= 1:
+        # Split on '.' AND strip any non-digit suffix from each piece
+        # (handles 'v0.2.0a1' -> ['0','2','0a1']; we only care about major + minor numeric prefix)
+        parts = version.split(".")
+        major_str = "".join(c for c in parts[0] if c.isdigit()) or "0"
+        minor_str = "".join(c for c in parts[1] if c.isdigit()) if len(parts) > 1 else "0"
+        major = int(major_str)
+        minor = int(minor_str)
+        if major >= 1:
             return "stable"
-        if int(minor) >= 1:
+        if minor >= 1:
             return "in-development"
         return "scaffolding"
     except (ValueError, IndexError):
