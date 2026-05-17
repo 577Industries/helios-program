@@ -1094,3 +1094,55 @@ The placeholder `ProvenanceRecord` (defined in `helios_connectors.schema`) is st
 
 After that lands → tag connectors **v0.2.0 stable** → PyPI publish via the existing `publish.yml` workflow (once operator configures trusted publishing on pypi.org).
 
+
+### Session 3 — Atomic provenance swap + v0.2.0 stable + Sprint C-Training dispatch
+
+**Atomic provenance-swap PR landed and merged.** Branch `chore/v0.2-provenance-swap` on `helios-spaceweather-connectors`. 3 focused commits.
+
+| Change | Impact |
+|---|---|
+| Drop placeholder `ProvenanceRecord` class | All 6 adapters now emit real `helios_provenance.HeliosModelOutputRecord` |
+| Consolidate `SourceID` enum: 16 → 8 members | Variant discrimination via `record_type` on `NormalizedRecord.value` |
+| `BaseAdapter._emit_provenance` rewritten | Adds `_helios_agent()`, `_ensure_utc`, `model_version` ClassVar |
+| Per-adapter scalar/extra migration | Scalar `value` per spec; compound payload → `extra` dict; lineage → `extra["lineage"]` |
+| Test pollution issue #4 fixed | `test_safe_log_params_filters` filters caplog to `helios_connectors.http` only |
+| GOES `mypy --strict` clean | Side-effect of migration (dict-typed-value implicit-Any path removed) |
+
+**Test summary**: 305 tests passing, 90% repo-wide coverage. Per-adapter 87-94%. `ruff`, `ruff format --check`, `mypy --strict src/` all clean.
+
+**v0.2.0 stable tagged and released**: <https://github.com/577Industries/helios-spaceweather-connectors/releases/tag/v0.2.0>. `publish.yml` added to connectors (mirrors A and C). Operator-action: trusted publishing config at pypi.org.
+
+Review pack: `specs/2026-05-17-Atomic-Provenance-Swap-review-pack.md`.
+
+**Operator surface-area decisions** (non-blocking; all 1-line tweaks if revisited):
+- Scoreboard C scalar: 0/1 crossing flag vs threshold value vs onset time
+- DONKI `value_units` `"GOES_class"` — non-SPASE-standard
+- SWPC SEP forecast scalar: Day-1 S-storm probability (vs G-scale or R-blackout)
+- Synthetic `dataset_refs` fallback: `helios-connectors://{source_id}` URL stub registration
+
+### Sprint C-Training dispatched (in background)
+
+Agent dispatched against the spec at `specs/2026-05-17-Sprint-C-Training-spec.md`. Working in isolated worktree `~/577i-Projects/.worktrees/helios-fusion-engine-training/` on branch `feat/sprint-c-training`. Scope:
+
+- Fit BMA priors on the 7 Table 3-1 training events (Bastille Day 2000 through September 2017)
+- Fit isotonic calibrators per Kp severity stratum (quiet / moderate / extreme)
+- Fit conformal residual sets (split + Mondrian)
+- Persist to `helios-fusion-internal/weights/` with sibling `.provenance.json` records validating against `helios-provenance-spec` v0.1
+- **Does NOT run hold-out evaluation** (gated on OSF pre-reg filing per kill-gate discipline)
+
+Will write Sprint C-Training review pack on agent return; then update execution log with the trained-artifact manifest.
+
+### After Sprint C-Training merges
+
+**Operator action items** (consolidated at `helios-program/OPERATOR_TODO.md`):
+
+1. **PyPI trusted-publishing config** for 3 packages (helios-provenance-spec, helios-fusion-engine, helios-spaceweather-connectors)
+2. **NASA Earthdata Login credentials** in env vars + GH Actions secrets — unblocks CDDIS live tests
+3. **OSF pre-registration filing** — the kill-gate runner refuses to execute without an OSF URL on file at `orchestration/osf_preregistration.url`
+4. **RFC outreach** — cross-post issue #4 to SPASE community list / sunpy-dev / CCMC feedback
+5. **Gannon blog post publication** — copy from `helios-program/docs/blog/posts/` to 577industries.com; schedule LinkedIn + Twitter posts from drafts at `docs/blog/social/`
+6. **Named-personnel LOIs** — Senior ML Engineer + Space-Weather SME consultant
+7. **NASA-center outreach** — courtesy emails to CCMC / M2M SWAO / SRAG / SPoRT with the companion URL
+
+After items 1-3 are done by the operator: kill-gate runner is unblocked. Then run `orchestration/kill_gate.py` for the actual hold-out evaluation against the 3-event set (2022-01-20 M5.5, 2023-02-17 X2.2, 2024-05-11 Gannon G5).
+
