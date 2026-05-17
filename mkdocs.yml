@@ -1,0 +1,65 @@
+site_name: HELIOS
+site_description: Heliophysics-Enhanced Location Integrity and Operations System — 577 Industries NASA SBIR Phase I (subtopic SPWX.1.S26A)
+site_url: https://577industries.github.io/helios-program/
+repo_url: https://github.com/577Industries/helios-program
+repo_name: 577Industries/helios-program
+copyright: Copyright 2026 577 Industries Inc.
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Master Plan: master-plan.md
+  - Operations Guide: operations.md
+  - OSF Pre-Registration Template: osf-preregistration-template.md
+  - Review Packs:
+      - "Artifact A — Provenance Spec": specs/A-provenance-spec.md
+      - "Artifact B — Connectors + DONKI": specs/B-connectors-foundation.md
+      - "Artifact C — Fusion-Engine Framework": specs/C-fusion-engine-framework.md
+      - "Artifact D — Gannon Analysis": specs/D-gannon-analysis.md

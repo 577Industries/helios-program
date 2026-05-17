@@ -1,0 +1,67 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material==9.5.27
+
+      - name: Aggregate sources into docs/
+        run: |
+          set -e
+          # Home: companion.md → docs/index.md
+          cp companion/companion.md docs/index.md
+
+          # Master plan
+          cp plan/master-plan.md docs/master-plan.md
+
+          # OSF template (renamed for friendly URL slug)
+          cp orchestration/osf_preregistration.template.md docs/osf-preregistration-template.md
+
+          # Review packs: rename to friendly slugs matching mkdocs nav
+          mkdir -p docs/specs
+          cp specs/2026-05-17-A-provenance-spec-review-pack.md docs/specs/A-provenance-spec.md
+          cp specs/2026-05-17-B-connectors-foundation-review-pack.md docs/specs/B-connectors-foundation.md
+          cp specs/2026-05-17-C-fusion-engine-framework-review-pack.md docs/specs/C-fusion-engine-framework.md
+          cp specs/2026-05-17-D-gannon-analysis-review-pack.md docs/specs/D-gannon-analysis.md
+
+      - name: Build site
+        run: mkdocs build --strict
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
