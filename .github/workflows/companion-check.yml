@@ -1,0 +1,61 @@
+name: companion-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '37 6 * * 1'  # weekly Monday 06:37 UTC — catch silent upstream changes
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install yamllint pyyaml
+      - name: yamllint footnotes.yaml
+        run: yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}}}" companion/footnotes.yaml
+
+  footnotes-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml
+      - name: Verify footnotes.yaml is in sync with upstream release state
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m orchestration.companion_sync --check || {
+            echo "::error::footnotes.yaml is stale; run 'python -m orchestration.companion_sync' locally and commit"
+            exit 1
+          }
+
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: lychee link-checker on companion.md
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >-
+            --no-progress
+            --max-redirects 5
+            --timeout 20
+            --accept 200,206,301,302,308,403,429
+            --exclude '^mailto:'
+            --exclude '^https?://(localhost|127\.0\.0\.1)'
+            companion/companion.md
+          fail: false  # warn-only for now; flip to true once all artifacts ship v0.1.0
