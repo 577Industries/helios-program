@@ -1221,3 +1221,42 @@ Three branches in flight:
 - Direct main commit on `helios-fusion-internal` (per private-repo pattern)
 
 Will write Sprint C-Training-v2 review pack on agent return; then update execution log + companion footnotes + decide whether to recommend v3 or proceed to OSF pre-reg + kill-gate.
+
+### Session 4 — resumed after interruption
+
+The previous session's Sprint C-Training-v2 agent had completed the **exhaustive ISWA probe + coverage matrix** before the interruption but stopped before any branches were committed. Reconstruction from filesystem evidence (worktrees + branches + matrix file) confirmed the salvageable work and the path-decision rationale.
+
+**Phase 1 (connectors v0.2.1) — completed inline this session**:
+
+The previous agent's uncommitted WIP in `~/577i-Projects/.worktrees/helios-spaceweather-connectors-iswa-v2/` contained the SCOREBOARD_MODELS registry expansion (+122 / −29 lines on `sep_scoreboards.py`; +56 on `docs/adapters/sep_scoreboards.md`; version bump). Verified: 50/50 scoreboards tests pass (425s runtime, 1 live deselected); `ruff check` and `ruff format --check` clean after a single RUF003 fix (Unicode multiplication sign in a comment → ASCII `x`); `mypy --strict` clean. Committed, merged to main, tagged `v0.2.1`, released at <https://github.com/577Industries/helios-spaceweather-connectors/releases/tag/v0.2.1>.
+
+Registry changes summary:
+- **UMASEP**: added `v2_0`, `v2_1`, `v20190101` (was just `v3_X`). v2_0 reaches the Table 3-1 Sept 2017 training event.
+- **SEPSTER**: added `WSA-ENLIL` (was just `Parker`).
+- **SAWS_ASPECS**: corrected variant chains to the real `1.X/{Forecasts,Nowcasts}/{Intensity,Probability,Profile}` layout (the v0.2.0 chain never reached year-level directories).
+- **MagPy**: added `2.X` + `3.X/LOS` (was just `3.X/VEC`).
+- **SPRINTS-SEP**: added `1.X/Post_Eruptive` chain (was unreachable).
+- **NEW models**: `GSU_All_Clear` (`v0_1`), `SEPForecast` (`2X`), `mag4_2019` (5 NRT variant streams — broadest pre-2018 coverage of any model).
+- **Dropped**: `SEPMOD` from default registry (not visible in exhaustive probe; still injectable via `models=` kwarg).
+- **Not added**: `iPATH` (registered but never deposited), `NCAR_MLSO_KCOR` (coronagraph product, not a SEP forecast).
+
+The REleASE-family exclusion (`RELEASE`, `RELEASE_PLUS`, `STEREO_RELEASE`, `STEREO_RELEASE_PLUS`) remains enforced by the URL-sweep regression test.
+
+**Phase 2-3 (fusion-engine v0.1.2 + refit) — dispatched as continuation agent**:
+
+Agent brief covers:
+- Phase 2.A: refactor `load_table_3_1.py` for per-component-per-event fallback (label each row's source as `iswa_real` / `synthetic_proxy` / `swpc_archive_truth`)
+- Phase 2.B: add SWPC SEP-event archive ingestion as ground-truth labels (NOAA SESC "Solar Proton Events Affecting the Earth Environment, 1976-present" at `umbra.nascom.nasa.gov/SEP/seps.html` + NCEI mirror)
+- Phase 2.C: update orchestrator to fit BMA against (component predictions, real truth labels) pairs — methodologically stronger than v1's closed-loop synthetic
+- Phase 3: refit + re-persist v2 artifacts to `helios-fusion-internal/weights/`; preserve v1 entry in `manifest.json` as `training_runs: [...]` array history
+
+Expected outcome from v2: BMA weights for Sept 2017 should **diverge from the v1 ~0.09-0.11 near-uniform** because v2 uses real component predictions (UMASEP v2_0 across 5 energies + SEPSTER Parker/WSA-ENLIL + 5 mag4_2019 variants) plus real ground-truth labels. The other 6 events will still be synthetic-proxy on the prediction side but get real ground-truth labels.
+
+Cleanup: 6 stale worktrees from earlier waves removed (`helios-spaceweather-connectors-{cddis,dscovr,scoreboards,swpc,provswap}`, `helios-fusion-engine-training`); the empty stale `feat/sprint-c-training-v2` branch from the interrupted dispatch deleted.
+
+**Pending after continuation agent returns**:
+- Review + merge `feat/sprint-c-training-v2` on fusion-engine; tag `v0.1.2`
+- Verify `helios-fusion-internal` v2 artifacts persisted with full provenance
+- Refresh companion footnotes (fusion-engine version bumps to 0.1.2)
+- Write v2 review pack (`specs/2026-05-17-Sprint-C-Training-v2-review-pack.md`)
+- Update OPERATOR_TODO.md with the v2 methodology-note suggestion for OSF deviations section
