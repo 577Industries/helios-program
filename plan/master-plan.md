@@ -1198,3 +1198,26 @@ The full HELIOS portfolio at session-3 close:
 5. Trained BMA priors on 7 SEP events (Sprint C-Training; synthetic-proxy substrate with documented caveat)
 
 **Operator action items remaining**: see `OPERATOR_TODO.md` for the 9-item checklist. Critical-path items: PyPI trusted publishing (3 packages); Earthdata Login credentials; OSF pre-registration filing.
+
+### Sprint C-Training-v2 dispatched (in background)
+
+Following operator decision to refit with real data before kill-gate eval rather than accept v1's near-uniform synthetic-trained priors. Agent brief covers:
+
+**Phase 1 — Exhaustive ISWA probe**. Walk all 16 visible model directories at every energy level (`10`, `30`, `50`, `100` MeV) for two representative Table 3-1 windows (Sept 2017 and Oct 2003). Build a coverage matrix recording real-data availability per (event × model × variant × energy) tuple. Output: `results/2026-05-17-iswa-coverage-matrix.md`. HESPERIA REleASE family explicitly excluded from probing.
+
+**Phase 2 — Decision point**.
+- **Path A** if exhaustive probe finds non-zero real coverage for ≥1 training event: refit with per-component-per-event fallback (real data wherever available; synthetic-proxy only fills gaps).
+- **Path B** if exhaustive probe confirms genuine pre-2018 ISWA absence: pivot to **SWPC SEP-event archive** (NCEI historical proton event list + SWPC + GOES proton archive via `GoesAdapter`) for ground-truth onset/peak labels. BMA fit compares synthetic-proxy predictions against real ground-truth — methodologically more rigorous than v1's closed-loop synthetic; flag in OSF pre-reg deviations.
+
+**Phase 3 — Expanded SepScoreboardsAdapter**. Add discovered new (model, variant, energy) tuples to the default registry. If non-trivial expansion: tag connectors v0.2.1.
+
+**Phase 4 — Refit + re-persist**. Re-run `helios_fusion.training.pipeline` with the expanded coverage + improved fallback. Re-persist artifacts to `helios-fusion-internal/weights/` (replacing v1's synthetic-only outputs; preserving v1 entry in manifest.json's history).
+
+**Constraints retained**: no hold-out evaluation; no modification of `orchestration/kill_gate.py`; no change to pre-registered hyperparameters.
+
+Three branches in flight:
+- `feat/v0.2.1-iswa-exhaustive-probe` on `helios-spaceweather-connectors` (worktree at `~/577i-Projects/.worktrees/helios-spaceweather-connectors-iswa-v2/`)
+- `feat/sprint-c-training-v2` on `helios-fusion-engine` (worktree at `~/577i-Projects/.worktrees/helios-fusion-engine-training-v2/`)
+- Direct main commit on `helios-fusion-internal` (per private-repo pattern)
+
+Will write Sprint C-Training-v2 review pack on agent return; then update execution log + companion footnotes + decide whether to recommend v3 or proceed to OSF pre-reg + kill-gate.
