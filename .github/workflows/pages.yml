@@ -24,23 +24,17 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements-docs.txt
 
       - name: Install MkDocs Material
-        run: pip install mkdocs-material==9.5.27
+        run: pip install -r requirements-docs.txt
 
       - name: Aggregate sources into docs/
         run: |
           set -e
-          # Home: companion.md → docs/index.md
           cp companion/companion.md docs/index.md
-
-          # Master plan
           cp plan/master-plan.md docs/master-plan.md
-
-          # OSF template (renamed for friendly URL slug)
           cp orchestration/osf_preregistration.template.md docs/osf-preregistration-template.md
-
-          # Review packs: rename to friendly slugs matching mkdocs nav
           mkdir -p docs/specs
           cp specs/2026-05-17-A-provenance-spec-review-pack.md docs/specs/A-provenance-spec.md
           cp specs/2026-05-17-B-connectors-foundation-review-pack.md docs/specs/B-connectors-foundation.md
