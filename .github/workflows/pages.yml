@@ -33,6 +33,7 @@ jobs:
         run: |
           set -e
           cp companion/companion.md docs/index.md
+          cp companion/footnotes.yaml docs/footnotes.yaml
           cp plan/master-plan.md docs/master-plan.md
           cp orchestration/osf_preregistration.template.md docs/osf-preregistration-template.md
           mkdir -p docs/specs
