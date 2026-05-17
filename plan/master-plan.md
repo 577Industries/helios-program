@@ -1049,3 +1049,48 @@ Dispatched 2 background agents in **isolated worktrees** (lesson from Wave 2a wh
 - **Sprint C-Training**: fusion-engine ingests Table 3-1 events through real connector data; fits BMA priors; persists weights to `helios-fusion-internal`. **Blocked on**: B v0.2.0 + OSF pre-registration filing.
 - **OSF pre-registration filing**: operator action. Fill `orchestration/osf_preregistration.template.md`'s `TO_BE_FILLED` fields, file on OSF, save URL to `orchestration/osf_preregistration.url`, tag `helios-fusion-engine` at `prereg-v1.0`.
 - **Kill-gate execution**: after all the above, run `python -m orchestration.kill_gate`.
+
+### Phase 6 — Wave 2b complete; connectors v0.2.0a1 alpha released
+
+Both Wave 2b agents returned successfully:
+
+| Adapter | Branch | Tests | Coverage | Headline result |
+|---|---|---|---|---|
+| `CddisGimAdapter` | `feat/v0.2-cddis-gim-adapter` | 57 unit + 3 skipped | 87% | Synthetic Gannon fixture validated against literature: peak TEC **55.1 TECU** at Columbus OH at 2024-05-10T20:00 UTC (matches published >50 TECU Midwest signature). Live test gated on operator-set Earthdata credentials. |
+| `SepScoreboardsAdapter` | `feat/v0.2-sep-scoreboards-adapter` | 50 unit + 1 live | 90% | **Discovered the actual machine-accessible mirror is the ISWA data tree** (the brief's SPA paths returned 404); A/B/C are projections of one per-model JSON envelope; **REleASE exclusion enforced** by URL-sweep regression test. |
+
+Both branches merged to main with union conflict resolution on `adapters/__init__.py`, `mkdocs.yml`, `CHANGELOG.md`. Per-agent review packs at `specs/2026-05-17-Wave2b-{CDDIS,Scoreboards}-review-pack.md`.
+
+**v0.2.0a1 alpha tagged and released**: <https://github.com/577Industries/helios-spaceweather-connectors/releases/tag/v0.2.0a1>. Six connectors live (DONKI + SWPC + GOES + DSCOVR + CDDIS GIMs + SEP Scoreboards). Alpha designation because the placeholder `ProvenanceRecord` shape is still in place; v0.2.0 stable ships after the atomic provenance-swap PR.
+
+**Four citable Gannon storm ground-truth observations** now exist with full provenance lineage — the §4.2 innovation #2 (provenance-aware architecture) made concrete for Phase II reviewers:
+
+| Quantity | Value | Source adapter | Notes |
+|---|---|---|---|
+| Kp peak | 9.0 | SwpcAdapter (GFZ Potsdam) | Routes correctly to archive for >30-day-old queries |
+| Bz peak | -59.16 nT | DscovrAdapter (DSCOVR L2 SPDF) | GSE frame; among most extreme southward IMF on record |
+| TEC peak at Columbus OH | 55.1 TECU | CddisGimAdapter (synthetic; pending real-data confirmation) | Matches published Gannon-Midwest enhancement |
+| RTK error >2.5 cm | 1,302 station-hours | gannon-storm-rtk-analysis | Across 25 NGS CORS stations |
+
+### Phase 6 follow-ups (pending; surfaced by agents)
+
+These are tracked but **not blocking** v0.2.0a1:
+
+- **#4 — test pollution** (https://github.com/577Industries/helios-spaceweather-connectors/issues/4): `test_safe_log_params_filters` passes in isolation, fails in full suite. P3. Likely caused by an adapter's logger capturing URL params during pyspedas import. Fix path: tighten the test's caplog filter to only `helios_connectors.http` logger, or fix the offending adapter to never log raw URLs.
+- **GOES `mypy --strict` error** (pre-existing from Wave 2a; unrelated to CDDIS/Scoreboards): one mypy error in `goes.py` needs surface-level repair before tagging v0.2.0 stable.
+- **GOES differential-channel proxies**: SGPS L2 1-minute file doesn't publish pre-integrated ≥10/≥50/≥100 MeV channels. Adapter uses differential-channel proxies (effective energies ≈16/54/91 MeV). **Sprint C-Training must re-integrate or route through SWPC NRT pre-integrated path** before kill-gate evaluation.
+- **SEP Scoreboards model registry incomplete by design**: 8 of 16 visible model directories wired. Easy to extend via `models=` kwarg. SEPMOD, SPRINTS-SEP, iPATH not fully probed — if needed for kill-gate, probe and adjust.
+
+### Atomic provenance-swap PR — next-session priority
+
+The placeholder `ProvenanceRecord` (defined in `helios_connectors.schema`) is still emitted by `BaseAdapter._emit_provenance`. The real `helios_provenance.HeliosModelOutputRecord` has a substantially different shape (`agent` field, `confidence_interval` field, `extra` dict; no top-level `lineage`). The atomic-swap PR:
+
+1. Updates `BaseAdapter._emit_provenance` to emit real `HeliosModelOutputRecord`
+2. Updates `NormalizedRecord.provenance` type accordingly
+3. Updates all 6 adapter implementations (some are forward-compatible via the GOES `to_helios_model_output()` static-converter pattern; others need surface-level work)
+4. Consolidates redundant `SourceID` enum members (`SWPC_KP/PLASMA/MAG/SEP_FORECAST` → `SWPC` + `record_type` discriminator; same for `GOES_XRAY/PROTON` and `DSCOVR_MAG/PLASMA`)
+5. Updates DONKI's ~32 existing tests + the 5 Wave 2 adapters' ~250 tests to assert against the new shape
+6. Drops the placeholder `ProvenanceRecord` class
+
+After that lands → tag connectors **v0.2.0 stable** → PyPI publish via the existing `publish.yml` workflow (once operator configures trusted publishing on pypi.org).
+
