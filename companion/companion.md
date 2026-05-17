@@ -379,6 +379,6 @@ The hybrid open/private architecture supports this: the fusion-engine framework 
 
 ---
 
-*This companion document is maintained at [github.com/577Industries/helios-program](https://github.com/577Industries/helios-program) (private; collaborators with access).
+*This companion document is maintained at [github.com/577Industries/helios-program](https://github.com/577Industries/helios-program) (public; pull requests welcome from interested reviewers and stakeholders).
 Rendered HTML and PDF versions auto-publish to the project's GitHub Pages site on every artifact merge.
 Last updated: 2026-05-17. Contact: <engineering@577industries.com>.*
