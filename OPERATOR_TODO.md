@@ -74,6 +74,10 @@
    git push origin prereg-v1.0
    ```
 
+**For the OSF "Deviations" section**: the Sprint C-Training-v2 review pack at [`specs/2026-05-17-Sprint-C-Training-v2-review-pack.md`](specs/2026-05-17-Sprint-C-Training-v2-review-pack.md) contains a **ready-to-paste methodology-note draft** documenting v2's hybrid truth approach (real NOAA SESC archive labels + per-(component, event) source labeling from the empirical ISWA coverage matrix). Drop it verbatim into the OSF "Deviations" section before filing; adjust the dates and OSF URL placeholder when known.
+
+**Tag target after merge**: as of session 4, the locked commit is `helios-fusion-engine` at `ac53eb6` (post-v0.1.2 merge). If any docs PRs land before pre-reg filing, retag at the new HEAD.
+
 **Status**: ⏳ pending. **Blocks**: kill-gate execution (the hold-out evaluation).
 
 ---
