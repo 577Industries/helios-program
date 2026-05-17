@@ -17,7 +17,7 @@ author: Thomas Waweru, 577 Industries
 date: 2026-05-17
 tags: [precision-agriculture, gnss, rtk, space-weather, gannon-storm]
 audience: [row-crop operators, agronomists, OEM platform teams, ag-tech press]
-hero_image: ../results/figures/fig-01-regional-error-vs-time.png
+hero_image: https://raw.githubusercontent.com/577Industries/gannon-storm-rtk-analysis/main/results/figures/fig-01-regional-error-vs-time.png
 canonical: https://577industries.com/posts/when-the-sky-stopped-the-tractors
 ---
 
@@ -86,7 +86,7 @@ corridor stations, on a log scale. The bottom panel shows the contemporaneous
 Kp index (colored bars, green-quiet through dark-red G5) and Dst (black
 line, with the catastrophic -406 nT minimum on May 11).
 
-![Regional 2D RTK error vs time](../results/figures/fig-01-regional-error-vs-time.png)
+![Regional 2D RTK error vs time](https://raw.githubusercontent.com/577Industries/gannon-storm-rtk-analysis/main/results/figures/fig-01-regional-error-vs-time.png)
 
 The story the figure tells is brutally simple: error stayed below the 2.5 cm
 agronomic planting threshold throughout May 8-9 (the pre-storm baseline),
@@ -98,7 +98,7 @@ The per-station view is the same story 25 times, with subtle differences
 by latitude. Northern Iowa stations (higher geomagnetic latitude) saw
 larger excursions than southern Indiana stations:
 
-![Per-station error grid](../results/figures/fig-02-per-station-grid.png)
+![Per-station error grid](https://raw.githubusercontent.com/577Industries/gannon-storm-rtk-analysis/main/results/figures/fig-02-per-station-grid.png)
 
 The aggregate operator impact is captured in our **citable headline result**:
 
@@ -114,7 +114,7 @@ window." A row-crop operation that lost 50 productive hours during the
 five-day May planting window lost roughly a fifth of its annual planting
 capacity.
 
-![Hours over threshold by day](../results/figures/fig-03-station-hours-over-threshold.png)
+![Hours over threshold by day](https://raw.githubusercontent.com/577Industries/gannon-storm-rtk-analysis/main/results/figures/fig-03-station-hours-over-threshold.png)
 
 The bar chart makes the time evolution legible at a glance. May 11 — the
 day Dst hit -406 nT — saw the worst per-station impact. May 12 was
@@ -142,8 +142,8 @@ and add **equipment-specific transfer functions** for the John Deere
 StarFire 6000/7000, Trimble RTK, and AgLeader Surefire/Versa families —
 the receivers operating on 80%+ of US row-crop acres.
 
-For now: the methodology is at [docs/methodology.md](../docs/methodology.md),
-the model constants are at [src/gannon_analysis/positioning.py](../src/gannon_analysis/positioning.py),
+For now: the methodology is at [docs/methodology.md](https://577industries.github.io/gannon-storm-rtk-analysis/methodology/),
+the model constants are at [src/gannon_analysis/positioning.py](https://github.com/577Industries/gannon-storm-rtk-analysis/blob/main/src/gannon_analysis/positioning.py),
 and you can replace either with your own and re-run `make all` in under
 ten minutes.
 
