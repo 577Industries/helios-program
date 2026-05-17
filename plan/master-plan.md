@@ -372,15 +372,27 @@ All public repos: Apache 2.0 LICENSE (full text), Python 3.11/3.12 matrix CI, ru
 
 **GitHub topics** set on each repo for discoverability. Bootstrap script committed to `/tmp/helios_bootstrap.py` (not in the repo; ephemeral build-time artifact).
 
-**Agents dispatched (background, parallel)**:
+**Wave 1 agents dispatched (background, parallel)**:
 
-| Agent | Repo | Branch (local) | Goal |
+| Agent | Repo | Branch (local) | Status |
 |---|---|---|---|
-| A | helios-provenance-spec | `feat/v0.1-rfc` | Full v0.1 RFC: JSON Schema (draft 2020-12) for 4 record types (Dataset / ModelOutput / Transformation / FusedOutput), pydantic v2 models, hashing-based tamper evidence, 10 worked examples, SPASE + PROV + RO-Crate crosswalks, RFC-0001 doc |
-| B-foundation | helios-spaceweather-connectors | `feat/v0.1-foundation-and-donki` | Adapter pattern (BaseAdapter abstract class), cache, ratelimit, shared httpx client, full DONKI adapter as proof-of-pattern (all 10 endpoints + intelligent linkages), tests with recorded fixtures + nightly live integration |
-| D | gannon-storm-rtk-analysis | `feat/v0.1-gannon-analysis` | NGS CORS RINEX fetcher for 12+ IA/IL/IN/OH stations May 8-14 2024, SWPC index puller, SPP positioning solutions (or honest placeholder), regional 2D error aggregate plot, blog post draft |
+| A | helios-provenance-spec | `feat/v0.1-rfc` | ✅ Complete |
+| B-foundation | helios-spaceweather-connectors | `feat/v0.1-foundation-and-donki` | ✅ Complete |
+| C-framework | helios-fusion-engine | `feat/v0.1-framework` | ✅ Complete |
+| D | gannon-storm-rtk-analysis | `feat/v0.1-gannon-analysis` | ✅ Complete |
 
-Each agent commits locally on its feature branch but does NOT push — human operator (Thomas) reviews and merges. Reports back with file list, test results, and any decisions needing review.
+Each agent commits locally on its feature branch but does NOT push — human operator (Thomas) reviews and merges.
+
+**Wave 1 outcomes**:
+
+| Artifact | Tests | Coverage | Headline result | Review pack |
+|---|---|---|---|---|
+| A — provenance-spec | 98 passing | 98% | 4 record types, 11 worked examples, hash-stable lineage proof-of-concept on May 8 2024 fused SEP all-clear | `specs/2026-05-17-A-provenance-spec-review-pack.md` |
+| B-foundation — connectors | 66 unit + 1 live | 94% | DONKI adapter with dual-endpoint failover (api.nasa.gov ↔ kauai.ccmc.gsfc.nasa.gov); real Gannon GST → 5 CME ancestors + 1 IPS lineage proven end-to-end | `specs/2026-05-17-B-connectors-foundation-review-pack.md` |
+| C-framework — fusion engine | 105 passing | 92% | BMA + isotonic/Platt/stratified calibration + split/Mondrian conformal + CCMC metrics with bootstrap CIs; synthetic demo: isotonic brings reliability slope from 1.0071 → 1.0772, Mondrian 91% aggregate coverage @ α=0.1 | `specs/2026-05-17-C-fusion-engine-framework-review-pack.md` |
+| D — Gannon analysis | 40 passing | 80% | **1,302 station-hours over 2.5 cm threshold across 25 NGS CORS stations IA/IL/IN/OH; 95th-pctl peak 3.0 m, ~150× quiet baseline.** Real Kp (GFZ Potsdam) + real Dst (Kyoto WDC) + 175 cached real RINEX files. v1 climatological positioning, honestly disclosed. 1707-word blog post draft. | `specs/2026-05-17-D-gannon-analysis-review-pack.md` |
+
+**Cumulative**: 309 tests passing across 4 artifacts, all `mypy --strict` + `ruff` clean, all coverage targets met or exceeded. Every artifact's quality bar matches the master plan's "citable-readiness checklist" except where blocked by sequencing (no v0.1.0 tags pushed, no PyPI publishes — operator-gated per policy).
 
 **Companion document seeded**: `companion/companion.md` ported the full submitted-proposal structure with live artifact footnote references for §1.3, §1.4, §2 (all objectives), §3.1, §4.2 (all five innovations). URLs are placeholders until each artifact's v0.1.0 ships.
 
@@ -388,11 +400,45 @@ Each agent commits locally on its feature branch but does NOT push — human ope
 
 **`companion_sync.py`** upgraded from skeleton to working implementation. Reads each artifact's latest GitHub release (via `gh release view`), derives a status (scaffolding/in-development/stable), and writes `companion/footnotes.yaml`. CI mode (`--check`) for stale-detection.
 
-**Pending (next session, blocked on agent completion)**:
-- Review each agent's branch via `gh pr view` (or `git log` if PR not opened); merge to main; tag v0.1.0; push tag; trigger PyPI publish.
-- Once A v0.1 ships → connectors PR to swap placeholder `ProvenanceRecord` for the real one, complete remaining 5 adapters (SEP Scoreboards A/B/C, SWPC, CDDIS GIMs, GOES, DSCOVR).
-- Set up GitHub Pages on `helios-program` to serve the rendered companion HTML/PDF.
-- Add OSF pre-reg filing as a tracked task; only after fusion-engine framework is implementation-ready.
+**Pending (operator action items)**:
+
+*Immediate (review-and-merge Wave 1)*:
+- Review each feature branch using the per-artifact review pack in `specs/`. Each has a precise `git diff | pytest | ruff | mypy | merge --no-ff | tag | push | gh release create` sequence.
+- After merging A: open RFC discussion issue on helios-provenance-spec (the agent deferred per policy because the doc must be on main first).
+- After merging A and C: dispatch the small follow-up agents to swap placeholder `ProvenanceRecord` in B (connectors) and C (fusion-engine) for the real import from `helios_provenance.models`.
+- Hold off on tagging connectors v0.1.0 until ≥3 adapters live (DONKI + SWPC + GOES). A `v0.1.0a1` PyPI alpha is acceptable for the foundation-only state.
+
+*Wave 2 (next agent dispatch — runs after Wave 1 merges land)*:
+- **Five next-wave connector adapter agents IN PARALLEL** on `helios-spaceweather-connectors`:
+  - SEP Scoreboards A/B/C (single agent; all three Scoreboards together)
+  - NOAA SWPC plasma + mag + 3-day SEP forecast (EXTEND of SunPy's index coverage)
+  - NASA CDDIS GIMs with Earthdata auth + IONEX parsing + parquet cache
+  - GOES wrapper over PySPEDAS + SWPC near-real-time JSON
+  - DSCOVR wrapper over PySPEDAS + real-time JSON
+  
+  **Each brief inherits the 7 DONKI API quirks** the B-foundation agent surfaced (api.nasa.gov flakiness, nullable linkedEvents, variable ID fields, singleton-vs-list defensive wrapping, 30-day max window, inclusive date math). Also inherits the historical-archive gotcha D surfaced: **NOAA SWPC public archive only serves the last ~30 days**; the SWPC adapter must support GFZ Potsdam + Kyoto WDC fallback for retrospective windows.
+
+- **`helios-fusion-engine` Sprint C-Training** (single agent, after B v0.2 ships ≥3 adapters):
+  - Ingest the 7 Table 3-1 training events via real connectors
+  - Fit BMA priors per OSF pre-reg
+  - Fit isotonic calibrators per Kp severity stratum
+  - Persist weights to `helios-fusion-internal/weights/` (private repo)
+  - **Do not run hold-out evaluation yet** — that needs OSF pre-reg filing first.
+
+- **OSF pre-registration filing** (operator action):
+  - Fill in TO_BE_FILLED fields in `orchestration/osf_preregistration.template.md`
+  - File publicly on OSF (cite to public artifact URLs that should be stable by then)
+  - Save returned OSF DOI/URL to `orchestration/osf_preregistration.url`
+  - Tag `helios-fusion-engine` at the locked commit with `prereg-v1.0` and push
+  - Only THEN can `orchestration/kill_gate.py` run on the 3-event hold-out
+
+- **GitHub Pages for companion document** — three options in `docs/operations.md §8`. Pick one before publishing the companion broadly.
+
+*Phase II readiness (longer arc)*:
+- Customer-discovery interviews per proposal §2 Obj. 5 (≥10 prospective customers; OSU Extension / OARDC channels)
+- NASA-center engagement decks (CCMC, M2M SWAO, SRAG, SPoRT) using the companion document as pre-read and the Gannon analysis blog post as the operational hook
+- Letters of intent (≥2 NASA-relevant, ≥2 precision-ag commercial)
+- Phase II commercialization plan draft
 
 ### Notes for future sessions
 
