@@ -23,7 +23,7 @@
 | # | Artifact | Repository | Docs | Version | Status | Cited in |
 |---|---|---|---|---|---|---|
 | 1 | helios-provenance-spec | [GitHub](https://github.com/577Industries/helios-provenance-spec) | [docs](https://577industries.github.io/helios-provenance-spec/) | v0.1.0 | in-development | §1.4 CONOPS · §4.2 innovation #2 |
-| 2 | helios-spaceweather-connectors | [GitHub](https://github.com/577Industries/helios-spaceweather-connectors) | [docs](https://577industries.github.io/helios-spaceweather-connectors/) | pre-v0.1 | scaffolding | §2 Obj. 1 · §3 T1 |
+| 2 | helios-spaceweather-connectors | [GitHub](https://github.com/577Industries/helios-spaceweather-connectors) | [docs](https://577industries.github.io/helios-spaceweather-connectors/) | v0.2.0a1 (alpha) | in-development | §2 Obj. 1 · §3 T1 |
 | 3 | helios-fusion-engine *(public framework)* | [GitHub](https://github.com/577Industries/helios-fusion-engine) | [docs](https://577industries.github.io/helios-fusion-engine/) | v0.1.0 | in-development | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
 | 4 | gannon-storm-rtk-analysis | [GitHub](https://github.com/577Industries/gannon-storm-rtk-analysis) | [docs](https://577industries.github.io/gannon-storm-rtk-analysis/) | v0.1.0 | in-development | §1.3 Gannon · §2 Obj. 4 · §4.2 innovation #4 |
 
@@ -81,7 +81,7 @@ HELIOS **does not replace** SRAG's Acute Radiation Risk Tool (ARRT). It produces
 
 The **May 10-12, 2024 Gannon superstorm (G5, Kp=9)** was the most powerful geomagnetic storm in over two decades. RTK-GNSS positioning failed across the U.S. Midwest during peak corn and soybean planting season; the American Farm Bureau Federation [27] and OSU Extension [28] documented equipment shutdowns lasting 12-48 hours. In Brazil, Equatorial Plasma Bubbles routinely disrupt GNSS during harvest [16]. In the UK, autonomous agricultural vehicles were severely disrupted by the same storm [29]. **No commercial product converted federal space-weather data into terms a row-crop operator could act on** — not a Kp index, not a TEC map, but a field-level *"your StarFire 6000 will not hold sub-3 cm RTK for the next four hours; recommend manual operations until 19:00 local."*
 
-[^4]: A retrospective reanalysis of the May 10-12, 2024 Gannon storm using NGS CORS data across IA / IL / IN / OH is published at [`gannon-storm-rtk-analysis`](https://github.com/577Industries/gannon-storm-rtk-analysis) (status: scaffolding; v0.1 in progress). Notebook + blog post + 2D error envelope plots forthcoming.
+[^4]: A retrospective reanalysis of the May 10-12, 2024 Gannon storm using NGS CORS data across IA / IL / IN / OH is published at [`gannon-storm-rtk-analysis`](https://github.com/577Industries/gannon-storm-rtk-analysis) (v0.1.0 released). **Headline**: across 25 NGS CORS stations the v1 climatological model produced 2D horizontal positioning error exceeding the 2.5 cm planting threshold for 1,302 station-hours during May 10-12 2024 (peak Kp=9.0, Dst min = -406 nT, DSCOVR L2 peak Bz = -59.16 nT). v1 climatological; v2 will swap in full pseudo-range SPP via the helios-spaceweather-connectors CDDIS adapter.
 
 Precision agriculture is the beachhead for three reasons. **First, install base concentration:** more than 80% of U.S. row-crop acres operate under GPS guidance [27]; the John Deere StarFire 6000/7000, Trimble RTK, and AgLeader Surefire/Versa families dominate. Deere's Operations Center alone connects 500,000+ machines. **Second, observable, dollar-quantified disruption:** the May 2024 storm produced widely reported equipment shutdowns during peak planting, with daily opportunity costs documented at the national level. **Third, geographic concentration:** the IA/IL/IN/OH corridor — within one day's drive of 577 Industries' Columbus, OH base — concentrates the customer base where OEM, cooperative, and operator conversations are tractable on a Phase I budget.
 
@@ -93,11 +93,11 @@ HELIOS operates as a continuously running cloud service. The ingestion tier[^2] 
 
 **Every output exposes a drill-down to its full provenance chain** — which upstream models contributed at which weights, with which calibration history. This provenance affordance is essential for SRAG console adoption and for the CCMC proving-ground evaluation pathway, and is formalized as a public, community-comment RFC[^1].
 
-[^1]: The provenance affordance is formalized as a public, machine-readable JSON Schema (draft 2020-12) plus a pydantic v2 reference implementation: [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec). Currently scaffolding; v0.1 RFC issued for community comment shortly.
+[^1]: The provenance affordance is formalized as a public, machine-readable JSON Schema (draft 2020-12) plus a pydantic v2 reference implementation: [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec). v0.1.0 RFC released; community comment open at [issue #4](https://github.com/577Industries/helios-provenance-spec/issues/4) on the 8 §6 design questions.
 
-[^2]: The ingestion pipeline is implemented as a Python package: [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors). Currently scaffolding; first adapter (DONKI) v0.1 in progress.
+[^2]: The ingestion pipeline is implemented as a Python package: [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors). v0.2.0a1 alpha released with all six adapters live (DONKI, NOAA SWPC, NASA CDDIS GIMs, GOES, DSCOVR, CCMC SEP Scoreboards). 304+ tests, 87-94% per-adapter coverage. Atomic provenance-swap PR pending before v0.2.0 stable + PyPI publication.
 
-[^3]: The fusion engine framework is open source: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine). Trained weights and BMA priors live in the private companion `helios-fusion-internal`. Currently scaffolding.
+[^3]: The fusion engine framework is open source: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine). v0.1.0 released with the BMA orchestrator, isotonic + Platt + severity-stratified calibrators, split and Mondrian conformal regressors, CCMC-compatible metrics suite (HSS + TSS + POD + FAR + Brier + CRPS with bootstrapped 95% CIs). 105 tests at 92% coverage. Trained weights and BMA priors fitted on Table 3-1 events live in the private companion `helios-fusion-internal`.
 
 ---
 
