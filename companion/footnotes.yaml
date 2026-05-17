@@ -1,11 +1,11 @@
 artifacts:
   provenance_spec:
     repo: https://github.com/577Industries/helios-provenance-spec
-    status: scaffolding
+    status: in-development
     cited_in:
     - §1.4
     - '§4.2 innovation #2'
-    version: 0.0.0
+    version: 0.1.0
     pypi: https://pypi.org/project/helios-provenance/
     docs: https://577industries.github.io/helios-provenance-spec/
   connectors:
@@ -19,23 +19,23 @@ artifacts:
     docs: https://577industries.github.io/helios-spaceweather-connectors/
   fusion_engine:
     repo: https://github.com/577Industries/helios-fusion-engine
-    status: scaffolding
+    status: in-development
     cited_in:
     - §2 Obj. 2
     - §3.1
     - '§4.2 innovation #1'
-    version: 0.0.0
+    version: 0.1.0
     pypi: https://pypi.org/project/helios-fusion-engine/
     docs: https://577industries.github.io/helios-fusion-engine/
     preprint: null
     osf_preregistration: null
   gannon_analysis:
     repo: https://github.com/577Industries/gannon-storm-rtk-analysis
-    status: scaffolding
+    status: in-development
     cited_in:
     - §1.3 Gannon case study
     - §2 Obj. 4
     - '§4.2 innovation #4'
-    version: 0.0.0
+    version: 0.1.0
     docs: https://577industries.github.io/gannon-storm-rtk-analysis/
     blog_post: null
