@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed for git-revision-date-localized
 
       - uses: actions/setup-python@v5
         with:
@@ -26,21 +28,15 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-docs.txt
 
-      - name: Install MkDocs Material
+      - name: Install docs dependencies
         run: pip install -r requirements-docs.txt
 
-      - name: Aggregate sources into docs/
+      - name: Copy non-markdown assets into docs/
         run: |
           set -e
-          cp companion/companion.md docs/index.md
+          # All markdown content is included at build time via mkdocs-include-markdown-plugin.
+          # The only file still copied is footnotes.yaml (referenced as a relative download link in companion.md).
           cp companion/footnotes.yaml docs/footnotes.yaml
-          cp plan/master-plan.md docs/master-plan.md
-          cp orchestration/osf_preregistration.template.md docs/osf-preregistration-template.md
-          mkdir -p docs/specs
-          cp specs/2026-05-17-A-provenance-spec-review-pack.md docs/specs/A-provenance-spec.md
-          cp specs/2026-05-17-B-connectors-foundation-review-pack.md docs/specs/B-connectors-foundation.md
-          cp specs/2026-05-17-C-fusion-engine-framework-review-pack.md docs/specs/C-fusion-engine-framework.md
-          cp specs/2026-05-17-D-gannon-analysis-review-pack.md docs/specs/D-gannon-analysis.md
 
       - name: Build site
         run: mkdocs build --strict

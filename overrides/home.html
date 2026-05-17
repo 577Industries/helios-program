@@ -1,0 +1,156 @@
+{% extends "main.html" %}
+
+{# Hide the page title (we render our own in the hero), the breadcrumb, and the TOC for the landing page only. #}
+{% block htmltitle %}
+  <title>{{ config.site_name }} — {{ config.site_description }}</title>
+{% endblock %}
+
+{# Inject the hero between the tabs bar and the main content. `super()` keeps the tabs visible. #}
+{% block tabs %}
+  {{ super() }}
+
+  <section class="helios-hero">
+    <div class="helios-hero__inner">
+      <p class="helios-hero__eyebrow">577 Industries · NASA SBIR Phase I · Subtopic SPWX.1.S26A</p>
+      <h1>HELIOS</h1>
+      <p class="helios-hero__subtitle">Heliophysics-Enhanced Location Integrity and Operations System</p>
+      <p class="helios-hero__lede">
+        Calibrated, provenance-tracked decision intelligence that fuses NASA and NOAA
+        space-weather model outputs and translates them into the specific operational
+        decisions two user communities act on: NASA mission operations (SRAG SEP
+        all-clear revocation) and U.S. precision agriculture (equipment-specific RTK
+        accuracy maps). Not a new model — a model-agnostic fusion layer with
+        feature-level provenance.
+      </p>
+
+      <div class="helios-hero__headline-number">
+        <strong>1,302 station-hours</strong>
+        <span>of RTK error exceeding the 2.5 cm planting threshold across 25 NGS CORS stations in IA / IL / IN / OH during the May 10-12, 2024 Gannon G5 storm.</span>
+      </div>
+      <span class="helios-hero__caveat">First reproducible quantification. v1 climatological model — full SPP refinement in v2 via the CDDIS adapter (in flight).</span>
+
+      <div class="helios-hero__actions">
+        <a class="helios-btn helios-btn--primary" href="companion/">Read the Proposal Companion</a>
+        <a class="helios-btn helios-btn--secondary" href="master-plan/">Master Plan</a>
+        <a class="helios-btn helios-btn--secondary" href="https://github.com/577Industries/helios-program">GitHub</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{# Wrap the standard markdown content in our home-page layout sections. #}
+{% block content %}
+<div class="helios-artifacts">
+  <h2 id="artifacts">Phase I artifacts</h2>
+  <p class="helios-artifacts__intro">
+    Four public repositories + one private companion convert the submitted-proposal
+    claims into citable, reproducible URLs. Status reflects the most recent tagged
+    release; see <a href="footnotes.yaml">footnotes.yaml</a> for the machine-readable registry.
+  </p>
+
+  <div class="helios-artifact-grid">
+    <div class="helios-artifact-card">
+      <h3>helios-provenance-spec</h3>
+      <p class="helios-artifact-card__desc">
+        JSON Schema (draft 2020-12) for feature-level provenance in heliophysics fusion
+        systems, with a pydantic v2 reference implementation. Open RFC.
+      </p>
+      <div class="helios-artifact-card__footer">
+        <span class="helios-status helios-status--in-development">v0.1.0 · in-development</span>
+        <a class="helios-artifact-card__link" href="https://github.com/577Industries/helios-provenance-spec">repo →</a>
+      </div>
+    </div>
+
+    <div class="helios-artifact-card">
+      <h3>helios-spaceweather-connectors</h3>
+      <p class="helios-artifact-card__desc">
+        Production-grade Python adapters for DONKI, NOAA SWPC, CCMC SEP Scoreboards,
+        NASA CDDIS GIMs, GOES, and DSCOVR. DONKI live; five more in flight.
+      </p>
+      <div class="helios-artifact-card__footer">
+        <span class="helios-status helios-status--scaffolding">scaffolding · pre-v0.1</span>
+        <a class="helios-artifact-card__link" href="https://github.com/577Industries/helios-spaceweather-connectors">repo →</a>
+      </div>
+    </div>
+
+    <div class="helios-artifact-card">
+      <h3>helios-fusion-engine</h3>
+      <p class="helios-artifact-card__desc">
+        BMA orchestrator + isotonic / Platt / severity-stratified calibration + split &amp;
+        Mondrian conformal prediction + CCMC-compatible metrics. Public framework.
+      </p>
+      <div class="helios-artifact-card__footer">
+        <span class="helios-status helios-status--in-development">v0.1.0 · in-development</span>
+        <a class="helios-artifact-card__link" href="https://github.com/577Industries/helios-fusion-engine">repo →</a>
+      </div>
+    </div>
+
+    <div class="helios-artifact-card">
+      <h3>gannon-storm-rtk-analysis</h3>
+      <p class="helios-artifact-card__desc">
+        Reproducible retrospective of the May 10-12, 2024 Gannon G5 storm across 25 NGS
+        CORS stations. Real RINEX manifest, real GFZ Kp + Kyoto WDC Dst, v1 climatological.
+      </p>
+      <div class="helios-artifact-card__footer">
+        <span class="helios-status helios-status--in-development">v0.1.0 · in-development</span>
+        <a class="helios-artifact-card__link" href="https://github.com/577Industries/gannon-storm-rtk-analysis">repo →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="helios-stats">
+  <div class="helios-stat">
+    <div class="helios-stat__number">309</div>
+    <div class="helios-stat__label">tests passing</div>
+  </div>
+  <div class="helios-stat">
+    <div class="helios-stat__number">≥80%</div>
+    <div class="helios-stat__label">coverage across artifacts</div>
+  </div>
+  <div class="helios-stat">
+    <div class="helios-stat__number">1,302</div>
+    <div class="helios-stat__label">station-hours over 2.5 cm</div>
+  </div>
+  <div class="helios-stat">
+    <div class="helios-stat__number">7/3</div>
+    <div class="helios-stat__label">SEP train/hold-out split</div>
+  </div>
+</div>
+
+<section class="helios-section">
+  <h2 id="dependency-graph">Dependency graph</h2>
+  <p>
+    Artifact A (provenance schema) is the foundation; B (connectors) and C (fusion engine)
+    consume it. C also consumes B's normalized data. D (Gannon retrospective) is
+    independent today but will consume B's CDDIS adapter in v2 for full SPP solutions.
+    F (private weights companion) ships trained priors fitted on Table 3-1 events.
+  </p>
+
+<div class="mermaid">
+graph LR
+  A["helios-provenance-spec<br/>v0.1.0 · RFC"]:::ship
+  B["helios-spaceweather-connectors<br/>foundation+DONKI"]:::part
+  C["helios-fusion-engine<br/>v0.1.0 · framework"]:::ship
+  D["gannon-storm-rtk-analysis<br/>v0.1.0 · v1 climatological"]:::ship
+  F["helios-fusion-internal<br/>(private weights)"]:::priv
+  A -- "schema" --> B
+  A -- "schema" --> C
+  B -- "Table 3-1 data" --> C
+  D -. "v2 ↣ CDDIS" .-> B
+  C -- "trained weights" --> F
+  classDef ship fill:#5cb85c,stroke:#3e8e41,color:#fff,font-weight:600
+  classDef part fill:#f0ad4e,stroke:#cb8430,color:#fff,font-weight:600
+  classDef priv fill:#888,stroke:#555,color:#fff,font-weight:600
+</div>
+
+  <p>
+    Wave 2 dispatch (in progress) adds 5 more connector adapters to B:
+    NOAA SWPC, GOES, DSCOVR (Wave 2a — DONKI-pattern-similar), then SEP Scoreboards
+    A/B/C and CDDIS GIMs (Wave 2b — complex). Sprint C-Training begins once B v0.2
+    ships with real Scoreboard A flow.
+  </p>
+</section>
+
+{{ super() }}
+{% endblock %}
