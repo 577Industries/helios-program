@@ -1,0 +1,16 @@
+[submodule "submodules/helios-provenance-spec"]
+	path = submodules/helios-provenance-spec
+	url = https://github.com/577Industries/helios-provenance-spec.git
+	branch = main
+[submodule "submodules/helios-spaceweather-connectors"]
+	path = submodules/helios-spaceweather-connectors
+	url = https://github.com/577Industries/helios-spaceweather-connectors.git
+	branch = main
+[submodule "submodules/helios-fusion-engine"]
+	path = submodules/helios-fusion-engine
+	url = https://github.com/577Industries/helios-fusion-engine.git
+	branch = main
+[submodule "submodules/gannon-storm-rtk-analysis"]
+	path = submodules/gannon-storm-rtk-analysis
+	url = https://github.com/577Industries/gannon-storm-rtk-analysis.git
+	branch = main

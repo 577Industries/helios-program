@@ -114,7 +114,8 @@ All live under `github.com/577Industries/`:
 
 | Concern | Convention |
 |---|---|
-| Local checkout | `~/577i-Projects/<repo>/` (sibling to existing patterns: agent-memory, hashchain-audit, etc.) |
+| Canonical clone (umbrella) | `git clone --recurse-submodules https://github.com/577Industries/helios-program.git` — fetches the meta-repo with all 4 public HELIOS artifacts as pinned submodules under `submodules/` |
+| Local checkout | `~/577i-Projects/<repo>/` for solo work on a single artifact |
 | Worktrees | `~/577i-Projects/.worktrees/<repo>-<branch>/` — pre-established user pattern, directory already exists |
 | License | Apache 2.0 across all public repos (`helios-fusion-internal` is proprietary) |
 | Python | 3.11+/3.12 matrix in CI; develop against 3.12 |
