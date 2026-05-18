@@ -124,7 +124,7 @@ Expected fields when filled:
 
 The provenance schema is filed as an open RFC, demonstrating community-engaged standards development before commercial lock-in.
 
-- **RFC-0001 source**: <https://github.com/577Industries/helios-provenance-spec/blob/main/rfcs/RFC-0001.md>
+- **RFC-0001 source**: <https://github.com/577Industries/helios-provenance-spec/blob/main/rfc/RFC-0001-feature-lineage.md>
 - **RFC issue (open for comment)**: <https://github.com/577Industries/helios-provenance-spec/issues/4>
 - **8 §6 design questions** open for community input (SPASE 2.7.1 composition, W3C PROV-JSON binding, RO-Crate 1.2 JSON-LD nesting, transformation-chain depth limits, etc.)
 - **Cross-posts** (operator action — `OPERATOR_TODO.md` item 4): SPASE info list · sunpy-dev · CCMC feedback channel · 577 Industries LinkedIn
