@@ -22,7 +22,8 @@ jobs:
           python-version: '3.12'
       - run: pip install yamllint pyyaml
       - name: yamllint footnotes.yaml
-        run: yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}}}" companion/footnotes.yaml
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}}}" companion/footnotes.yaml
 
   footnotes-sync:
     runs-on: ubuntu-latest
