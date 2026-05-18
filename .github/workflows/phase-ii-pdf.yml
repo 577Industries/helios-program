@@ -1,0 +1,89 @@
+name: phase-ii-pdf
+
+# Auto-renders phase-ii/evidence-package.md to PDF via Pandoc on every push to main
+# that touches the evidence package. PDF is uploaded as a workflow artifact
+# (downloadable from the workflow run). The source-of-truth is the .md file;
+# the PDF is a derived artifact and is not committed back to the repo.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'phase-ii/evidence-package.md'
+      - '.github/workflows/phase-ii-pdf.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'phase-ii/evidence-package.md'
+      - '.github/workflows/phase-ii-pdf.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  render-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pandoc and XeLaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pandoc \
+            texlive-xetex \
+            texlive-fonts-recommended \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            lmodern
+
+      - name: Render evidence-package.md to PDF
+        run: |
+          mkdir -p build/phase-ii
+          BUILD_DATE="$(date -u +%Y-%m-%d)"
+          pandoc phase-ii/evidence-package.md \
+            -o build/phase-ii/evidence-package.pdf \
+            --pdf-engine=xelatex \
+            --variable=geometry:margin=1in \
+            --variable=fontsize:11pt \
+            --variable=colorlinks:true \
+            --variable=linkcolor:blue \
+            --variable=urlcolor:blue \
+            --variable=toccolor:blue \
+            --toc \
+            --toc-depth=2 \
+            --metadata=date:"$BUILD_DATE"
+
+      - name: Verify PDF rendered
+        run: |
+          test -s build/phase-ii/evidence-package.pdf || {
+            echo "::error::evidence-package.pdf is empty or missing"
+            exit 1
+          }
+          ls -la build/phase-ii/
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-ii-evidence-package-pdf
+          path: build/phase-ii/evidence-package.pdf
+          if-no-files-found: error
+          retention-days: 90
+
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: lychee link-check on evidence-package.md
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >-
+            --no-progress
+            --max-redirects 5
+            --timeout 20
+            --accept 200,206,301,302,308,403,429
+            --exclude '^mailto:'
+            --exclude '^https?://(localhost|127\.0\.0\.1)'
+            phase-ii/evidence-package.md
+          fail: false  # warn-only — flip to true once all referenced artifacts have stable URLs
