@@ -134,3 +134,8 @@ nav:
       - "Artifact B — Connectors + DONKI": specs/B-connectors-foundation.md
       - "Artifact C — Fusion-Engine Framework": specs/C-fusion-engine-framework.md
       - "Artifact D — Gannon Analysis": specs/D-gannon-analysis.md
+  - Phase II:
+      - "Overview": phase-ii/index.md
+      - "Evidence Package": phase-ii/evidence-package.md
+      - "Commercialization Plan (Refined)": phase-ii/commercialization-plan-refined.md
+      - "Phase II Proposal (Scaffold)": phase-ii/phase-ii-proposal-draft.md
