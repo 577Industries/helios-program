@@ -4,6 +4,41 @@
 
 ---
 
+## 0. Next-session quick-start
+
+The HELIOS program is **Phase-II-ready** as of 2026-05-18. Four substantive tracks are open in parallel — **each gets a dedicated session** to avoid context-window pressure. **Pick one per session**; don't try to attack multiple in parallel.
+
+| Track | Dispatch spec | Operator prereq | Why this session |
+|---|---|---|---|
+| **Sprint D — kill-gate execution** | [`specs/2026-05-18-Sprint-D-kill-gate-spec.md`](./specs/2026-05-18-Sprint-D-kill-gate-spec.md) | OSF pre-registration filed | Produces the headline Phase II result |
+| **§2 Obj 2 — TFT for TEC forecasting** | [`specs/2026-05-18-TFT-TEC-forecasting-spec.md`](./specs/2026-05-18-TFT-TEC-forecasting-spec.md) | NASA Earthdata credentials | Second proposal objective; upgrades Gannon analysis to real-data v2 |
+| **arXiv preprint draft** | [`specs/2026-05-18-arXiv-preprint-draft-spec.md`](./specs/2026-05-18-arXiv-preprint-draft-spec.md) | None (parallel-safe) | Fills §4 from Sprint D when that lands; shortens "result → submission" from weeks to days |
+| **Phase II evidence assembly** | [`specs/2026-05-18-PhaseII-evidence-assembly-spec.md`](./specs/2026-05-18-PhaseII-evidence-assembly-spec.md) | None (incremental) | Curated evidence package for Phase II proposal embed |
+
+**Recommended dispatch order** (highest leverage first; lowest blocking risk):
+
+1. **arXiv preprint draft** (no operator prereq; parallel-safe; fillable from any Sprint D outcome)
+2. **Sprint D — kill-gate execution** (once OSF is filed)
+3. **§2 Obj 2 — TFT for TEC forecasting** (once Earthdata creds set)
+4. **Phase II evidence assembly** (continuous — runs once initially, refresh each session)
+
+**Current portfolio state** (also in `companion/footnotes.yaml`):
+
+```
+helios-program                  v0.2.0   public
+helios-provenance-spec          v0.1.0   public   (RFC issue #4 open)
+helios-spaceweather-connectors  v0.2.1   public   (6 adapters live; ISWA registry expanded)
+helios-fusion-engine            v0.1.2   public   (Sprint C-Training-v2 shipped)
+helios-fusion-internal          —        private  (v2 weights with HeliosTransformationRecord provenance)
+gannon-storm-rtk-analysis       v0.1.0   public
+```
+
+All 5 Pages sites HTTP 200. All worktrees clean. 0 stale branches across all 6 repos.
+
+**One-instruction onboarding** for a new session: read `## 2. GitHub identity disambiguation` below, then read the dispatch spec for the track you're working on. The master plan (`plan/master-plan.md`) and per-artifact review packs (`specs/`) are reference material — you usually don't need to re-read them.
+
+---
+
 ## 1. What HELIOS is
 
 **HELIOS** = Heliophysics-Enhanced Location Integrity and Operations System.

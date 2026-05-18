@@ -6,7 +6,22 @@
 
 ---
 
-## Immediate (unblock v0.2.0 stable + Sprint C-Training)
+## Next-session dispatch readiness (added 2026-05-18)
+
+Four dispatch-ready specs live in [`specs/`](specs/). Each gets a dedicated session per the Phase II readiness handoff (see [CLAUDE.md §0](CLAUDE.md)):
+
+| Track | Spec | Operator prereq |
+|---|---|---|
+| Sprint D — kill-gate execution | [`2026-05-18-Sprint-D-kill-gate-spec.md`](specs/2026-05-18-Sprint-D-kill-gate-spec.md) | OSF pre-registration (#3 below) |
+| §2 Obj 2 — TFT for TEC forecasting | [`2026-05-18-TFT-TEC-forecasting-spec.md`](specs/2026-05-18-TFT-TEC-forecasting-spec.md) | Earthdata credentials (#2 below) |
+| arXiv preprint draft | [`2026-05-18-arXiv-preprint-draft-spec.md`](specs/2026-05-18-arXiv-preprint-draft-spec.md) | None — parallel-safe |
+| Phase II evidence assembly | [`2026-05-18-PhaseII-evidence-assembly-spec.md`](specs/2026-05-18-PhaseII-evidence-assembly-spec.md) | None — incremental |
+
+**Recommended dispatch order**: arXiv first → Sprint D after #3 → TFT after #2 → Phase II evidence continuous.
+
+---
+
+## Immediate (unblock the dispatchable tracks above)
 
 ### 1. Configure PyPI trusted publishing for 3 packages
 
@@ -167,4 +182,4 @@ This file is the operator-facing checklist. **Update statuses** as items move �
 - Per-Claude-session context: `helios-program/CLAUDE.md`
 - Public-facing companion: `helios-program/companion/companion.md`
 
-Last edited: 2026-05-17 (this is the canonical "what the operator still needs to do" doc at the end of Session 2; will be refreshed each session).
+Last edited: 2026-05-18 (Session 5 — Phase-II-ready handoff).

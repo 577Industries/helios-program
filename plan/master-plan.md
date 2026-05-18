@@ -1260,3 +1260,32 @@ Cleanup: 6 stale worktrees from earlier waves removed (`helios-spaceweather-conn
 - Refresh companion footnotes (fusion-engine version bumps to 0.1.2)
 - Write v2 review pack (`specs/2026-05-17-Sprint-C-Training-v2-review-pack.md`)
 - Update OPERATOR_TODO.md with the v2 methodology-note suggestion for OSF deviations section
+
+### Session 5 — Clean-room reset + 4-track handoff specs (2026-05-18)
+
+**Hygiene pass complete**:
+- Committed `results/2026-05-17-iswa-coverage-matrix.md` (was untracked from session 4)
+- Deleted 11 stale merged feature branches across 4 repos (helios-provenance-spec, helios-spaceweather-connectors, helios-fusion-engine, gannon-storm-rtk-analysis)
+- State now: 0 uncommitted files, 0 non-main branches, 0 worktrees, all 5 Pages sites HTTP 200, all releases tagged + pushed
+
+**4 dispatch-ready specs landed in `specs/`**:
+
+| Spec | Purpose | Operator prereq | Effort |
+|---|---|---|---|
+| `2026-05-18-Sprint-D-kill-gate-spec.md` | Execute kill-gate hold-out evaluation on 3-event set | OSF pre-registration filed | 2-4 hours agent |
+| `2026-05-18-TFT-TEC-forecasting-spec.md` | Temporal Fusion Transformer for vertical-TEC multi-horizon forecasting (proposal §2 Obj 4) | NASA Earthdata creds | 8-16 hours agent |
+| `2026-05-18-arXiv-preprint-draft-spec.md` | Draft preprint skeleton with §4 placeholder ready for Sprint D fill-in | None — parallel-safe | 4-6 hours agent |
+| `2026-05-18-PhaseII-evidence-assembly-spec.md` | Curated evidence package + Phase II proposal scaffold | None — incremental | 2-3 hours initial + 30-60 min per refresh |
+
+Each spec is **sufficient for a future session to dispatch the relevant agent without re-reading the master plan or earlier review packs**. Each follows the established review-pack structure (TL;DR + prereqs + scope + quality bar + verification gates + cross-references).
+
+**Doc touches**:
+- `CLAUDE.md` — inserted new §0 "Next-session quick-start" at the top with track table + recommended dispatch order + current portfolio state + one-instruction onboarding
+- `OPERATOR_TODO.md` — refreshed to 2026-05-18; added "Next-session dispatch readiness" section above the immediate items; left existing items intact since they are still operator prereqs for the dispatchable tracks
+- `plan/master-plan.md` (this file) — this entry
+
+**Memory refresh**: `~/.claude/projects/.../memory/helios-program.md` updated with the Phase-II-ready state + the 4-track dispatch-readiness summary.
+
+**No new releases this session**. Pure handoff infrastructure.
+
+**Next session should**: pick one of the 4 tracks (arXiv preprint draft is recommended first since it has no operator prereq) and dispatch the agent against that spec. Don't try to attack multiple tracks in parallel — the user explicitly flagged context-window pressure as the constraint.
