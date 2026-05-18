@@ -24,7 +24,7 @@ artifacts:
     - §2 Obj. 2
     - §3.1
     - '§4.2 innovation #1'
-    version: 0.1.2
+    version: 0.2.0
     pypi: https://pypi.org/project/helios-fusion-engine/
     docs: https://577industries.github.io/helios-fusion-engine/
     preprint: null
