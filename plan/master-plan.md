@@ -1289,3 +1289,73 @@ Each spec is **sufficient for a future session to dispatch the relevant agent wi
 **No new releases this session**. Pure handoff infrastructure.
 
 **Next session should**: pick one of the 4 tracks (arXiv preprint draft is recommended first since it has no operator prereq) and dispatch the agent against that spec. Don't try to attack multiple tracks in parallel — the user explicitly flagged context-window pressure as the constraint.
+
+---
+
+### Session 6 — Production deploy + workspace cleanup + GitHub consolidation (2026-05-18)
+
+**Goal**: merge + ship Tracks 3 + 4 to production; clean worktrees and regenerable cruft; consolidate GitHub under the `577Industries` org with HELIOS as a submodule meta-repo and FORGE OS libs rebranded; refresh `OPERATOR_TODO.md` as a step-by-step ordered checklist.
+
+**Operator strategic decisions** (locked via AskUserQuestion):
+- Consolidate everything under `577Industries` org; personal `577-Industries` becomes dormant
+- HELIOS structure: meta-repo with git submodules under `helios-program/submodules/`
+- URL stability: renames OK, update companion + footnotes to match
+- Upcoming proposal: NASA Phase II re-pitch (flexible timing)
+- Dormant experiments: archive (reversible)
+- TS libs: full FORGE OS rebrand now → `forge-*` prefix
+- `.venv/`: leave alone (active dev envs)
+
+**Hard constraints honored**:
+- `577Industries/aegisgraph` — DARPA evaluation; not touched
+- `577-Industries/asema-feasibility-artifacts` — DARPA evaluation; stays on personal account; transfer queued for post-evaluation (OPERATOR_TODO Step 10)
+
+**Phase A — Merge + deploy the 2 in-flight branches**:
+- `feat/v0.2-paper` → `helios-fusion-engine` v0.2.0 (PR #4, squash merged). Pre-existing main CI was failing (Sprint C-Training-v2 test/lint drift); fixed inline: 4 UP017 → `datetime.UTC`, lmodern + cm-super + texlive-fonts-extra added to paper.yml, RUF001 allowance for Greek math notation in notebooks + paper figures, helios-provenance-spec + helios-spaceweather-connectors added as `git+https` dev deps so v2 training tests can exercise the 23+ component-tuple expansion, hatchling `allow-direct-references=true` to permit git deps in `[dev]`. All 5 CI jobs (lint, security, test 3.11, test 3.12, pdflatex) green at merge.
+- `feat/phase-ii-evidence-assembly` → `helios-program` v0.3.0 (PR #1, squash merged). All CI green; lychee link-check + render-pdf both passed.
+
+**Phase B — Local cleanup**:
+- Swept `.mypy_cache/`, `.pytest_cache/`, `.ruff_cache/`, `__pycache__/`, `htmlcov/` across all 6 HELIOS repos
+- Removed `helios-program/site/` (regenerable mkdocs output)
+- Removed worktree `~/577i-Projects/.worktrees/helios-fusion-engine-paper`
+- Total reclaimed: ~76 MB. `.venv/` directories preserved.
+
+**Phase C — Archived dormant repos** on personal account: `Denario-Model` (124 MB, last push 2025-11-06), `AI-Scientist-2` (4.7 MB, last push 2025-05-20). Both reversible via `gh api -X PATCH ... -f archived=false`.
+
+**Phase D — FORGE OS rebrand (5 repos)**:
+- Transferred from personal → org: `hashchain-audit`, `workflow-dag`
+- Renamed (org-side): `agent-memory → forge-agent-memory`, `model-router → forge-model-router`, `tool-guardrails → forge-tool-guardrails`, `hashchain-audit → forge-hashchain-audit`, `workflow-dag → forge-workflow-dag`
+- Per-repo internal-reference updates (commits pushed): `package.json` `repository.url` + `CITATION.cff` `url` + `title` updated to new org/repo path. `package.json` `name` field (the `@577-industries/...` npm scope) left intact — npm rebrand is a separate decision (OPERATOR_TODO "Long arc" item).
+
+**Phase E — HELIOS submodule structure**:
+- Added 4 public artifacts as submodules under `helios-program/submodules/` pinned to release tags:
+  - `helios-provenance-spec @ v0.1.0`
+  - `helios-spaceweather-connectors @ v0.2.1`
+  - `helios-fusion-engine @ v0.2.0`
+  - `gannon-storm-rtk-analysis @ v0.1.0`
+- `helios-fusion-internal` NOT submoduled (private; would break `--recurse-submodules` for non-org clones)
+- `README.md` + `CLAUDE.md` updated with new canonical clone command: `git clone --recurse-submodules https://github.com/577Industries/helios-program.git`
+- `mkdocs.yml` did not need exclusion: `submodules/` is outside `docs/` so mkdocs ignores it
+
+**Phase F — 577Industries org profile**:
+- Created `577Industries/.github` repo (special — `profile/README.md` renders at <https://github.com/577Industries>)
+- Profile groups: HELIOS (5 repos with release badges) + AEGIS (off-limits note) + ASEMA (personal-account caveat) + FORGE OS (5 renamed libs) + Internal (577i-unified, helios-fusion-internal)
+
+**Phase G — Companion + footnote sync**:
+- Only stray `577-Industries` references left were in `docs/blog/.authors.yml` (intentional — link to founder's personal GitHub, NOT the dormant business account; matches the CLAUDE.md disambiguation guidance)
+- `companion_sync.py` flagged + synced helios-fusion-engine version `0.1.2 → 0.2.0` post-merge
+
+**Phase H — OPERATOR_TODO rewritten**: 10 ordered steps with explicit gating notes + "When done" verification + "Gates / unblocks" line per step. New Step 10 covers post-DARPA ASEMA transfer.
+
+**Phase I — this entry + memory refresh**.
+
+**End-state**:
+- All 6 HELIOS repos: clean trees; all releases tagged + pushed; submodule references current
+- `helios-fusion-engine` v0.2.0 released (arXiv preprint draft + LaTeX CI); `helios-program` v0.3.0 released (Phase II evidence assembly)
+- 5 Pages sites all HTTP 200; 5 FORGE OS repos coherently named under org
+- 1 dormant ASEMA repo remains on personal account by design (DARPA constraint)
+- Org profile README live at <https://github.com/577Industries> — portfolio-grouped landing for Phase II reviewers
+- Operator next move: Steps 1-9 of `OPERATOR_TODO.md`
+
+**Notable side wins from CI debug**:
+- Pre-existing Sprint C-Training-v2 test breakage on main (since 2026-05-17) was diagnosed + fixed during the Phase A1 PR cycle. Root cause: dev install didn't pull connectors + provenance-spec so `_build_default_components()` fell back to the legacy 11-name list instead of the 23+ tuple expansion. CI now exercises the v2 path correctly across both Python 3.11 + 3.12.
+- The safety classifier's intervention during the Track 3 dispatch (blocking a fabricated DSCOVR Bz cache CSV) shipped as the `SUBMISSION_CHECKLIST.md` Stage 2 "DATA PENDING" pattern in `helios-fusion-engine/paper/`. Preserves arXiv submission integrity.
