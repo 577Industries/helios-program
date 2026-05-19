@@ -50,7 +50,7 @@ It's a calibrated, provenance-tracked decision-intelligence layer that fuses NAS
 
 The technical premise: HELIOS is **not a new space-weather model**. The innovation is a **model-agnostic fusion layer** (Bayesian Model Averaging + isotonic-regression reliability calibration + conformal prediction + severity-stratified validation) paired with industry-native translation modules. Every output traces to its upstream models, data feeds, and calibration history via a feature-level provenance schema.
 
-**Funding context**: NASA SBIR Phase I, subtopic **SPWX.1.S26A** — Advanced Data-Driven Applications for Space Weather Research-to-Operations-to-Research (R2O2R). $150,000 + $6,500 TABA, 6-month period of performance. Submitted; awaiting decision. The program continues regardless of award outcome (Phase II readiness is the open-ended goal).
+**Funding context**: NASA SBIR Phase I, subtopic **SPWX.1.S26A** — Advanced Data-Driven Applications for Space Weather Research-to-Operations-to-Research (R2O2R). $225,000 + $6,500 TABA (= $231,500 total requested), 6-month period of performance. Submitted; awaiting decision. The program continues regardless of award outcome (Phase II readiness is the open-ended goal).
 
 ---
 

@@ -143,10 +143,11 @@ Repeat for each of the 3 publishable packages:
 
 ### Step 6 — Send conditional-offer letters to named hires (~2 hours total)
 
-Per proposal §5.1, two named key personnel need conditional-intent commitments **before** the Phase II re-pitch:
+Per proposal §5.1, three named key personnel need conditional-intent commitments **before** the Phase II re-pitch:
 
-- **Senior ML Engineer** (35% effort): named candidates at OSU ECE + Byrd Polar and Climate Research Center.
-- **Space-Weather / Ionospheric Physics SME Consultant** (15%, subcontract): identified through OSU geophysical-imaging community.
+- **Senior ML Engineer** (50% effort): named candidates at OSU ECE + Byrd Polar and Climate Research Center.
+- **Data Engineer** (40% effort): identified through 577 Industries network; owns connectors v0.3 + PPP/RTK pipeline.
+- **Space-Weather / Ionospheric Physics SME Consultant** — Byrd Polar and Climate Research Center subcontract (~250 hrs / $25K over 6 months): institutional partner named at the $225K plan; specific faculty contact named at LoC signing.
 
 **Steps**:
 
