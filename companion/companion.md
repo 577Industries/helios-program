@@ -150,7 +150,7 @@ The equipment translation layer applies receiver-family-specific transfer functi
 
 ## 3. Work Plan, Validation Framework, Risk, and Phase II Vision
 
-Phase I executes over six months across five concurrent tasks (T1-T5) aligned with the technical objectives. Total proposed price: $150,000 plus $6,500 TABA.
+Phase I executes over six months across five concurrent tasks (T1-T5) aligned with the technical objectives. Total proposed price: $225,000 plus $6,500 TABA (see §7 for line-item budget).
 
 ### T1 — Ingestion and Pipeline Architecture (Months 1-3)
 
@@ -256,7 +256,7 @@ The novelty claim is framed conservatively. HELIOS is innovative in five specifi
 
 ### 5.2 Facilities and Equipment
 
-577 Industries operates from Columbus, OH. No major capital equipment is required for this software-centric Phase I, concentrating funds on labor, validation, and stakeholder engagement. Facilities include AWS cloud compute (GPU instances for ML training; $8,000 budgeted), the FORGE OS containerized ML pipeline, secured developer workstations, and access to public archives (CDDIS, DONKI, SWPC, GOES, DSCOVR, IGS, NGS CORS) requiring no special agreements.
+577 Industries operates from Columbus, OH. No major capital equipment is required for this software-centric Phase I, concentrating funds on labor, validation, and stakeholder engagement. Facilities include AWS cloud compute (GPU instances for ML training; $12,000 budgeted), the FORGE OS containerized ML pipeline, secured developer workstations, and access to public archives (CDDIS, DONKI, SWPC, GOES, DSCOVR, IGS, NGS CORS) requiring no special agreements.
 
 ### 5.3 NASA Center Engagement
 
@@ -322,23 +322,32 @@ The hybrid open/private architecture supports this: the fusion-engine framework 
 
 ## 7. Budget Summary
 
-| Budget Category | Amount |
-|---|---|
-| Direct Labor — PI Thomas Waweru (50% effort, 6 months) | $52,000 |
-| Direct Labor — Senior ML Engineer (35% effort, 6 months) | $35,000 |
-| Fringe Benefits (30% of direct labor) | $26,100 |
-| Subcontract — Space-Weather/Ionospheric SME (15% effort) | $18,000 |
-| Cloud Computing (AWS GPU instances, S3, API hosting) | $8,000 |
-| Travel (NASA centers; agricultural end-user engagement) | $4,500 |
-| Materials and Software Licenses | $2,000 |
-| Subtotal Direct Costs | $145,600 |
-| Fee / Profit | $4,400 |
-| **TOTAL PROPOSED PRICE** | **$150,000** |
-| TABA Request (commercialization vendor support) | $6,500 |
+| Budget Category | Detail | Amount |
+|---|---|---|
+| Direct Labor — PI Thomas Waweru | 60% effort × 6 months | $63,000 |
+| Direct Labor — Senior ML Engineer | 50% effort × 6 months | $42,000 |
+| Direct Labor — Data Engineer | 40% effort × 6 months | $26,000 |
+| **Direct Labor — Subtotal** |  | **$131,000** |
+| Fringe Benefits | 30% rate (FICA / FUTA / SUTA / health / 401(k) match) | $39,300 |
+| **Total Compensation** | Labor + Fringe | **$170,300** |
+| ODC — AWS GPU compute | GPU instance-hours, S3, Lambda fetchers | $12,000 |
+| ODC — Software licenses | RTKLIB Pro + ML platform seats | $2,500 |
+| ODC — Travel (NASA centers) | 2 trips × 2 people @ $1,500 (GSFC / MSFC / JSC) | $6,000 |
+| ODC — Travel (CCMC / M2M technical exchange) | 1 dedicated tech-exchange trip | $2,500 |
+| ODC — Travel (ag operator visits) | 4 Midwest trips @ $750 (IA/IL/IN/OH) | $3,000 |
+| ODC — Customer-discovery honoraria | 12 interview honoraria @ $100 (Task T5) | $1,200 |
+| ODC — Materials & supplies |  | $500 |
+| **ODC — Subtotal** |  | **$27,700** |
+| Subcontract — **OSU Byrd Polar and Climate Research Center** | Space-Weather/Ionospheric SME (250 hrs @ $100/hr) | $25,000 |
+| **Direct Costs Subtotal** | Labor + Fringe + ODC + Subcontract | **$223,000** |
+| Fee / Profit | ~0.9% (constrained to maximize technical scope within cap) | $2,000 |
+| **TOTAL PROPOSED PRICE** | **Phase I base** | **$225,000** |
+| TABA Request (additive) | Customer discovery + FTO/IP review + pricing validation (BAA §3.1.5.9) | $6,500 |
+| **TOTAL REQUESTED** | Base + TABA | **$231,500** |
 
-**Subcontracting compliance**: subcontract cost ($18,000) + G&A allocation (≈$1,260) = $19,260 total subcontracting against direct technical cost of $145,600. Subcontracting percentage = $19,260 / ($150,000 − $4,400) = **13.2%**, well below the 33% maximum for SBIR Phase I (NFS 1852.219-80). PI primary employment is with the small business (NFS 1852.219-83). All work performed in the United States.
+**Subcontracting compliance.** Subcontract cost $25,000 against total proposed price $225,000 = **11.1%**, well below the 33% Phase I subcontracting ceiling per NFS 1852.219-80. PI primary employment is with the SBC (NFS 1852.219-83). All work performed in the United States. The TABA request is additive to the $225K base and excluded from the 33% subcontracting cap per BAA §3.1.5.9.
 
-**Budget rationale.** Direct labor maximizes technical execution within the Phase I ceiling. Cloud compute supports transformer model training on 20+ years of CDDIS GIM and CORS positioning data. Travel funds NASA center engagement (GSFC, MSFC, JSC) and Ohio-Midwest end-user discovery. TABA funds (maximum $6,500 allowed) support customer discovery, FTO/IP review of the fusion architecture, and pricing validation through an approved TABA vendor.
+**Budget rationale.** The Phase I plan executes through a three-person direct-labor team — PI Thomas Waweru, a Senior ML Engineer, and a Data Engineer — covering the four §3 objectives end-to-end (PI = fusion architecture + CCMC/SRAG engagement; Senior ML Engineer = TFT/transformer + BMA fusion; Data Engineer = connectors v0.3 + PPP/RTK pipeline). The **OSU Byrd Center subcontract** ($25K / 250 hours) brings complementary atmospheric and geomagnetic-coupling expertise that 577 Industries does not have in-house, and provides the independent SME review required to defend CCMC/SRAG-grade validation claims. Cloud compute ($12K) scales with BMA training across the 7 Table 4-1 training events plus 3 hold-out events. Expanded travel ($11.5K) covers two NASA centers, one dedicated CCMC technical-exchange trip, and four ag-operator visits across the IA/IL/IN/OH row-crop corridor. Fee is constrained to ~0.9% so the SBC accepts reduced profit to maximize technical scope within the cap. TABA funds (capped at $6,500) support customer-discovery facilitation, FTO/IP review of the fusion architecture, and pricing validation through an approved TABA vendor — additive to the $225K base.
 
 ---
 
