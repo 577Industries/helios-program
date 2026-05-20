@@ -7,6 +7,18 @@
 
 The submitted NASA SBIR Phase I proposal "HELIOS: Heliophysics-Enhanced Location Integrity and Operations System" advances a model-agnostic Bayesian-Model-Averaging fusion layer for space-weather model outputs, with two vertical slices (NASA SRAG mission-operations radiation risk and U.S. precision-agriculture GNSS). This meta-repo coordinates the public artifacts that back the proposal's claims with live, citable code.
 
+## For NASA SBIR Reviewers (5-minute onramp)
+
+This repository orchestrates the public artifact ecosystem for the HELIOS NASA SBIR Phase I proposal (subtopic SPWX.1.S26A). To verify proposal claims:
+
+1. **Start with [`companion/companion.md`](companion/companion.md)** — the canonical index that maps every proposal section (§1.3 Gannon case study, §3 technical objectives, §4 work plan, etc.) to specific files in the public artifact repos.
+2. **Pre-registration**: see [`orchestration/kill_gate.py`](orchestration/kill_gate.py) for the kill-gate constants and [`plan/master-plan.md`](plan/master-plan.md) for the sealed hold-out event list (Table 4-2 in the proposal).
+3. **Empirical evidence**: see [`gannon-storm-rtk-analysis`](https://github.com/577Industries/gannon-storm-rtk-analysis) for the 25-station NGS CORS analysis (1,302 station-hours headline; `results/quantitative.md`).
+4. **Framework code**: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine) (BMA + isotonic + Mondrian conformal) and [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors) (6 data adapters).
+5. **Provenance schema**: [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec) (feature-level lineage JSON Schema).
+
+Trained model weights, BMA priors, and equipment transfer functions are held in the private `helios-fusion-internal` repo (commercial-license gated); the framework code is fully open.
+
 ## Quick start
 
 ```bash

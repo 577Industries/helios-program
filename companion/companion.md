@@ -23,8 +23,8 @@
 | # | Artifact | Repository | Docs | Version | Status | Cited in |
 |---|---|---|---|---|---|---|
 | 1 | helios-provenance-spec | [GitHub](https://github.com/577Industries/helios-provenance-spec) | [docs](https://577industries.github.io/helios-provenance-spec/) | v0.1.0 | in-development | §1.4 CONOPS · §4.2 innovation #2 |
-| 2 | helios-spaceweather-connectors | [GitHub](https://github.com/577Industries/helios-spaceweather-connectors) | [docs](https://577industries.github.io/helios-spaceweather-connectors/) | v0.2.0a1 (alpha) | in-development | §2 Obj. 1 · §3 T1 |
-| 3 | helios-fusion-engine *(public framework)* | [GitHub](https://github.com/577Industries/helios-fusion-engine) | [docs](https://577industries.github.io/helios-fusion-engine/) | v0.1.0 | in-development | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
+| 2 | helios-spaceweather-connectors | [GitHub](https://github.com/577Industries/helios-spaceweather-connectors) | [docs](https://577industries.github.io/helios-spaceweather-connectors/) | v0.2.1 | in-development | §2 Obj. 1 · §3 T1 |
+| 3 | helios-fusion-engine *(public framework)* | [GitHub](https://github.com/577Industries/helios-fusion-engine) | [docs](https://577industries.github.io/helios-fusion-engine/) | v0.2.0 | in-development | §2 Obj. 2 · §3.1 · §4.2 innovation #1 |
 | 4 | gannon-storm-rtk-analysis | [GitHub](https://github.com/577Industries/gannon-storm-rtk-analysis) | [docs](https://577industries.github.io/gannon-storm-rtk-analysis/) | v0.1.0 | in-development | §1.3 Gannon · §2 Obj. 4 · §4.2 innovation #4 |
 
 A canonical machine-readable artifact registry lives at [`footnotes.yaml`](./footnotes.yaml). It is rebuilt automatically from each artifact's README on every merge to `main` via `orchestration/companion_sync.py`.
@@ -95,9 +95,9 @@ HELIOS operates as a continuously running cloud service. The ingestion tier[^2] 
 
 [^1]: The provenance affordance is formalized as a public, machine-readable JSON Schema (draft 2020-12) plus a pydantic v2 reference implementation: [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec). v0.1.0 RFC released; community comment open at [issue #4](https://github.com/577Industries/helios-provenance-spec/issues/4) on the 8 §6 design questions.
 
-[^2]: The ingestion pipeline is implemented as a Python package: [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors). v0.2.0a1 alpha released with all six adapters live (DONKI, NOAA SWPC, NASA CDDIS GIMs, GOES, DSCOVR, CCMC SEP Scoreboards). 304+ tests, 87-94% per-adapter coverage. Atomic provenance-swap PR pending before v0.2.0 stable + PyPI publication.
+[^2]: The ingestion pipeline is implemented as a Python package: [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors). v0.2.1 released with all six adapters live (DONKI, NOAA SWPC, NASA CDDIS GIMs, GOES, DSCOVR, CCMC SEP Scoreboards). 304+ tests, 87-94% per-adapter coverage.
 
-[^3]: The fusion engine framework is open source: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine). v0.1.0 released with the BMA orchestrator, isotonic + Platt + severity-stratified calibrators, split and Mondrian conformal regressors, CCMC-compatible metrics suite (HSS + TSS + POD + FAR + Brier + CRPS with bootstrapped 95% CIs). 105 tests at 92% coverage. Trained weights and BMA priors fitted on Table 3-1 events live in the private companion `helios-fusion-internal`.
+[^3]: The fusion engine framework is open source: [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine). v0.2.0 released with the BMA orchestrator, isotonic + Platt + severity-stratified calibrators, split and Mondrian conformal regressors, CCMC-compatible metrics suite (HSS + TSS + POD + FAR + Brier + CRPS with bootstrapped 95% CIs). 105 tests at 92% coverage. Trained weights and BMA priors fitted on Table 3-1 events live in the private companion `helios-fusion-internal`.
 
 ---
 
