@@ -1,9 +1,18 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/577Industries/.github/main/brand/out/wordmark-dark.svg">
+  <img alt="577 Industries" height="44" src="https://raw.githubusercontent.com/577Industries/.github/main/brand/out/wordmark-light.svg">
+</picture>
+
 # helios-program
 
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![companion-check](https://github.com/577Industries/helios-program/actions/workflows/companion-check.yml/badge.svg)](https://github.com/577Industries/helios-program/actions/workflows/companion-check.yml)
+`HELIOS` · [program overview](https://github.com/577Industries#helios--calibrated-heliophysics-fusion)
 
-> Meta-repo for **HELIOS** — 577 Industries' NASA SBIR Phase I program on calibrated space-weather decision intelligence (subtopic SPWX.1.S26A). Hosts the public proposal companion document, master plan, cross-repo orchestration scripts, and per-artifact design specs that coordinate the four HELIOS artifact repositories.
+**Meta-repo for HELIOS — 577 Industries' NASA SBIR Phase I program on calibrated space-weather decision intelligence (subtopic SPWX.1.S26A): public proposal companion, master plan, cross-repo orchestration scripts, and per-artifact design specs.**
+
+[![ci](https://img.shields.io/github/actions/workflow/status/577Industries/helios-program/companion-check.yml?style=flat-square&label=ci)](https://github.com/577Industries/helios-program/actions/workflows/companion-check.yml)
+[![release](https://img.shields.io/github/v/release/577Industries/helios-program?style=flat-square)](https://github.com/577Industries/helios-program/releases)
+[![license](https://img.shields.io/badge/license-Apache_2.0-blue?style=flat-square)](LICENSE)
+[![docs](https://img.shields.io/badge/docs-live-009688?style=flat-square)](https://577industries.github.io/helios-program/)
 
 The submitted NASA SBIR Phase I proposal "HELIOS: Heliophysics-Enhanced Location Integrity and Operations System" advances a model-agnostic Bayesian-Model-Averaging fusion layer for space-weather model outputs, with two vertical slices (NASA SRAG mission-operations radiation risk and U.S. precision-agriculture GNSS). This meta-repo coordinates the public artifacts that back the proposal's claims with live, citable code.
 
