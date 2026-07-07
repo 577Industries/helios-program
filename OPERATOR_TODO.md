@@ -223,27 +223,18 @@ Currently staged at <https://577industries.github.io/helios-program/blog/when-th
 
 ---
 
-### Step 10 — (Post-DARPA evaluation) Transfer ASEMA asset to org
+### Step 10 — ✅ DONE 2026-07-07 — Transfer ASEMA asset to org (executed ahead of evaluation close)
 
-**Why**: `asema-feasibility-artifacts` currently lives on the personal account `577-Industries` because URL stability during DARPA evaluation is non-negotiable. Once DARPA closes its evaluation, consolidate to the org.
+**Why**: `asema-feasibility-artifacts` lived on the personal account `577-Industries` for URL stability during DARPA evaluation. Executed 2026-07-07 ahead of evaluation close, by founder decision, as part of the org-wide consolidation — URL stability is preserved by two mechanisms:
 
-1. Confirm DARPA evaluation has closed (check email + DARPA portal).
-2. Transfer:
-   ```bash
-   gh api -X POST /repos/577-Industries/asema-feasibility-artifacts/transfer -f new_owner=577Industries
-   ```
-3. Wait ~30s for transfer to settle:
-   ```bash
-   until gh api /repos/577Industries/asema-feasibility-artifacts --jq '.full_name' 2>/dev/null | grep -q 577Industries; do sleep 3; done
-   ```
-4. Update the org profile README at `~/577i-Projects/577Industries.github/profile/README.md`:
-   - Move ASEMA section out of "personal-account caveat" framing
-   - Update the link to `github.com/577Industries/asema-feasibility-artifacts`
-5. Commit + push the profile update.
+1. **Repo redirect**: GitHub's permanent transfer redirect covers every cited `github.com`, git, and REST-API URL (`curl -sI https://github.com/577-Industries/asema-feasibility-artifacts` → 301). The redirect survives unless a repo with the same name is ever recreated on the personal account — that name is now reserved-forever (see org repo-standards doc).
+2. **Pages continuity**: GitHub does NOT redirect Pages on transfer, and the evaluator-facing site (`577-industries.github.io/asema-feasibility-artifacts/`, incl. `/dashboard/`) is cited in the submitted DP2 materials. A byte-identical mirror of all 37 live URLs is served from the personal user site (`577-Industries/577-industries.github.io`), so the original URLs keep returning 200 with identical content. The canonical site continues at `577industries.github.io/asema-feasibility-artifacts/`.
 
-**When done**: `gh repo view 577Industries/asema-feasibility-artifacts` returns 200; org profile README reflects the move.
+Org profile README updated in the same pass.
 
-**Gates**: nothing internal — purely consolidation hygiene. The personal account becomes 100% dormant (only archived repos remain).
+**When done** (verified): `gh repo view 577Industries/asema-feasibility-artifacts` returns the org repo; old web/git URLs 301; old Pages URLs 200 byte-identical; org profile README reflects the move.
+
+**Gates**: none remaining. The personal account is now 100% dormant (holds only the Pages-continuity user site).
 
 ---
 

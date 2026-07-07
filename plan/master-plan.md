@@ -1307,7 +1307,7 @@ Each spec is **sufficient for a future session to dispatch the relevant agent wi
 
 **Hard constraints honored**:
 - `577Industries/aegisgraph` — DARPA evaluation; not touched
-- `577-Industries/asema-feasibility-artifacts` — DARPA evaluation; stays on personal account; transfer queued for post-evaluation (OPERATOR_TODO Step 10)
+- `577-Industries/asema-feasibility-artifacts` — DARPA evaluation; transferred to the `577Industries` org 2026-07-07 (OPERATOR_TODO Step 10, executed ahead of evaluation close by founder decision). GitHub's permanent repo redirect preserves every cited `github.com`/git/API URL, and the evaluator-facing Pages site is preserved byte-identically at its original URL via a mirror on the personal user site.
 
 **Phase A — Merge + deploy the 2 in-flight branches**:
 - `feat/v0.2-paper` → `helios-fusion-engine` v0.2.0 (PR #4, squash merged). Pre-existing main CI was failing (Sprint C-Training-v2 test/lint drift); fixed inline: 4 UP017 → `datetime.UTC`, lmodern + cm-super + texlive-fonts-extra added to paper.yml, RUF001 allowance for Greek math notation in notebooks + paper figures, helios-provenance-spec + helios-spaceweather-connectors added as `git+https` dev deps so v2 training tests can exercise the 23+ component-tuple expansion, hatchling `allow-direct-references=true` to permit git deps in `[dev]`. All 5 CI jobs (lint, security, test 3.11, test 3.12, pdflatex) green at merge.
@@ -1319,7 +1319,7 @@ Each spec is **sufficient for a future session to dispatch the relevant agent wi
 - Removed worktree `~/577i-Projects/.worktrees/helios-fusion-engine-paper`
 - Total reclaimed: ~76 MB. `.venv/` directories preserved.
 
-**Phase C — Archived dormant repos** on personal account: `Denario-Model` (124 MB, last push 2025-11-06), `AI-Scientist-2` (4.7 MB, last push 2025-05-20). Both reversible via `gh api -X PATCH ... -f archived=false`.
+**Phase C — Archived dormant repos** on personal account: `Denario-Model` (124 MB, last push 2025-11-06), `AI-Scientist-2` (4.7 MB, last push 2025-05-20). 2026-07 update: both mirrored to local cold storage (`~/577i-Projects/archive/`) and removed from GitHub as part of the org consolidation.
 
 **Phase D — FORGE OS rebrand (5 repos)**:
 - Transferred from personal → org: `hashchain-audit`, `workflow-dag`
@@ -1359,3 +1359,13 @@ Each spec is **sufficient for a future session to dispatch the relevant agent wi
 **Notable side wins from CI debug**:
 - Pre-existing Sprint C-Training-v2 test breakage on main (since 2026-05-17) was diagnosed + fixed during the Phase A1 PR cycle. Root cause: dev install didn't pull connectors + provenance-spec so `_build_default_components()` fell back to the legacy 11-name list instead of the 23+ tuple expansion. CI now exercises the v2 path correctly across both Python 3.11 + 3.12.
 - The safety classifier's intervention during the Track 3 dispatch (blocking a fabricated DSCOVR Bz cache CSV) shipped as the `SUBMISSION_CHECKLIST.md` Stage 2 "DATA PENDING" pattern in `helios-fusion-engine/paper/`. Preserves arXiv submission integrity.
+
+### Session 7 — Org-wide consolidation: ASEMA transfer + archived-repo retirement (2026-07-07)
+
+Founder-approved campaign (GitHub consolidation + org-profile overhaul + website /open-source integration) executed Step 10 of `OPERATOR_TODO.md` **ahead of DARPA evaluation close**, by explicit founder decision. Supersedes the Session 6 end-state line "1 dormant ASEMA repo remains on personal account by design."
+
+- `577-Industries/asema-feasibility-artifacts` → `577Industries/asema-feasibility-artifacts` via `gh api repos/.../transfer`. Web/git/API URLs covered by GitHub's permanent transfer redirect.
+- **Pages continuity** (GitHub does not redirect Pages on transfer): all 37 live URLs of the evaluator-facing site were mirrored byte-identically into the personal user site `577-Industries/577-industries.github.io` under `/asema-feasibility-artifacts/`, so the URLs cited in the submitted DP2 materials (incl. `/dashboard/`) keep returning 200 with identical content. Canonical site continues at `577industries.github.io/asema-feasibility-artifacts/`.
+- Personal-account archived repos `Denario-Model` + `AI-Scientist-2`: mirrored to `~/577i-Projects/archive/*.git` cold storage, then removed from GitHub (Phase C note updated in Session 6 log).
+- Pointer updates: org profile README ASEMA row; `aegisgraph` homepage now targets the org copy of the artifacts repo (later: `577industries.com/open-source#aegis`).
+- Hard constraint unchanged: `577Industries/aegisgraph` itself remains untouched (name/URL/description frozen during evaluation).
