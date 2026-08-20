@@ -22,20 +22,18 @@ The HELIOS program is **Phase-II-ready** as of 2026-05-18. Four substantive trac
 3. **§2 Obj 2 — TFT for TEC forecasting** (once Earthdata creds set)
 4. **Phase II evidence assembly** (continuous — runs once initially, refresh each session)
 
-**Current portfolio state** (also in `companion/footnotes.yaml`):
+**Current portfolio state** (also in `companion/footnotes.yaml`; snapshot of `git describe --tags --abbrev=0` in each local clone on 2026-08-20 — authoritative: `git tag` / `gh release list` in each repo):
 
 ```
-helios-program                  v0.2.0   public
+helios-program                  v0.3.0   public
 helios-provenance-spec          v0.1.0   public   (RFC issue #4 open)
 helios-spaceweather-connectors  v0.2.1   public   (6 adapters live; ISWA registry expanded)
-helios-fusion-engine            v0.1.2   public   (Sprint C-Training-v2 shipped)
-helios-fusion-internal          —        private  (v2 weights with HeliosTransformationRecord provenance)
+helios-fusion-engine            v0.2.0   public
+helios-fusion-internal          —        private  (no tags; v2 weights with HeliosTransformationRecord provenance)
 gannon-storm-rtk-analysis       v0.1.0   public
 ```
 
-All 5 Pages sites HTTP 200. All worktrees clean. 0 stale branches across all 6 repos.
-
-**One-instruction onboarding** for a new session: read `## 2. GitHub identity disambiguation` below, then read the dispatch spec for the track you're working on. The master plan (`plan/master-plan.md`) and per-artifact review packs (`specs/`) are reference material — you usually don't need to re-read them.
+**One-instruction onboarding** for a new session: read `## 2. GitHub identity` below (and the org-folder CLAUDE.md it points to), then read the dispatch spec for the track you're working on. The master plan (`plan/master-plan.md`) and per-artifact review packs (`specs/`) are reference material — you usually don't need to re-read them.
 
 ---
 
@@ -54,42 +52,11 @@ The technical premise: HELIOS is **not a new space-weather model**. The innovati
 
 ---
 
-## 2. ⚠️ Critical: GitHub identity disambiguation
+## 2. ⚠️ Critical: GitHub identity
 
-This is **the single most common mistake** to make on this program. Read carefully.
-
-| Identity | Type | Where it appears | What goes here |
-|---|---|---|---|
-| **`577Industries`** *(no hyphen)* | **Organization** | `github.com/577Industries/*`; `gh api orgs/577Industries`; `https://577industries.github.io/*` | **All 577 SBIR public work**, including all 6 HELIOS repos, aegisgraph (DARPA ASEMA), model-router, agent-memory, tool-guardrails, and the private 577i-unified FORGE OS platform. |
-| **`577-Industries`** *(with hyphen)* | **User** | `gh auth status` (the CLI's authenticated user identity); historical `github.com/577-Industries/*` URLs auto-redirect | Personal user account; a **member** of the `577Industries` org. **Never create repos here.** |
-
-Both identities exist. The `gh` CLI is authenticated as the **user** (`577-Industries`, with hyphen), but the user has full member access to the **org** (`577Industries`, no hyphen). When creating a repo, you must explicitly target the org:
-
-```bash
-# CORRECT
-gh repo create 577Industries/<name> --public --source=. --push
-
-# WRONG (creates under user namespace; will need to be transferred)
-gh repo create <name> --public --source=. --push
-```
-
-If you discover repos under the user account that should be in the org, transfer them:
-
-```bash
-gh api -X POST repos/577-Industries/<repo>/transfer -f new_owner=577Industries
-```
-
-Then update local origin remotes to point to the new org URL. Old user-account URLs auto-redirect indefinitely, but in-repo references should use the org URL going forward.
-
-**Token scopes** on the user identity: `gist`, `read:org`, `repo`, `workflow`. No `admin:org` — so `gh api orgs/577Industries/*` calls that need org-admin will return 404. Repo-level operations on org repos work fine because the user is an org member.
-
-**Visibility flips**: `gh repo edit --visibility public` may reject `--accept-visibility-change-consequences` on gh CLI < 2.46. Fall back to REST API:
-
-```bash
-gh api -X PATCH repos/577Industries/<repo> -f visibility=public
-```
-
-**git tag**: in this gh CLI version, `git tag -a` does **not** accept `--quiet`. Omit that flag or you'll silently fail to create the tag (and any subsequent `git push origin <tag>` will fail). If `gh release create <tag>` is run afterward, it will create the tag implicitly — so things sometimes appear to work anyway, but the local tag will be missing.
+- **Org = `577Industries`** (no hyphen) owns every HELIOS repo; **user = `577-Industries`** (with hyphen) is the `gh` login and an org member. **Never create repos under the user** — always `gh repo create 577Industries/<name> ...`.
+- Full rules, token scopes, the user→org transfer command and the visibility-flip fallback live in the org-folder instructions: `../../CLAUDE.md` (= `/home/twawe/577i-Projects/577Industries-github/CLAUDE.md`). Read that file once per session; do not re-derive the rules here.
+- HELIOS-specific gotcha kept in this file — **git tag**: in this gh CLI version, `git tag -a` does **not** accept `--quiet`. Omit that flag or you'll silently fail to create the tag (and any subsequent `git push origin <tag>` will fail). If `gh release create <tag>` is run afterward, it will create the tag implicitly — so things sometimes appear to work anyway, but the local tag will be missing.
 
 ---
 
@@ -99,12 +66,14 @@ All live under `github.com/577Industries/`:
 
 | Repo | Visibility | Latest release | Pages | Purpose |
 |---|---|---|---|---|
-| [`helios-program`](https://github.com/577Industries/helios-program) | public | v0.2.0 | [live](https://577industries.github.io/helios-program/) | **Meta-repo (this one)**. Master plan, proposal companion, orchestration scripts, per-artifact specs, ops guide. |
+| [`helios-program`](https://github.com/577Industries/helios-program) | public | v0.3.0 | [live](https://577industries.github.io/helios-program/) | **Meta-repo (this one)**. Master plan, proposal companion, orchestration scripts, per-artifact specs, ops guide. |
 | [`helios-provenance-spec`](https://github.com/577Industries/helios-provenance-spec) | public | v0.1.0 | [live](https://577industries.github.io/helios-provenance-spec/) | JSON Schema (draft 2020-12) for feature-level provenance in heliophysics fusion + pydantic v2 ref impl + RFC-0001. |
-| [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors) | public | pre-v0.1 (foundation + DONKI merged; v0.1.0 alpha held until ≥3 adapters live) | [live](https://577industries.github.io/helios-spaceweather-connectors/) | Production-grade Python adapters for DONKI, SEP Scoreboards, NOAA SWPC, CDDIS GIMs, GOES, DSCOVR. |
-| [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine) | public | v0.1.0 | [live](https://577industries.github.io/helios-fusion-engine/) | BMA + isotonic/Platt/stratified calibration + split/Mondrian conformal + CCMC-compatible metrics. Public framework. |
+| [`helios-spaceweather-connectors`](https://github.com/577Industries/helios-spaceweather-connectors) | public | v0.2.1 | [live](https://577industries.github.io/helios-spaceweather-connectors/) | Production-grade Python adapters for DONKI, SEP Scoreboards, NOAA SWPC, CDDIS GIMs, GOES, DSCOVR. |
+| [`helios-fusion-engine`](https://github.com/577Industries/helios-fusion-engine) | public | v0.2.0 | [live](https://577industries.github.io/helios-fusion-engine/) | BMA + isotonic/Platt/stratified calibration + split/Mondrian conformal + CCMC-compatible metrics. Public framework. |
 | `helios-fusion-internal` | **private** | none | none (private) | Trained BMA priors, isotonic calibrators, equipment transfer functions. Hybrid-IP strategy per master plan §6.6. |
 | [`gannon-storm-rtk-analysis`](https://github.com/577Industries/gannon-storm-rtk-analysis) | public | v0.1.0 | [live](https://577industries.github.io/gannon-storm-rtk-analysis/) | Reproducible retrospective of the May 10-12, 2024 Gannon G5 storm. **Headline: 1,302 station-hours over 2.5 cm threshold across 25 NGS CORS stations.** v1 climatological; v2 will use full SPP via the CDDIS adapter. |
+
+The "Latest release" column is a 2026-08-20 snapshot; authoritative: `git tag` / `gh release list` in each repo. Don't hand-edit it without re-running those.
 
 **Dependency graph**: A (provenance schema) → B (connectors) → C (fusion engine). D (Gannon) is independent for v1 but will consume B's CDDIS adapter in v2. F (private weights) receives trained artifacts from C.
 
@@ -115,8 +84,7 @@ All live under `github.com/577Industries/`:
 | Concern | Convention |
 |---|---|
 | Canonical clone (umbrella) | `git clone --recurse-submodules https://github.com/577Industries/helios-program.git` — fetches the meta-repo with all 4 public HELIOS artifacts as pinned submodules under `submodules/` |
-| Local checkout | `~/577i-Projects/<repo>/` for solo work on a single artifact |
-| Worktrees | `~/577i-Projects/.worktrees/<repo>-<branch>/` — pre-established user pattern, directory already exists |
+| Local checkout | `~/577i-Projects/577Industries-github/helios/<repo>/` for solo work on a single artifact (all six HELIOS clones sit side by side there) |
 | License | Apache 2.0 across all public repos (`helios-fusion-internal` is proprietary) |
 | Python | 3.11+/3.12 matrix in CI; develop against 3.12 |
 | Lint/format | `ruff` (replaces black + flake8 + isort) — `ruff check .` and `ruff format --check .` in pre-commit and CI |
@@ -183,14 +151,19 @@ Review packs are public (visible on the GH Pages site under `/specs/`). They dem
 
 ## 7. The submitted NASA proposal
 
-The proposal `.docx` is at `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx` — **locked, do not modify**. That file is the submitted version.
+The proposal lives in the private program repo `577Industries/sbir-nasa-helios-proposal`, cloned at `/home/twawe/577i-Projects/577Industries-github/sbir/sbir-nasa-helios-proposal/`:
+
+- Canonical `.docx`: `drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`
+- Final submitted PDF: `submission/HELIOS_PhaseI_Final w cover.pdf` (quote the path — it contains spaces)
+
+Both are **locked, do not modify**. The PDF is the version that went to NASA; the `.docx` is its source.
 
 The public mirror is `companion/companion.md` (this repo, served at `https://577industries.github.io/helios-program/companion/`). The companion preserves the proposal structure section-by-section but adds **live citations** to public artifacts as they ship. When new artifacts land or release statuses change, update both:
 
 1. `companion/footnotes.yaml` — machine-readable artifact registry (rebuild via `python -m orchestration.companion_sync`)
 2. `companion/companion.md` — human-readable proposal mirror (update the artifact registry table manually if statuses change)
 
-A plaintext extraction of the proposal lives at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/774be7f5-a036-4889-8afe-4c087e05097c/tool-results/b0awntn99.txt` — useful for sessions that don't want to re-run `python-docx` to read the submitted version.
+There is no longer a cached plaintext extraction of the proposal (the old harness `tool-results` file is gone). Sessions that need the text should read the PDF directly or run `python-docx` against the canonical `.docx`.
 
 ---
 
@@ -200,13 +173,13 @@ A plaintext extraction of the proposal lives at `/home/twawe/.claude/projects/-h
 2. **Refresh footnotes**: `python -m orchestration.companion_sync` — pulls the latest gh release state across all artifacts; commit if changed.
 3. **Check open PRs and CI**: `for r in helios-provenance-spec helios-spaceweather-connectors helios-fusion-engine gannon-storm-rtk-analysis; do gh pr list --repo 577Industries/$r; done`
 4. **Check Pages workflow runs** if you've made docs changes: `gh run list --repo 577Industries/helios-program --workflow pages --limit 3`
-5. **If picking up agent-dispatched work**: look for `feat/v0.*` branches local on `~/577i-Projects/helios-spaceweather-connectors/` etc. — agents commit but don't push, so the operator might have unreviewed work waiting.
+5. **If picking up agent-dispatched work**: look for `feat/v0.*` branches local on `~/577i-Projects/577Industries-github/helios/helios-spaceweather-connectors/` etc. — agents commit but don't push, so the operator might have unreviewed work waiting.
 
 ---
 
 ## 9. Memory cross-reference
 
-The harness's persistent memory entries at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/memory/` cover much of this content from a Claude-session perspective:
+The harness's persistent memory entries at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/memory/` (the directory is named for an SBIR path that no longer exists — that intake folder became the `sbir-nasa-helios-proposal` repo — but the memory files are still there and still read) cover much of this content from a Claude-session perspective:
 
 - `user_profile.md` — Thomas Waweru's role and posture
 - `helios-program.md` — program summary (this CLAUDE.md is the in-repo version)
