@@ -132,7 +132,7 @@ The agent doesn't need a worktree (touches only `helios-program/`); commit direc
    - Refine the §6.2 revenue model per Phase I customer-discovery if interview notes are committed
    - Update the §6.3 go-to-market based on actual partnership conversations (operator-driven)
 6. **Phase II proposal draft scaffold** at `phase-ii/phase-ii-proposal-draft.md`:
-   - Use the submitted Phase I proposal as the template (`/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx`)
+   - Use the submitted Phase I proposal as the template (`/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`)
    - Update §1.3 Gannon to reference the v2 real-SPP analysis (when TFT lands)
    - Update §2 success criteria to reflect Phase II thresholds (CCMC proving-ground evaluation, OEM partnership commitments, etc.)
    - Update §3.3 Phase II vision → Phase II execution plan
@@ -180,7 +180,7 @@ Each refresh is a small focused commit; the README at `phase-ii/README.md` track
 
 ## Cross-references
 
-- Submitted Phase I proposal: `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx`
+- Submitted Phase I proposal: `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`
 - Companion document: `helios-program/companion/companion.md`
 - All 5 review packs in `helios-program/specs/`
 - `OPERATOR_TODO.md` items 5-7 (operator-driven inputs)

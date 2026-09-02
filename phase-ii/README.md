@@ -38,7 +38,7 @@ The auto-render workflow ([`phase-ii-pdf.yml`](https://github.com/577Industries/
 
 ## Cross-references
 
-- Submitted Phase I proposal (locked): `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx`
+- Submitted Phase I proposal (locked): `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`
 - Public companion (the lead narrative): [`../companion/companion.md`](https://github.com/577Industries/helios-program/blob/main/companion/companion.md)
 - Master plan: [`../plan/master-plan.md`](https://github.com/577Industries/helios-program/blob/main/plan/master-plan.md)
 - Dispatch spec for this assembly: [`../specs/2026-05-18-PhaseII-evidence-assembly-spec.md`](https://github.com/577Industries/helios-program/blob/main/specs/2026-05-18-PhaseII-evidence-assembly-spec.md)

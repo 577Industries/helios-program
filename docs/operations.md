@@ -9,7 +9,7 @@
 | Resource | Location |
 |---|---|
 | **Master plan** | `plan/master-plan.md` (this repo) — mirrored from `/home/twawe/.claude/plans/so-i-have-this-clever-mountain.md` |
-| **Submitted NASA proposal** (locked) | `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx` |
+| **Submitted NASA proposal** (locked) | `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx` |
 | **Submitted proposal — plaintext mirror** | `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/774be7f5-a036-4889-8afe-4c087e05097c/tool-results/b0awntn99.txt` |
 | **Public companion doc** | `companion/companion.md` (this repo); rendered output → `_site/` |
 | **Footnote registry** | `companion/footnotes.yaml` — rebuilt from upstream by `orchestration/companion_sync.py` |

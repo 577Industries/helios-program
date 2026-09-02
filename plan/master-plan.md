@@ -2,7 +2,7 @@
 
 ## Context
 
-577 Industries' NASA SBIR Phase I proposal "HELIOS: Heliophysics-Enhanced Location Integrity and Operations System" (`/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx`) is submitted. The proposal advances a five-objective work plan around a model-agnostic Bayesian-Model-Averaging fusion engine for space-weather model outputs, with two vertical slices: NASA SRAG mission-operations radiation risk and U.S. precision-agriculture GNSS.
+577 Industries' NASA SBIR Phase I proposal "HELIOS: Heliophysics-Enhanced Location Integrity and Operations System" (`/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`) is submitted. The proposal advances a five-objective work plan around a model-agnostic Bayesian-Model-Averaging fusion engine for space-weather model outputs, with two vertical slices: NASA SRAG mission-operations radiation risk and U.S. precision-agriculture GNSS.
 
 The goal of this plan is to convert four of the proposal's strongest claims from paper into citable, deployable, public artifacts:
 
@@ -301,7 +301,7 @@ Applied identically to all 4 public artifacts (A, B, C-public, D):
 | `~/577i-Projects/helios-program/companion/companion.md` | Public-facing proposal mirror |
 | `~/577i-Projects/helios-program/specs/` (4 files) | Per-artifact design specs from follow-up brainstorms |
 
-Nothing in `/home/twawe/577i-Projects/SBIR Working Folder/NASA/` is modified by this plan. The submitted proposal `.docx` stays as-is; the companion document is the public live mirror.
+The locked canonical proposal at `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx` is not modified by this plan; the companion document is the public live mirror.
 
 ## Verification & Quality Gates
 
