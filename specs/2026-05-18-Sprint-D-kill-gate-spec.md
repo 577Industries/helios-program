@@ -16,7 +16,7 @@ Sprint D executes the pre-registered kill-gate evaluation on the 3-event hold-ou
 
 | Prereq | How to verify | Status check |
 |---|---|---|
-| OSF pre-registration filed | `cat ~/577i-Projects/helios-program/orchestration/osf_preregistration.url` should print a real `https://osf.io/...` URL | Operator action (see [OPERATOR_TODO §3](../OPERATOR_TODO.md)) |
+| OSF pre-registration filed | `cat ~/577i-Projects/GitHub/577Industries/helios-program/orchestration/osf_preregistration.url` should print a real `https://osf.io/...` URL | Operator action (see [OPERATOR_TODO §3](../OPERATOR_TODO.md)) |
 | Methodology note in OSF "Deviations" | The Sprint C-Training-v2 review pack's drafted note (real NOAA SESC truth labels; per-(component, event) source labeling) included before filing | Operator action |
 | `helios-fusion-engine` tagged `prereg-v1.0` | `gh release view prereg-v1.0 --repo 577Industries/helios-fusion-engine` returns a release | Operator action |
 | `helios-fusion-internal/weights/` v2 artifacts loadable | `python3 -c "from helios_fusion_internal import load_weights; load_weights()"` works | Auto (already true post-Sprint-C-Training-v2) |
@@ -119,12 +119,12 @@ Each branch has explicit downstream actions:
 |---|---|
 | `orchestration/kill_gate.py` | Implementation (currently stub raises NotImplementedError) |
 | `~/577i-Projects/.worktrees/helios-fusion-engine-killgate/` | NEW worktree for the dispatch |
-| `~/577i-Projects/helios-program/results/<date>-killgate.json` | NEW (primary output) |
-| `~/577i-Projects/helios-program/results/<date>-killgate-{reliability-diagrams,bootstrap-distributions}.png` | NEW |
-| `~/577i-Projects/helios-program/results/<date>-decision.md` | NEW (branch-routing rationale) |
-| `~/577i-Projects/helios-program/companion/footnotes.yaml` | Edit (fusion_engine.preprint URL or negative-result URL) |
-| `~/577i-Projects/helios-program/companion/companion.md` | Edit (status table; potentially refresh innovation #1 wording) |
-| `~/577i-Projects/helios-program/plan/master-plan.md` | Append execution-log entry |
+| `~/577i-Projects/GitHub/577Industries/helios-program/results/<date>-killgate.json` | NEW (primary output) |
+| `~/577i-Projects/GitHub/577Industries/helios-program/results/<date>-killgate-{reliability-diagrams,bootstrap-distributions}.png` | NEW |
+| `~/577i-Projects/GitHub/577Industries/helios-program/results/<date>-decision.md` | NEW (branch-routing rationale) |
+| `~/577i-Projects/GitHub/577Industries/helios-program/companion/footnotes.yaml` | Edit (fusion_engine.preprint URL or negative-result URL) |
+| `~/577i-Projects/GitHub/577Industries/helios-program/companion/companion.md` | Edit (status table; potentially refresh innovation #1 wording) |
+| `~/577i-Projects/GitHub/577Industries/helios-program/plan/master-plan.md` | Append execution-log entry |
 
 ## Verification gates (pre-merge)
 

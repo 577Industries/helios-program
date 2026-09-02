@@ -31,7 +31,7 @@ Submission has happened; timeline is open-ended. The plan optimizes for **qualit
 
 - **Local checkout convention**: `~/577i-Projects/<repo>/` matching existing sibling repos (`agent-memory`, `hashchain-audit`, `model-router`, `tool-guardrails`, `workflow-dag`).
 - **Worktree convention**: `~/577i-Projects/.worktrees/<repo>-<branch>/` matching the directory you already maintain at `~/577i-Projects/.worktrees/`.
-- **Meta-repo**: `~/577i-Projects/helios-program/` (private, on GitHub) holds the proposal companion document source, cross-repo orchestration scripts, the master plan tracker, kill-gate evaluation runner, and per-artifact design specs as they're created.
+- **Meta-repo**: `~/577i-Projects/GitHub/577Industries/helios-program/` (private, on GitHub) holds the proposal companion document source, cross-repo orchestration scripts, the master plan tracker, kill-gate evaluation runner, and per-artifact design specs as they're created.
 - **CITATION**: every public repo ships `CITATION.cff` so academic citers don't have to invent one.
 - **PyPI**: `helios-spaceweather-connectors`, `helios-fusion-engine`, `helios-provenance` namespace; `helios-fusion-internal` is wheel-only via internal index, never PyPI.
 - **DOI**: each public release tagged on GitHub auto-mints a Zenodo DOI (free, accepts arbitrary GitHub repos).
@@ -292,14 +292,14 @@ Applied identically to all 4 public artifacts (A, B, C-public, D):
 
 | Path | Purpose |
 |---|---|
-| `~/577i-Projects/helios-program/` (NEW repo) | Meta-repo: companion doc source, orchestration scripts, master plan, per-artifact specs |
+| `~/577i-Projects/GitHub/577Industries/helios-program/` (NEW repo) | Meta-repo: companion doc source, orchestration scripts, master plan, per-artifact specs |
 | `~/577i-Projects/helios-provenance-spec/` (NEW repo) | Public RFC + ref impl |
 | `~/577i-Projects/helios-spaceweather-connectors/` (NEW repo) | Public Python package |
 | `~/577i-Projects/helios-fusion-engine/` (NEW repo) | Public fusion framework |
 | `~/577i-Projects/helios-fusion-internal/` (NEW PRIVATE repo) | Trained weights, BMA priors, eq transfer functions |
 | `~/577i-Projects/gannon-storm-rtk-analysis/` (NEW repo) | Public analysis + blog |
-| `~/577i-Projects/helios-program/companion/companion.md` | Public-facing proposal mirror |
-| `~/577i-Projects/helios-program/specs/` (4 files) | Per-artifact design specs from follow-up brainstorms |
+| `~/577i-Projects/GitHub/577Industries/helios-program/companion/companion.md` | Public-facing proposal mirror |
+| `~/577i-Projects/GitHub/577Industries/helios-program/specs/` (4 files) | Per-artifact design specs from follow-up brainstorms |
 
 The locked canonical proposal at `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx` is not modified by this plan; the companion document is the public live mirror.
 
@@ -679,7 +679,7 @@ Update `helios-program/orchestration/companion_sync.py` to verify each docs URL 
 
 ## Phase 4 — CLAUDE.md at helios-program root
 
-**Path**: `~/577i-Projects/helios-program/CLAUDE.md`
+**Path**: `~/577i-Projects/GitHub/577Industries/helios-program/CLAUDE.md`
 
 **Audience**: future Claude sessions joining the HELIOS program; any developer (including non-Claude) onboarding.
 
@@ -722,8 +722,8 @@ discipline for the fusion-engine paper — non-negotiable process.]
 does not push; operator merges" policy.]
 
 ## Submitted proposal
-[Locked .docx path; companion.md is the public mirror; the plaintext
-extraction at `~/.claude/projects/.../tool-results/b0awntn99.txt`]
+[Locked .docx path; companion.md is the public mirror; no cached plaintext
+extraction exists — run `python-docx` against the canonical .docx]
 
 ## Working with this program — daily checklist
 [Refresh footnotes, check open PRs, check CI, review master plan execution log]
@@ -742,7 +742,7 @@ Approximately 250-400 lines; scannable.
 
 ### Verification gate for Phase 4
 
-- `~/577i-Projects/helios-program/CLAUDE.md` committed and pushed
+- `~/577i-Projects/GitHub/577Industries/helios-program/CLAUDE.md` committed and pushed
 - File renders cleanly on GitHub's web view (preview before commit if possible)
 - No `577-Industries` (hyphen) references except in the disambiguation table itself
 - Cross-references to `plan/master-plan.md`, `docs/operations.md`, and `specs/*` resolve
@@ -982,7 +982,7 @@ The fourth "next move" from session 1 *is* Wave 2 — already detailed above.
 3. **Tests**: every artifact repo CI is green on main. `helios-spaceweather-connectors` v0.2.0 has ≥80% coverage with 4+ adapters tested.
 4. **PyPI**: `pip install helios-provenance-spec helios-fusion-engine helios-spaceweather-connectors` succeeds; each package imports.
 5. **Companion sync**: `python3 -m orchestration.companion_sync --check` exits 0; footnotes match upstream release state.
-6. **CLAUDE.md**: a fresh `Claude` session in `~/577i-Projects/helios-program/` reads CLAUDE.md on session start and demonstrates context — e.g., correctly disambiguates 577Industries vs 577-Industries on first probe.
+6. **CLAUDE.md**: a fresh `Claude` session in `~/577i-Projects/GitHub/577Industries/helios-program/` reads CLAUDE.md on session start and demonstrates context — e.g., correctly disambiguates 577Industries vs 577-Industries on first probe.
 7. **RFC issue**: visible at `github.com/577Industries/helios-provenance-spec/issues/1` with the full RFC body.
 8. **Blog post**: published at the chosen URL; first-paragraph quote with caveat preserved.
 9. **End-to-end integration test** (added in P6): `python -m pytest helios-fusion-engine/tests/test_e2e.py::test_fetch_through_fusion -v` passes — proves real connector data flows through fusion engine.
