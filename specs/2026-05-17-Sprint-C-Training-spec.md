@@ -12,7 +12,7 @@ Fit BMA priors + isotonic calibrators on the **seven Table 3-1 training events**
 
 ## What "trained" means here
 
-Per `~/577i-Projects/helios-program/orchestration/osf_preregistration.template.md`:
+Per `~/577i-Projects/GitHub/577Industries/helios-program/orchestration/osf_preregistration.template.md`:
 
 - **H1 metric**: fused all-clear-revocation HSS beats best-component HSS by ≥15% on the 3-event hold-out (2022-01-20, 2023-02-17, 2024-05-11 Gannon).
 - **H2 metric**: reliability slope within 0.15 of 1.0 across all Kp severity strata.

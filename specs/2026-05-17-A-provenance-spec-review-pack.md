@@ -104,7 +104,7 @@ gh issue create --repo 577Industries/helios-provenance-spec \
   --body "See \`rfc/RFC-0001-feature-lineage.md\`. Comments welcome on the 8 open questions in §6."
 
 # 6. Notify the helios-program companion that A has shipped
-cd ~/577i-Projects/helios-program
+cd ~/577i-Projects/GitHub/577Industries/helios-program
 python -m orchestration.companion_sync
 git add companion/footnotes.yaml
 git commit -m "chore: companion sync after helios-provenance-spec v0.1.0"

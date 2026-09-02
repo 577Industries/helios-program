@@ -3,7 +3,7 @@
 **Status**: SCAFFOLD ONLY — section headers + key-phrasing carry-over + cross-link placeholders. The operator writes actual Phase II copy.
 **Submission deadline**: TBD — depends on the NASA Phase II solicitation cycle (subtopic SPWX.1.S26A continuation, when announced).
 **Last refreshed**: 2026-05-18 (initial scaffold).
-**Template source**: submitted Phase I proposal at `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx` (locked); plaintext extraction at `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/774be7f5-a036-4889-8afe-4c087e05097c/tool-results/b0awntn99.txt`.
+**Template source**: submitted Phase I proposal at `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx` (locked); for plaintext, run `python-docx` against that `.docx` (the old harness extraction file no longer exists).
 
 ---
 
@@ -236,8 +236,8 @@ The dispatch spec calls for these four specific Phase II adjustments — confirm
 
 ## Cross-references
 
-- Submitted Phase I proposal (locked; do not modify): `/home/twawe/577i-Projects/SBIR Working Folder/NASA/HELIOS_NASA_SBIR_PhaseI_Proposal.docx`
-- Plaintext extraction: `/home/twawe/.claude/projects/-home-twawe-577i-Projects-SBIR-Working-Folder-NASA/774be7f5-a036-4889-8afe-4c087e05097c/tool-results/b0awntn99.txt`
+- Submitted Phase I proposal (locked; do not modify): `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`
+- Plaintext: run `python-docx` against the canonical `.docx` (no cached extraction exists)
 - Public companion (Phase I mirror): [`../companion/companion.md`](https://github.com/577Industries/helios-program/blob/main/companion/companion.md)
 - Evidence package (this Phase II evidence index): [`evidence-package.md`](./evidence-package.md)
 - Refined commercialization plan: [`commercialization-plan-refined.md`](./commercialization-plan-refined.md)

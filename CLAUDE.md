@@ -55,7 +55,7 @@ The technical premise: HELIOS is **not a new space-weather model**. The innovati
 ## 2. ⚠️ Critical: GitHub identity
 
 - **Org = `577Industries`** (no hyphen) owns every HELIOS repo; **user = `577-Industries`** (with hyphen) is the `gh` login and an org member. **Never create repos under the user** — always `gh repo create 577Industries/<name> ...`.
-- Full rules, token scopes, the user→org transfer command and the visibility-flip fallback live in the org-folder instructions: `../../CLAUDE.md` (= `/home/twawe/577i-Projects/577Industries-github/CLAUDE.md`). Read that file once per session; do not re-derive the rules here.
+- Full rules, token scopes, the user→org transfer command and the visibility-flip fallback live in the org-folder instructions: `../../CLAUDE.md` (= `/home/twawe/577i-Projects/GitHub/CLAUDE.md`). Read that file once per session; do not re-derive the rules here.
 - HELIOS-specific gotcha kept in this file — **git tag**: in this gh CLI version, `git tag -a` does **not** accept `--quiet`. Omit that flag or you'll silently fail to create the tag (and any subsequent `git push origin <tag>` will fail). If `gh release create <tag>` is run afterward, it will create the tag implicitly — so things sometimes appear to work anyway, but the local tag will be missing.
 
 ---
@@ -84,7 +84,7 @@ The "Latest release" column is a 2026-08-20 snapshot; authoritative: `git tag` /
 | Concern | Convention |
 |---|---|
 | Canonical clone (umbrella) | `git clone --recurse-submodules https://github.com/577Industries/helios-program.git` — fetches the meta-repo with all 4 public HELIOS artifacts as pinned submodules under `submodules/` |
-| Local checkout | `~/577i-Projects/577Industries-github/helios/<repo>/` for solo work on a single artifact (all six HELIOS clones sit side by side there) |
+| Local checkout | `~/577i-Projects/GitHub/577Industries/<repo>/` for solo work on a single artifact (all six HELIOS clones sit side by side there) |
 | License | Apache 2.0 across all public repos (`helios-fusion-internal` is proprietary) |
 | Python | 3.11+/3.12 matrix in CI; develop against 3.12 |
 | Lint/format | `ruff` (replaces black + flake8 + isort) — `ruff check .` and `ruff format --check .` in pre-commit and CI |
@@ -151,7 +151,7 @@ Review packs are public (visible on the GH Pages site under `/specs/`). They dem
 
 ## 7. The submitted NASA proposal
 
-The proposal lives in the private program repo `577Industries/sbir-nasa-helios-proposal`, cloned at `/home/twawe/577i-Projects/577Industries-github/sbir/sbir-nasa-helios-proposal/`:
+The proposal lives in the private program repo `577Industries/sbir-nasa-helios-proposal`, cloned at `/home/twawe/577i-Projects/GitHub/577Industries/sbir-nasa-helios-proposal/`:
 
 - Canonical `.docx`: `drafts/_archive/HELIOS_NASA_SBIR_PhaseI_Proposal_2026-05-17_CANONICAL_v0.docx`
 - Final submitted PDF: `submission/HELIOS_PhaseI_Final w cover.pdf` (quote the path — it contains spaces)
@@ -173,7 +173,7 @@ There is no longer a cached plaintext extraction of the proposal (the old harnes
 2. **Refresh footnotes**: `python -m orchestration.companion_sync` — pulls the latest gh release state across all artifacts; commit if changed.
 3. **Check open PRs and CI**: `for r in helios-provenance-spec helios-spaceweather-connectors helios-fusion-engine gannon-storm-rtk-analysis; do gh pr list --repo 577Industries/$r; done`
 4. **Check Pages workflow runs** if you've made docs changes: `gh run list --repo 577Industries/helios-program --workflow pages --limit 3`
-5. **If picking up agent-dispatched work**: look for `feat/v0.*` branches local on `~/577i-Projects/577Industries-github/helios/helios-spaceweather-connectors/` etc. — agents commit but don't push, so the operator might have unreviewed work waiting.
+5. **If picking up agent-dispatched work**: look for `feat/v0.*` branches local on `~/577i-Projects/GitHub/577Industries/helios-spaceweather-connectors/` etc. — agents commit but don't push, so the operator might have unreviewed work waiting.
 
 ---
 

@@ -155,7 +155,7 @@ git push origin v0.1.0
 gh release create v0.1.0 --generate-notes --repo 577Industries/helios-fusion-engine
 
 # 3. Notify the companion document
-cd ~/577i-Projects/helios-program
+cd ~/577i-Projects/GitHub/577Industries/helios-program
 python -m orchestration.companion_sync
 git add companion/footnotes.yaml
 git commit -m "chore: companion sync after helios-fusion-engine v0.1.0"

@@ -141,7 +141,7 @@ git push origin v0.1.0
 gh release create v0.1.0 --generate-notes --repo 577Industries/gannon-storm-rtk-analysis
 
 # 4. Notify the companion document
-cd ~/577i-Projects/helios-program
+cd ~/577i-Projects/GitHub/577Industries/helios-program
 python -m orchestration.companion_sync
 git add companion/footnotes.yaml
 git commit -m "chore: companion sync after gannon-storm-rtk-analysis v0.1.0"

@@ -66,7 +66,7 @@ gh pr merge <number> --squash --delete-branch --repo 577Industries/helios-fusion
 
 **Why**: The pre-registered kill-gate is non-negotiable program discipline. The OSF URL must be on file **BEFORE** any hold-out evaluation runs. `orchestration/kill_gate.py` refuses to execute without it. Gates the Track 1 (Sprint D) dispatch.
 
-1. Open `~/577i-Projects/helios-program/orchestration/osf_preregistration.template.md`.
+1. Open `~/577i-Projects/GitHub/577Industries/helios-program/orchestration/osf_preregistration.template.md`.
 2. Fill in the `TO_BE_FILLED` fields:
    - **Investigators** (already lists PI Thomas; add SME consultant + ML Engineer names when those hires confirm — see Step 6)
    - **Date filed (UTC ISO 8601)** — at filing time
@@ -78,7 +78,7 @@ gh pr merge <number> --squash --delete-branch --repo 577Industries/helios-fusion
 4. Submit on OSF: <https://osf.io/dashboard/> → "Create new project" → "Registrations" → use the AsPredicted template.
 5. Save the OSF URL:
    ```bash
-   echo "https://osf.io/<your-registration-id>/" > ~/577i-Projects/helios-program/orchestration/osf_preregistration.url
+   echo "https://osf.io/<your-registration-id>/" > ~/577i-Projects/GitHub/577Industries/helios-program/orchestration/osf_preregistration.url
    ```
 6. Tag the locked commit on `helios-fusion-engine`:
    ```bash
@@ -89,7 +89,7 @@ gh pr merge <number> --squash --delete-branch --repo 577Industries/helios-fusion
    ```
 7. Commit + push the URL file:
    ```bash
-   cd ~/577i-Projects/helios-program
+   cd ~/577i-Projects/GitHub/577Industries/helios-program
    git add orchestration/osf_preregistration.url
    git commit -m "chore(orchestration): pin OSF pre-registration URL for kill-gate"
    git push
@@ -97,7 +97,7 @@ gh pr merge <number> --squash --delete-branch --repo 577Industries/helios-fusion
 
 **Tag target as of Session 6**: `helios-fusion-engine` at `v0.2.0` (current main HEAD). If any docs PRs land before pre-reg filing, retag at the new HEAD.
 
-**When done**: `cat ~/577i-Projects/helios-program/orchestration/osf_preregistration.url` returns a real OSF URL; `git ls-remote --tags origin | grep prereg-v1.0` returns one row.
+**When done**: `cat ~/577i-Projects/GitHub/577Industries/helios-program/orchestration/osf_preregistration.url` returns a real OSF URL; `git ls-remote --tags origin | grep prereg-v1.0` returns one row.
 
 **Gates / unblocks**: Track 1 dispatch (Sprint D kill-gate execution).
 
@@ -105,7 +105,7 @@ gh pr merge <number> --squash --delete-branch --repo 577Industries/helios-fusion
 
 ### Step 4 — Signal "prereqs done" to dispatch Sprint D + TFT (~1 min)
 
-After Steps 2 + 3 land: open the next Claude Code session in `~/577i-Projects/helios-program/` and write:
+After Steps 2 + 3 land: open the next Claude Code session in `~/577i-Projects/GitHub/577Industries/helios-program/` and write:
 
 > prereqs done — dispatch Sprint D and TFT
 
