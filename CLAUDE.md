@@ -22,7 +22,7 @@ The HELIOS program is **Phase-II-ready** as of 2026-05-18. Four substantive trac
 3. **§2 Obj 2 — TFT for TEC forecasting** (once Earthdata creds set)
 4. **Phase II evidence assembly** (continuous — runs once initially, refresh each session)
 
-**Current portfolio state** (also in `companion/footnotes.yaml`; snapshot of `git describe --tags --abbrev=0` in each local clone on 2026-08-20 — authoritative: `git tag` / `gh release list` in each repo):
+**Current portfolio state** (also in `companion/footnotes.yaml`; snapshot of `git describe --tags --abbrev=0` in each local clone, re-verified against `gh release list` on 2026-09-01 — authoritative: `git tag` / `gh release list` in each repo):
 
 ```
 helios-program                  v0.3.0   public
@@ -73,7 +73,7 @@ All live under `github.com/577Industries/`:
 | `helios-fusion-internal` | **private** | none | none (private) | Trained BMA priors, isotonic calibrators, equipment transfer functions. Hybrid-IP strategy per master plan §6.6. |
 | [`gannon-storm-rtk-analysis`](https://github.com/577Industries/gannon-storm-rtk-analysis) | public | v0.1.0 | [live](https://577industries.github.io/gannon-storm-rtk-analysis/) | Reproducible retrospective of the May 10-12, 2024 Gannon G5 storm. **Headline: 1,302 station-hours over 2.5 cm threshold across 25 NGS CORS stations.** v1 climatological; v2 will use full SPP via the CDDIS adapter. |
 
-The "Latest release" column is a 2026-08-20 snapshot; authoritative: `git tag` / `gh release list` in each repo. Don't hand-edit it without re-running those.
+The "Latest release" column is a 2026-09-01 snapshot; authoritative: `git tag` / `gh release list` in each repo. Don't hand-edit it without re-running those.
 
 **Dependency graph**: A (provenance schema) → B (connectors) → C (fusion engine). D (Gannon) is independent for v1 but will consume B's CDDIS adapter in v2. F (private weights) receives trained artifacts from C.
 
@@ -91,11 +91,12 @@ The "Latest release" column is a 2026-08-20 snapshot; authoritative: `git tag` /
 | Type check | `mypy --strict` for `src/`; `--ignore-missing-imports` permitted on third-party gaps |
 | Tests | `pytest`, `pytest-cov`, hypothesis where invariants exist; ≥80% line+branch coverage gate |
 | Coverage threshold | 80% for libraries; 85% for `helios-fusion-engine` (per OSF pre-reg discipline) |
-| CI/CD | GitHub Actions; Python 3.11+3.12 matrix; nightly integration suite separate from PR suite |
+| CI/CD | GitHub Actions; Python 3.11+3.12 matrix; nightly integration suite separate from PR suite. Every scheduled workflow carries `workflow_dispatch` and every job `timeout-minutes` — a lock-killed weekly cron otherwise waits for its next tick (2026-08-31 org billing lock) |
 | Release | `git tag -a vX.Y.Z` (no `--quiet`!) → `git push origin vX.Y.Z` → `gh release create` → triggers PyPI publish via trusted publishing |
 | Conventional commits | `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:` — enforced by pre-commit |
 | Pre-commit | ruff + mypy + conventional-commit lint + secrets scan (detect-secrets) |
 | Docs | MkDocs Material; `mkdocs build --strict`; Pages via `actions/configure-pages` + `actions/deploy-pages` |
+| Docs pins + Pages | `requirements-docs.txt` is kept identical across the four public artifact repos (mkdocs-material, pymdown-extensions, git-revision-date-localized, glightbox); helios-program additionally pins `mkdocs-include-markdown-plugin`. Dependabot (pip weekly) proposes the bumps; the deploy proof is a green `pages` run on the bumped repo, not a local build. `pages.yml` runs `concurrency: pages, cancel-in-progress: false` — a run stuck `pending`/`queued` blocks every later deploy silently (helios-fusion-engine served a 2026-07-07 build for three weeks). |
 
 ---
 
@@ -174,6 +175,7 @@ There is no longer a cached plaintext extraction of the proposal (the old harnes
 3. **Check open PRs and CI**: `for r in helios-provenance-spec helios-spaceweather-connectors helios-fusion-engine gannon-storm-rtk-analysis; do gh pr list --repo 577Industries/$r; done`
 4. **Check Pages workflow runs** if you've made docs changes: `gh run list --repo 577Industries/helios-program --workflow pages --limit 3`
 5. **If picking up agent-dispatched work**: look for `feat/v0.*` branches local on `~/577i-Projects/GitHub/577Industries/helios-spaceweather-connectors/` etc. — agents commit but don't push, so the operator might have unreviewed work waiting.
+6. **Docs-pin alignment + Pages proof**: `for r in helios-program helios-provenance-spec helios-spaceweather-connectors helios-fusion-engine gannon-storm-rtk-analysis; do echo "== $r"; gh api -H "Accept: application/vnd.github.raw+json" repos/577Industries/$r/contents/requirements-docs.txt; gh run list -R 577Industries/$r --workflow pages --limit 1; done` — the four artifact repos should print identical pins and every repo a recent `success`. A `pages` run sitting in `pending`/`queued` with no jobs is a failure, not a pass: cancel it and re-dispatch.
 
 ---
 
@@ -205,6 +207,6 @@ Things that are conventional but worth confirming with the operator (Thomas) bef
 
 - New connector adapters: follow the DONKI pattern (`helios-spaceweather-connectors/docs/design.md`); inherit the 7 documented API quirks.
 - New schema fields in `helios-provenance-spec`: ship as v0.x (still RFC); open an issue tying the change to RFC-0001 comments.
-- Visual changes to Pages: keep the blue/teal palette and the sun-and-horizon logo; deviation breaks portfolio-wide consistency with aegisgraph + model-router + agent-memory + tool-guardrails.
+- Visual changes to Pages: keep the blue/teal palette and the sun-and-horizon logo; deviation breaks portfolio-wide consistency with aegisgraph and forge-os-libs (the three archived forge-* libraries no longer publish Pages).
 
 Welcome to HELIOS. The master plan tells you what; this file tells you how.
